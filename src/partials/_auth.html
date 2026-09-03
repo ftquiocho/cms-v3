@@ -1,0 +1,89 @@
+<!-- ===== AUTHENTICATION OVERLAY ===== -->
+<div id="authOverlay" style="display:flex; position:fixed; inset:0; z-index:99999; background:#0f172a; align-items:center; justify-content:center; padding:1rem;">
+    <div style="background:white; border-radius:1.5rem; padding:2rem; max-width:400px; width:100%; text-align:center; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">
+        <!-- Logo -->
+        <div style="width:64px; height:64px; background:#ea580c; border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem; font-weight:900; margin:0 auto 1rem auto; box-shadow:0 8px 24px rgba(234,88,12,0.3);">VC</div>
+        <h1 style="font-size:1.5rem; font-weight:900; color:#0f172a; margin:0 0 0.25rem 0;">Veritas Campus</h1>
+        <p style="font-size:0.875rem; color:#64748b; margin:0 0 1.5rem 0;">Please enter the password.</p>
+
+        <!-- Password Input -->
+        <input type="password" id="authPassword" placeholder="Enter password"
+               style="width:100%; padding:0.75rem 1rem; border:2px solid #e2e8f0; border-radius:12px; font-size:1rem; text-align:center; outline:none; box-sizing:border-box; transition:border-color 0.2s;"
+               onfocus="this.style.borderColor='#ea580c'"
+               onblur="this.style.borderColor='#e2e8f0'" />
+
+        <!-- Error Message -->
+        <p id="authError" style="color:#ef4444; font-size:0.75rem; margin:0.5rem 0 0 0; display:none;">✕ Incorrect password. Try again.</p>
+
+        <!-- Buttons -->
+        <div style="display:flex; gap:0.75rem; margin-top:1.25rem;">
+            <button onclick="authenticate()" style="flex:1; padding:0.75rem; background:#ea580c; color:white; border:none; border-radius:12px; font-size:0.875rem; font-weight:700; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='#c2410c'" onmouseout="this.style.background='#ea580c'">
+                Continue →
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const PROTECTED_PASSWORD = 'ditto2025'; //change here
+
+    function authenticate() {
+        const input = document.getElementById('authPassword');
+        const error = document.getElementById('authError');
+        const entered = input?.value?.trim();
+
+        // DEBUG: Log what was entered to console
+        console.log('Entered password:', entered);
+        console.log('Expected password:', PROTECTED_PASSWORD);
+        console.log('Match?', entered === PROTECTED_PASSWORD);
+
+        if (!entered) {
+            input?.focus();
+            return;
+        }
+
+        if (entered === PROTECTED_PASSWORD) {
+            // Save to localStorage so they don't have to re-enter
+            localStorage.setItem('veritas_auth', String(Date.now() + (7 * 24 * 60 * 60 * 1000)));
+            document.getElementById('authOverlay').style.display = 'none';
+            if (error) error.style.display = 'none';
+            console.log('✅ Authentication successful!');
+        } else {
+            if (error) error.style.display = 'block';
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            console.log('❌ Authentication failed - passwords do not match');
+        }
+    }
+
+    // Check if already authenticated
+    (function() {
+        const stored = localStorage.getItem('veritas_auth');
+        if (stored && Date.now() < parseInt(stored)) {
+            document.getElementById('authOverlay').style.display = 'none';
+            console.log('✅ Already authenticated, overlay hidden');
+        }
+    })();
+
+    // Enter key support
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('authPassword');
+        if (input) {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    authenticate();
+                }
+            });
+            // Auto-focus
+            setTimeout(function() { input.focus(); }, 200);
+        }
+    });
+
+    // Expose globally for onclick
+    window.authenticate = authenticate;
+
+    console.log('🔐 Auth script loaded. Password is set to:', PROTECTED_PASSWORD);
+</script>

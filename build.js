@@ -28,11 +28,14 @@ const layout = fs.readFileSync('src/_layout.html', 'utf8');
 const header = fs.readFileSync('src/partials/_header.html', 'utf8');
 const sidebar = fs.readFileSync('src/partials/_sidebar.html', 'utf8');
 const modals = fs.readFileSync('src/partials/_modals.html', 'utf8');
+const auth = fs.readFileSync('src/partials/_auth.html', 'utf8');
+
 
 const pageNames = ['dashboard', 'approvals', 'admissions', 'manage', 'settings', 'enrol', 'graduation', 'billing','registrar','security', 'ter', 'academic', 'colleges','departments','courses','subjects','curriculum','courses','subjects','curriculum','grade-system','grade-remarks','score-settings','autolapse-control','semester-definitions', 'schedules','graduation-dates','school-info', 'logo-signature', 'institution-reports','view-evaluation','view-grades','pre-enrol-subjects','enrol-subjects','change-matriculation','subject-override','unit-override','enrol-reports', 'student-360', 'curriculum-requirements', 'recommend-students','graduation-reports', 'grad-eligibility','grad-reports','grad-ceremony','account-billing', 'payment-log', 'account-arrears','registrar', 'registrar-statistics', 'registrar-transcript', 'registrar-misc', 'security-users', 'security-roles', 'security-logs'];
 pageNames.forEach(page => {
     const content = fs.readFileSync(`src/pages/${page}.html`, 'utf8');
     let html = layout
+        .replace('<!--#include auth -->', auth)
         .replace('<!--#include header -->', header)
         .replace('<!--#include sidebar -->', sidebar)
         .replace('<!--#include modals -->', modals)
@@ -99,3 +102,8 @@ const titles = {
 
 console.log('✅ Build complete! Pages generated:', pageNames.join(', '));
 
+// Copy built index.html to root for GitHub Pages
+if (fs.existsSync('dist/index.html')) {
+    fs.copyFileSync('dist/index.html', 'index.html');
+    console.log('✅ Copied dist/index.html to root');
+}
