@@ -99,7 +99,3 @@ const titles = {
 
 console.log('✅ Build complete! Pages generated:', pageNames.join(', '));
 
-if (fs.existsSync('dist/index.html')) {
-    fs.copyFileSync('dist/index.html', 'index.html');
-    console.log('✅ Copied dist/index.html to root for GitHub Pages');
-}
