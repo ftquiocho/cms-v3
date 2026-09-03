@@ -1,0 +1,571 @@
+<!-- ===== SECURITY USER MANAGEMENT ===== -->
+
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='security.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Security Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">User Management</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">User Management</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage system user accounts, roles, and access levels</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="security.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Security Hub</a>
+                <a href="security-users.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">User Management</a>
+                <a href="security-roles.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Roles &amp; Permissions</a>
+                <a href="security-logs.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Security Logs</a>
+            </div>
+        </div>
+        <!-- Add User (golden egg) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                ondblclick="openAddUserModal()"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Add User
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic with Tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Users (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Users
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of user accounts in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="userTotal">0</h2>
+            <span class="text-sm text-slate-500">All accounts</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Active (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Active
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Users with active accounts who can log in.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="userActive">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold">Can access system</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Inactive (Rose) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Inactive
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Users with disabled or deactivated accounts.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="userInactive">0</h2>
+            <span class="text-sm text-rose-600 font-semibold">Requires review</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+    </div>
+
+    <!-- 4th – Roles (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Roles
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Distinct user roles defined in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="userRoles">0</h2>
+            <span class="text-sm text-amber-600 font-semibold">Used across system</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="userSearch" placeholder="Search by name or email..." class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="roleFilter" class="select-field text-sm w-36" onchange="applyFilters()">
+            <option value="all">All Roles</option>
+            <option value="Super Admin">Super Admin</option>
+            <option value="Registrar Admin">Registrar Admin</option>
+            <option value="Enrollment Staff">Enrollment Staff</option>
+            <option value="Finance Staff">Finance Staff</option>
+            <option value="Faculty">Faculty</option>
+            <option value="Student">Student</option>
+        </select>
+        <select id="statusFilter" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+    </div>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="userTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="name" onclick="sortTable('name')">
+                        Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[180px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="email" onclick="sortTable('email')">
+                        Email <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="role" onclick="sortTable('role')">
+                        Role <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="department" onclick="sortTable('department')">
+                        Department <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[160px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userBody">
+                <!-- Rows rendered by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">👤</div>
+        <h3 class="font-bold text-slate-800">No users found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+
+    <!-- Pagination & Rows Per Page -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500 ml-2">
+                Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div id="userModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 id="userModalTitle" class="text-lg font-bold text-slate-900">Add User</h3>
+            <button type="button" onclick="closeUserModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="userForm" onsubmit="saveUser(event)" class="space-y-4">
+            <input type="hidden" id="editUserId" value="" />
+            <div>
+                <label for="userName" class="block font-bold text-sm text-slate-700 mb-1">Full Name *</label>
+                <input type="text" id="userName" required class="input-field" placeholder="e.g. Alex Rivera" />
+            </div>
+            <div>
+                <label for="userEmail" class="block font-bold text-sm text-slate-700 mb-1">Email *</label>
+                <input type="email" id="userEmail" required class="input-field" placeholder="alex@edu.ph" />
+            </div>
+            <div>
+                <label for="userRole" class="block font-bold text-sm text-slate-700 mb-1">Role *</label>
+                <select id="userRole" class="select-field" required>
+                    <option value="Super Admin">Super Admin</option>
+                    <option value="Registrar Admin">Registrar Admin</option>
+                    <option value="Enrollment Staff">Enrollment Staff</option>
+                    <option value="Finance Staff">Finance Staff</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Student">Student</option>
+                </select>
+            </div>
+            <div>
+                <label for="userDepartment" class="block font-bold text-sm text-slate-700 mb-1">Department</label>
+                <input type="text" id="userDepartment" class="input-field" placeholder="e.g. Registrar Office" />
+            </div>
+            <div>
+                <label for="userStatus" class="block font-bold text-sm text-slate-700 mb-1">Status</label>
+                <select id="userStatus" class="select-field">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeUserModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit"
+                        data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                        ondblclick="saveUser(event)"
+                        class="btn btn-primary text-xs">
+                    Save User
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="deleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Confirm Delete</h3>
+            <button type="button" onclick="closeDeleteModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600" id="deleteModalBody">Are you sure you want to delete this user?</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeDeleteModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                    ondblclick="confirmDelete()"
+                    id="confirmDeleteBtn"
+                    class="btn btn-danger text-xs">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { systemUsers, getSystemUsers, getSystemUserById, addSystemUser, updateSystemUser, deleteSystemUser } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    // ===== Use the shared data =====
+    let users = getSystemUsers();
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let filteredData = [];
+    let deleteTargetId = null;
+    let currentSort = { column: 'name', direction: 'asc' };
+
+    // ===== Apply Filters =====
+    function applyFilters() {
+        const search = document.getElementById('userSearch').value.toLowerCase().trim();
+        const role = document.getElementById('roleFilter').value;
+        const status = document.getElementById('statusFilter').value;
+
+        filteredData = users.filter(u => {
+            const matchSearch = u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search);
+            const matchRole = role === 'all' || u.role === role;
+            const matchStatus = status === 'all' || u.status === status;
+            return matchSearch && matchRole && matchStatus;
+        });
+
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        document.getElementById('userTotal').textContent = users.length;
+        document.getElementById('userActive').textContent = users.filter(u => u.status === 'Active').length;
+        document.getElementById('userInactive').textContent = users.filter(u => u.status === 'Inactive').length;
+        const uniqueRoles = new Set(users.map(u => u.role));
+        document.getElementById('userRoles').textContent = uniqueRoles.size;
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('userBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('emptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('emptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((u, index) => {
+                const statusClass = u.status === 'Active' ? 'status-badge--approved' : 'status-badge--hold';
+                const roleColors = {
+                    'Super Admin': 'bg-purple-100 text-purple-700',
+                    'Registrar Admin': 'bg-blue-100 text-blue-700',
+                    'Registrar Officer': 'bg-blue-100 text-blue-700',
+                    'Enrollment Staff': 'bg-green-100 text-green-700',
+                    'Enrollment Officer': 'bg-green-100 text-green-700',
+                    'Finance Staff': 'bg-amber-100 text-amber-700',
+                    'Finance Officer': 'bg-amber-100 text-amber-700',
+                    'Faculty Member': 'bg-indigo-100 text-indigo-700',
+                    'Student': 'bg-slate-100 text-slate-700',
+                    'System Administrator': 'bg-rose-100 text-rose-700',
+                    'IT Administrator': 'bg-rose-100 text-rose-700',
+                    'Security Officer': 'bg-slate-100 text-slate-700',
+                    'Department Head': 'bg-blue-100 text-blue-700',
+                    'VP for Academic & Student Affairs': 'bg-brand-100 text-brand-700'
+                };
+                const roleClass = roleColors[u.role] || 'bg-slate-100 text-slate-700';
+                return `
+                    <tr>
+                        <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                        <td class="p-3 font-bold text-slate-900">${u.name}</td>
+                        <td class="p-3 text-slate-700">${u.email}</td>
+                        <td class="p-3"><span class="text-xs font-medium ${roleClass} px-2 py-0.5 rounded">${u.role}</span></td>
+                        <td class="p-3">${u.department || '—'}</td>
+                        <td class="p-3"><span class="status-badge ${statusClass}">${u.status}</span></td>
+                        <td class="p-3 text-right whitespace-nowrap">
+                            <button type="button"
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                                    ondblclick="editUser(${u.id})"
+                                    class="btn btn-secondary text-xs py-1 px-2.5">
+                                Edit
+                            </button>
+                            <button type="button"
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                                    ondblclick="confirmDeleteUser(${u.id})"
+                                    class="btn btn-danger text-xs py-1 px-2.5">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        initTooltips();
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    // ===== Pagination =====
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+
+        let html = '';
+
+        // Rows per page dropdown (first)
+        html += `
+            <div class="flex items-center gap-1.5 mr-2">
+                <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+                <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        `;
+
+        // Previous
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+
+        // Next
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+        controls.innerHTML = html;
+
+        // Set the rows per page dropdown to the current value
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = rowsPerPage;
+    }
+
+    function goToPage(page) {
+        if (page < 1 || page > Math.ceil(filteredData.length / rowsPerPage)) return;
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('#userTable .sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`#userTable .sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    function resetFilters() {
+        document.getElementById('userSearch').value = '';
+        document.getElementById('roleFilter').value = 'all';
+        document.getElementById('statusFilter').value = 'all';
+        applyFilters();
+    }
+
+    // ===== CRUD using shared functions =====
+    function openAddUserModal() {
+        document.getElementById('userModalTitle').textContent = 'Add User';
+        document.getElementById('editUserId').value = '';
+        document.getElementById('userForm').reset();
+        document.getElementById('userModal').classList.remove('hidden');
+    }
+
+    function editUser(id) {
+        const user = getSystemUserById(id);
+        if (!user) return;
+        document.getElementById('userModalTitle').textContent = 'Edit User';
+        document.getElementById('editUserId').value = id;
+        document.getElementById('userName').value = user.name;
+        document.getElementById('userEmail').value = user.email;
+        document.getElementById('userRole').value = user.role;
+        document.getElementById('userDepartment').value = user.department || '';
+        document.getElementById('userStatus').value = user.status;
+        document.getElementById('userModal').classList.remove('hidden');
+    }
+
+    function closeUserModal() {
+        document.getElementById('userModal').classList.add('hidden');
+    }
+
+    function saveUser(e) {
+        e.preventDefault();
+        const id = document.getElementById('editUserId').value;
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const role = document.getElementById('userRole').value;
+        const department = document.getElementById('userDepartment').value.trim();
+        const status = document.getElementById('userStatus').value;
+
+        if (!name || !email) {
+            showNotification('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        const emailExists = systemUsers.some(u => u.email.toLowerCase() === email.toLowerCase() && u.id != id);
+        if (emailExists) {
+            showNotification('A user with this email already exists.', 'warning');
+            return;
+        }
+
+        if (id) {
+            const updated = updateSystemUser(parseInt(id), { name, email, role, department, status });
+            if (updated) {
+                showNotification('User updated successfully.', 'success');
+            }
+        } else {
+            const newUser = addSystemUser({ name, email, role, department, status });
+            showNotification('User added successfully.', 'success');
+        }
+
+        closeUserModal();
+        applyFilters();
+    }
+
+    function confirmDeleteUser(id) {
+        const user = getSystemUserById(id);
+        if (!user) return;
+        deleteTargetId = id;
+        document.getElementById('deleteModalBody').textContent = `Are you sure you want to delete "${user.name}"? This action cannot be undone.`;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        deleteTargetId = null;
+    }
+
+    function confirmDelete() {
+        if (!deleteTargetId) return;
+        const success = deleteSystemUser(deleteTargetId);
+        if (success) {
+            closeDeleteModal();
+            applyFilters();
+            showNotification('User deleted.', 'warning');
+        }
+    }
+
+    document.getElementById('confirmDeleteBtn').onclick = confirmDelete;
+
+    // ===== Quick Jump =====
+    function toggleQuickJump() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+        applyFilters();
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+        initTooltips();
+        console.log('✅ Security User Management submodule initialised with shared data.');
+    });
+
+    // ===== Expose Globals =====
+    window.applyFilters = applyFilters;
+    window.resetFilters = resetFilters;
+    window.sortTable = sortTable;
+    window.goToPage = goToPage;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.openAddUserModal = openAddUserModal;
+    window.editUser = editUser;
+    window.closeUserModal = closeUserModal;
+    window.saveUser = saveUser;
+    window.confirmDeleteUser = confirmDeleteUser;
+    window.closeDeleteModal = closeDeleteModal;
+    window.confirmDelete = confirmDelete;
+    window.toggleQuickJump = toggleQuickJump;
+</script>

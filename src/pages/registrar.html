@@ -1,0 +1,645 @@
+<!-- ===== REGISTRAR HUB PAGE ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Dashboard
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Registrar</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Registrar</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage official student records, transcripts, and registrar functions</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="registrar.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Registrar Hub</a>
+                <a href="registrar-statistics.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Statistics</a>
+                <a href="registrar-transcript.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Transcript</a>
+                <a href="registrar-misc.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Miscellaneous</a>
+            </div>
+        </div>
+        <button type="button" onclick="window.location.href='registrar-transcript.html'" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Transcripts
+        </button>
+        <!-- New Record Entry (golden egg – opens modal) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                ondblclick="openNewRecordModal()"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + New Record Entry
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic from data.js with Tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <!-- 1st – Total Student Records (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Student Records
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of active student records in the registrar database.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalStudents">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="studentTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Transcript Requests (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Transcript Requests
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of pending transcript of records (TOR) requests.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="transcriptPending">0</h2>
+            <span class="text-sm text-slate-500" id="transcriptSubtext">Pending processing</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Records Verified (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Records Verified
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of verified and authenticated student records.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="recordsVerified">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="verifiedTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 4th – Pending Verification (Rose) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending Verification
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Records awaiting verification or authentication review.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="pendingVerification">0</h2>
+            <span class="text-sm text-rose-600 font-semibold" id="pendingVerifSubtext">Requires review</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 3 SUBMODULE TILES (Fully Accessible) ===== -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <!-- 1. Statistics -->
+    <div onclick="window.location.href='registrar-statistics.html'" 
+         class="card cursor-pointer hover:border-brand-400 transition-all hover:shadow-md border-transparent">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md">Analytics</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Statistics</h3>
+        <p class="text-sm text-slate-500 mt-1">View registrar statistics, enrolment trends, and demographic reports.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>View Statistics</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 2. Transcript -->
+    <div onclick="window.location.href='registrar-transcript.html'" 
+         class="card cursor-pointer hover:border-brand-400 transition-all hover:shadow-md border-transparent">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md" id="transcriptBadge">0 Pending</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Transcript of Records (TOR)</h3>
+        <p class="text-sm text-slate-500 mt-1">Generate official transcripts, verify records, and manage TOR requests.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>Manage TOR</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 3. Miscellaneous Functions -->
+    <div onclick="window.location.href='registrar-misc.html'" 
+         class="card cursor-pointer hover:border-brand-400 transition-all hover:shadow-md border-transparent">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md">Utils</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Miscellaneous Functions</h3>
+        <p class="text-sm text-slate-500 mt-1">ID generation, certificate requests, document authentication, record correction.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>View Functions</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== ACTIVITY LOG (Dynamic from auditLogs) ===== -->
+<div class="card space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+            Registrar Activity Log
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Complete audit trail of all registrar actions. Search, filter, and export for reporting.">ⓘ</span>
+        </h2>
+        <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="exportActivityLog()" class="btn btn-secondary text-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+                <input type="search" id="activitySearch" placeholder="Search by student, reference, or action..." class="input-field text-sm w-full sm:w-56 pr-8" oninput="applyActivityFilters()" />
+                <button onclick="resetActivityFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <select id="actionTypeFilter" class="select-field text-sm w-36" onchange="applyActivityFilters()">
+                <option value="all">All Actions</option>
+                <option value="Updated enrolment">Updated enrolment</option>
+                <option value="Approved grade submission">Approved grade submission</option>
+                <option value="Viewed grades">Viewed grades</option>
+                <option value="Updated contact info">Updated contact info</option>
+                <option value="Requested matriculation change">Requested matriculation change</option>
+                <option value="Completed clearance">Completed clearance</option>
+                <option value="Submitted pre-enrolment">Submitted pre-enrolment</option>
+            </select>
+            <select id="userFilter" class="select-field text-sm w-36" onchange="applyActivityFilters()">
+                <option value="all">All Users</option>
+                <option value="Registrar Staff">Registrar Staff</option>
+                <option value="Dr. Mateo Alcantara">Dr. Mateo Alcantara</option>
+                <option value="Student">Student</option>
+                <option value="System Admin">System Admin</option>
+                <option value="Faculty">Faculty</option>
+            </select>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500" id="activityShowingInfo">Showing 1-25 of 0</span>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="activityTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="timestamp" onclick="sortActivity('timestamp')">
+                        Timestamp <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="user" onclick="sortActivity('user')">
+                        User <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentName" onclick="sortActivity('studentName')">
+                        Student <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="action" onclick="sortActivity('action')">
+                        Action <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentId" onclick="sortActivity('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="activityBody" class="divide-y divide-slate-100">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty state -->
+    <div id="activityEmptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+        <h3 class="font-bold text-slate-800">No activity found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+
+    <!-- Pagination & Rows Per Page -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500 ml-2">
+                Showing <span id="activityPageStart">1</span>–<span id="activityPageEnd">10</span> of <span id="activityTotalItems">0</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-1.5" id="activityPaginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== NEW RECORD MODAL ===== -->
+<div id="newRecordModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">New Record Entry</h3>
+            <button type="button" onclick="closeNewRecordModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div class="space-y-2">
+            <!-- All buttons in the modal have golden egg protection -->
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                    ondblclick="window.location.href='registrar-misc.html'; closeNewRecordModal();"
+                    class="w-full text-left btn btn-secondary text-sm justify-start">
+                <span class="font-bold">👤 Create New Student Record</span>
+                <span class="text-xs text-slate-500 block">Add a new student to the system</span>
+            </button>
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                    ondblclick="window.location.href='registrar-transcript.html'; closeNewRecordModal();"
+                    class="w-full text-left btn btn-secondary text-sm justify-start">
+                <span class="font-bold">📄 New Transcript Request</span>
+                <span class="text-xs text-slate-500 block">Request a Transcript of Records (TOR)</span>
+            </button>
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                    ondblclick="window.location.href='registrar-misc.html'; closeNewRecordModal();"
+                    class="w-full text-left btn btn-secondary text-sm justify-start">
+                <span class="font-bold">🪪 Generate Student ID</span>
+                <span class="text-xs text-slate-500 block">Issue a new student ID card</span>
+            </button>
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                    ondblclick="window.location.href='registrar-misc.html'; closeNewRecordModal();"
+                    class="w-full text-left btn btn-secondary text-sm justify-start">
+                <span class="font-bold">📜 Request Certificate</span>
+                <span class="text-xs text-slate-500 block">Good Moral, Enrollment, Graduation, etc.</span>
+            </button>
+            <button type="button"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                    ondblclick="window.location.href='registrar-misc.html'; closeNewRecordModal();"
+                    class="w-full text-left btn btn-secondary text-sm justify-start">
+                <span class="font-bold">✏️ Log Record Correction</span>
+                <span class="text-xs text-slate-500 block">Request changes to student records</span>
+            </button>
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeNewRecordModal()" class="btn btn-secondary text-xs">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TRANSACTION DETAIL MODAL ===== -->
+<div id="txnDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900" id="txnDetailTitle">Transaction Details</h3>
+            <button type="button" onclick="closeTxnDetail()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div id="txnDetailContent" class="space-y-2 text-sm">
+            <!-- Populated by JavaScript -->
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeTxnDetail()" class="btn btn-secondary text-xs">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { students, auditLogs, registrar, getStudentById } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    // ===== KPIs =====
+    const totalStudents = students.length;
+    const transcriptPending = registrar.transcriptRequests.filter(r => r.status === 'Pending' || r.status === 'Processing').length;
+    const recordsVerified = registrar.studentIDs.filter(id => id.status === 'Active').length;
+    const pendingVerification = registrar.authentications.filter(a => a.status === 'Pending' || a.status === 'Processing').length;
+
+    document.getElementById('totalStudents').textContent = totalStudents;
+    document.getElementById('studentTrend').textContent = `${totalStudents} active records`;
+
+    document.getElementById('transcriptPending').textContent = transcriptPending;
+    document.getElementById('transcriptSubtext').textContent = transcriptPending > 0 ? `${transcriptPending} requests pending` : 'All processed';
+
+    document.getElementById('recordsVerified').textContent = recordsVerified;
+    document.getElementById('verifiedTrend').textContent = `${recordsVerified} IDs verified`;
+
+    document.getElementById('pendingVerification').textContent = pendingVerification;
+    document.getElementById('pendingVerifSubtext').textContent = pendingVerification > 0 ? `${pendingVerification} pending review` : 'All verified';
+
+    // Update badge on transcript tile
+    const badge = document.getElementById('transcriptBadge');
+    if (badge) badge.textContent = transcriptPending + ' Pending';
+
+    // ===== Activity Log (from auditLogs) =====
+    let activityLog = [...auditLogs];
+    let activityCurrentPage = 1;
+    let activityRowsPerPage = 25;
+    let activityFilteredData = [];
+    let activityCurrentSort = { column: 'timestamp', direction: 'desc' };
+
+    // ===== Apply Filters =====
+    function applyActivityFilters() {
+        const search = document.getElementById('activitySearch').value.toLowerCase().trim();
+        const actionType = document.getElementById('actionTypeFilter').value;
+        const user = document.getElementById('userFilter').value;
+
+        activityFilteredData = activityLog.filter(item => {
+            const student = getStudentById(item.studentId);
+            const studentName = student ? student.name : item.studentId;
+            const matchSearch = studentName.toLowerCase().includes(search) ||
+                item.action.toLowerCase().includes(search) ||
+                item.studentId.toLowerCase().includes(search);
+            const matchAction = actionType === 'all' || item.action === actionType;
+            const matchUser = user === 'all' || item.user === user;
+            return matchSearch && matchAction && matchUser;
+        });
+
+        // Sort
+        if (activityCurrentSort.column) {
+            activityFilteredData.sort((a, b) => {
+                let aVal = a[activityCurrentSort.column];
+                let bVal = b[activityCurrentSort.column];
+                if (activityCurrentSort.column === 'studentName') {
+                    const aStudent = getStudentById(a.studentId);
+                    const bStudent = getStudentById(b.studentId);
+                    aVal = aStudent ? aStudent.name : a.studentId;
+                    bVal = bStudent ? bStudent.name : b.studentId;
+                } else if (activityCurrentSort.column === 'timestamp') {
+                    aVal = new Date(aVal);
+                    bVal = new Date(bVal);
+                }
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return activityCurrentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return activityCurrentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        activityCurrentPage = 1;
+        renderActivityTable();
+        renderActivityPagination();
+    }
+
+    // ===== Render Table =====
+    function renderActivityTable() {
+        const tbody = document.getElementById('activityBody');
+        const start = (activityCurrentPage - 1) * activityRowsPerPage;
+        const end = Math.min(start + activityRowsPerPage, activityFilteredData.length);
+        const pageItems = activityFilteredData.slice(start, end);
+        const total = activityFilteredData.length;
+
+        const emptyState = document.getElementById('activityEmptyState');
+
+        if (pageItems.length === 0) {
+            emptyState.classList.remove('hidden');
+            tbody.innerHTML = '';
+            document.getElementById('activityPageStart').textContent = '0';
+            document.getElementById('activityPageEnd').textContent = '0';
+            document.getElementById('activityTotalItems').textContent = '0';
+            document.getElementById('activityShowingInfo').textContent = 'Showing 0 of 0';
+            return;
+        }
+
+        emptyState.classList.add('hidden');
+        document.getElementById('activityPageStart').textContent = start + 1;
+        document.getElementById('activityPageEnd').textContent = end;
+        document.getElementById('activityTotalItems').textContent = total;
+        document.getElementById('activityShowingInfo').textContent = `Showing ${start + 1}-${end} of ${total}`;
+
+        tbody.innerHTML = pageItems.map((item, index) => {
+            const student = getStudentById(item.studentId);
+            const studentName = student ? student.name : item.studentId;
+            return `
+                <tr>
+                    <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                    <td class="p-3 font-mono text-slate-700 text-xs">${item.timestamp}</td>
+                    <td class="p-3 font-bold text-slate-900 text-xs">${item.user}</td>
+                    <td class="p-3 font-bold text-slate-900">${studentName}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${item.action}</span></td>
+                    <td class="p-3 font-mono text-slate-700 text-xs">${item.studentId}</td>
+                </tr>
+            `;
+        }).join('');
+
+        // Re-initialise tooltips for dynamic content
+        initTooltips();
+    }
+
+    // ===== Render Pagination =====
+    function renderActivityPagination() {
+        const totalPages = Math.ceil(activityFilteredData.length / activityRowsPerPage);
+        const controls = document.getElementById('activityPaginationControls');
+        if (totalPages <= 1) {
+            controls.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+
+        // Rows per page dropdown (first)
+        html += `
+            <div class="flex items-center gap-1.5 mr-2">
+                <label for="activityRowsPerPage" class="text-xs text-slate-500">Rows:</label>
+                <select id="activityRowsPerPage" class="select-field text-sm w-20" onchange="changeActivityRows()">
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        `;
+
+        // Previous
+        html += `<button class="btn btn-secondary text-xs ${activityCurrentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${activityCurrentPage > 1 ? `goToActivityPage(${activityCurrentPage - 1})` : ''}" ${activityCurrentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === activityCurrentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToActivityPage(${i})">${i}</button>`;
+            }
+        }
+
+        // Next
+        html += `<button class="btn btn-secondary text-xs ${activityCurrentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${activityCurrentPage < totalPages ? `goToActivityPage(${activityCurrentPage + 1})` : ''}" ${activityCurrentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+        controls.innerHTML = html;
+
+        // Set rows per page dropdown to current value
+        const select = document.getElementById('activityRowsPerPage');
+        if (select) select.value = activityRowsPerPage;
+    }
+
+    function goToActivityPage(page) {
+        if (page < 1 || page > Math.ceil(activityFilteredData.length / activityRowsPerPage)) return;
+        activityCurrentPage = page;
+        renderActivityTable();
+        renderActivityPagination();
+    }
+
+    function changeActivityRows() {
+        activityRowsPerPage = parseInt(document.getElementById('activityRowsPerPage').value);
+        activityCurrentPage = 1;
+        renderActivityTable();
+        renderActivityPagination();
+    }
+
+    // ===== Sort =====
+    function sortActivity(column) {
+        if (activityCurrentSort.column === column) {
+            activityCurrentSort.direction = activityCurrentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            activityCurrentSort.column = column;
+            activityCurrentSort.direction = 'asc';
+        }
+        document.querySelectorAll('#activityTable .sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`#activityTable .sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(activityCurrentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = activityCurrentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyActivityFilters();
+    }
+
+    // ===== Reset Filters =====
+    function resetActivityFilters() {
+        document.getElementById('activitySearch').value = '';
+        document.getElementById('actionTypeFilter').value = 'all';
+        document.getElementById('userFilter').value = 'all';
+        applyActivityFilters();
+    }
+
+    // ===== Export CSV (read-only – no golden egg) =====
+    function exportActivityLog() {
+        const data = activityFilteredData.length > 0 ? activityFilteredData : activityLog;
+        if (!data || data.length === 0) {
+            showNotification('No data to export.', 'warning');
+            return;
+        }
+        const headers = ['Timestamp', 'User', 'Student ID', 'Student Name', 'Action'];
+        const rows = data.map(item => {
+            const student = getStudentById(item.studentId);
+            return [item.timestamp, item.user, item.studentId, student ? student.name : item.studentId, item.action];
+        });
+        let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'registrar_activity_log.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        showNotification('CSV exported successfully.', 'success');
+    }
+
+    // ===== Quick Jump =====
+    function toggleQuickJump() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== New Record Modal =====
+    function openNewRecordModal() {
+        document.getElementById('newRecordModal').classList.remove('hidden');
+    }
+
+    function closeNewRecordModal() {
+        document.getElementById('newRecordModal').classList.add('hidden');
+    }
+
+    // ===== Transaction Detail Modal =====
+    function openTxnDetail(studentId) {
+        const student = getStudentById(studentId);
+        if (!student) {
+            showNotification('Student not found.', 'error');
+            return;
+        }
+        const studentLogs = activityLog.filter(l => l.studentId === studentId);
+        document.getElementById('txnDetailTitle').textContent = `Activity for ${student.name}`;
+        document.getElementById('txnDetailContent').innerHTML = `
+            <div class="grid grid-cols-2 gap-2">
+                <div><span class="font-bold">Student ID:</span> ${student.id}</div>
+                <div><span class="font-bold">Program:</span> ${student.program}</div>
+                <div><span class="font-bold">Total Actions:</span> ${studentLogs.length}</div>
+                <div><span class="font-bold">Last Action:</span> ${studentLogs.length > 0 ? studentLogs[studentLogs.length - 1].action : 'None'}</div>
+            </div>
+            ${studentLogs.length > 0 ? `
+                <div class="mt-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-2">Recent Actions</h4>
+                    <div class="space-y-1">
+                        ${studentLogs.slice(0, 5).map(log => `
+                            <div class="flex items-center justify-between text-xs border-b border-slate-100 pb-1">
+                                <span>${log.action}</span>
+                                <span class="text-slate-400">${log.timestamp}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '<p class="text-sm text-slate-500">No recent activity.</p>'}
+        `;
+        document.getElementById('txnDetailModal').classList.remove('hidden');
+    }
+
+    function closeTxnDetail() {
+        document.getElementById('txnDetailModal').classList.add('hidden');
+    }
+
+    // ===== Initialization =====
+    document.addEventListener('DOMContentLoaded', function() {
+        applyActivityFilters();
+        const select = document.getElementById('activityRowsPerPage');
+        if (select) select.value = '25';
+        initTooltips();
+        console.log('✅ Registrar Hub initialised with real data from data.js');
+    });
+
+    // ===== Expose Globals =====
+    window.toggleQuickJump = toggleQuickJump;
+    window.openNewRecordModal = openNewRecordModal;
+    window.closeNewRecordModal = closeNewRecordModal;
+    window.openTxnDetail = openTxnDetail;
+    window.closeTxnDetail = closeTxnDetail;
+    window.applyActivityFilters = applyActivityFilters;
+    window.resetActivityFilters = resetActivityFilters;
+    window.sortActivity = sortActivity;
+    window.goToActivityPage = goToActivityPage;
+    window.changeActivityRows = changeActivityRows;
+    window.exportActivityLog = exportActivityLog;
+</script>

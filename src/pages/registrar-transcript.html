@@ -1,0 +1,717 @@
+<!-- ===== REGISTRAR TRANSCRIPT (TOR) ===== -->
+
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='registrar.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Registrar Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Transcript of Records (TOR)</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Transcript of Records (TOR)</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage TOR requests, processing, and release</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="registrar.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Registrar Hub</a>
+                <a href="registrar-statistics.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Statistics</a>
+                <a href="registrar-transcript.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Transcript</a>
+                <a href="registrar-misc.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Miscellaneous</a>
+            </div>
+        </div>
+        <!-- New Request (golden egg) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                ondblclick="openNewRequest()"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + New Request
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic with Tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Requests
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of TOR requests in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="torTotal">0</h2>
+            <span class="text-sm text-slate-500">All requests</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Requests awaiting initial processing.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="torPending">0</h2>
+            <span class="text-sm text-amber-600 font-semibold">Awaiting processing</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Processing
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Requests currently being processed.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="torProcessing">0</h2>
+            <span class="text-sm text-blue-600 font-semibold">In progress</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Ready / Released
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Requests ready for pickup or already released.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="torReady">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold">Completed</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="torSearch" placeholder="Search by student or ID..." class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="statusFilter" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Ready for Pickup">Ready for Pickup</option>
+            <option value="Released">Released</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+    </div>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="torTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="id" onclick="sortTable('id')">
+                        Request ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentId" onclick="sortTable('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentName" onclick="sortTable('studentName')">
+                        Student <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="copies" onclick="sortTable('copies')">
+                        Copies <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="purpose" onclick="sortTable('purpose')">
+                        Purpose <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="requestDate" onclick="sortTable('requestDate')">
+                        Request Date <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[200px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="torBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📄</div>
+        <h3 class="font-bold text-slate-800">No requests found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+    <!-- Pagination & Rows Per Page (rows dropdown before Previous) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500 ml-2">
+                Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== STUDENT SEARCH MODAL (Reusable) ===== -->
+<div id="studentSearchModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[60] flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[80vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Select Student</h3>
+            <button type="button" onclick="closeStudentSearch()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div class="mt-3">
+            <input type="search" id="studentSearchInput" placeholder="Search by name or ID..." class="input-field text-sm w-full" oninput="filterStudentList()" />
+        </div>
+        <div class="flex-1 overflow-y-auto mt-3">
+            <table class="w-full text-left text-sm text-slate-600 border-collapse" id="studentSearchTable">
+                <thead class="sticky top-0 bg-white">
+                    <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th class="p-2 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="id" onclick="sortStudentTable('id')">
+                            ID <span class="sort-arrow text-slate-300">↕</span>
+                        </th>
+                        <th class="p-2 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="name" onclick="sortStudentTable('name')">
+                            Name <span class="sort-arrow text-slate-300">↕</span>
+                        </th>
+                        <th class="p-2 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="program" onclick="sortStudentTable('program')">
+                            Program <span class="sort-arrow text-slate-300">↕</span>
+                        </th>
+                        <th class="p-2 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="studentListBody" class="divide-y divide-slate-100">
+                    <!-- Rows generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pt-3 border-t border-slate-100 mt-3 flex justify-end">
+            <button type="button" onclick="closeStudentSearch()" class="btn btn-secondary text-xs">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== NEW REQUEST MODAL ===== -->
+<div id="newRequestModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">New TOR Request</h3>
+            <button type="button" onclick="closeNewRequest()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="newRequestForm" onsubmit="submitNewRequest(event)" class="space-y-4">
+            <input type="hidden" id="newRequestStudentId" value="">
+            <div>
+                <label class="block font-bold text-sm text-slate-700 mb-1">Student</label>
+                <div class="flex gap-2">
+                    <input type="text" id="newRequestStudentDisplay" readonly placeholder="Select a student" class="input-field flex-1 bg-slate-50 cursor-pointer" onclick="openStudentSearchFor('new')" />
+                    <button type="button" onclick="openStudentSearchFor('new')" class="btn btn-secondary text-xs shrink-0">Search</button>
+                    <button type="button" onclick="clearStudentSelection('new')" class="btn btn-danger text-xs shrink-0">Clear</button>
+                </div>
+            </div>
+            <div>
+                <label for="newRequestCopies" class="block font-bold text-sm text-slate-700 mb-1">Number of Copies</label>
+                <input type="number" id="newRequestCopies" min="1" value="1" class="input-field" required />
+            </div>
+            <div>
+                <label for="newRequestPurpose" class="block font-bold text-sm text-slate-700 mb-1">Purpose</label>
+                <select id="newRequestPurpose" class="select-field" required>
+                    <option value="Employment">Employment</option>
+                    <option value="Graduate School">Graduate School</option>
+                    <option value="Scholarship">Scholarship</option>
+                    <option value="Transfer">Transfer</option>
+                    <option value="Professional License">Professional License</option>
+                    <option value="Personal">Personal</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeNewRequest()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== ACTION CONFIRMATION MODALS ===== -->
+<div id="actionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900" id="actionModalTitle">Confirm Action</h3>
+            <button type="button" onclick="closeActionModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600" id="actionModalBody">Are you sure?</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeActionModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" id="actionConfirmBtn" class="btn btn-primary text-xs">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { students, registrar } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    // ===== Data =====
+    let torRequests = [...registrar.transcriptRequests];
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let filteredData = [];
+    let actionTarget = null;
+    let actionType = '';
+    let currentContext = 'new';
+    let currentSort = { column: 'requestDate', direction: 'desc' };
+
+    // ===== All students for search =====
+    let allStudents = students;
+
+    // ===== Student Search Sorting =====
+    let studentSearchSort = { column: 'name', direction: 'asc' };
+
+    function sortStudentTable(column) {
+        if (studentSearchSort.column === column) {
+            studentSearchSort.direction = studentSearchSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            studentSearchSort.column = column;
+            studentSearchSort.direction = 'asc';
+        }
+
+        document.querySelectorAll('#studentSearchTable .sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`#studentSearchTable .sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(studentSearchSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = studentSearchSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+
+        const query = document.getElementById('studentSearchInput').value.toLowerCase().trim();
+        let filtered = allStudents.filter(s => s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query));
+        filtered.sort((a, b) => {
+            let aVal = a[studentSearchSort.column];
+            let bVal = b[studentSearchSort.column];
+            if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+            if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+            if (aVal < bVal) return studentSearchSort.direction === 'asc' ? -1 : 1;
+            if (aVal > bVal) return studentSearchSort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+        renderStudentList(filtered);
+    }
+
+    function renderStudentList(filtered) {
+        const tbody = document.getElementById('studentListBody');
+        if (!filtered) {
+            const query = document.getElementById('studentSearchInput').value.toLowerCase().trim();
+            filtered = allStudents.filter(s => s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query));
+            if (studentSearchSort.column) {
+                filtered.sort((a, b) => {
+                    let aVal = a[studentSearchSort.column];
+                    let bVal = b[studentSearchSort.column];
+                    if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                    if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                    if (aVal < bVal) return studentSearchSort.direction === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return studentSearchSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+        }
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">No students found.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = filtered.map(s => `
+            <tr>
+                <td class="p-2 font-mono">${s.id}</td>
+                <td class="p-2 font-bold">${s.name}</td>
+                <td class="p-2">${s.program}</td>
+                <td class="p-2 text-right">
+                    <button onclick="selectStudent('${s.id}')" class="btn btn-primary text-xs py-1 px-2">Select</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    window.openStudentSearchFor = function(context) {
+        currentContext = context || 'new';
+        document.getElementById('studentSearchModal').classList.remove('hidden');
+        document.getElementById('studentSearchInput').value = '';
+        renderStudentList(allStudents);
+    };
+
+    window.closeStudentSearch = function() {
+        document.getElementById('studentSearchModal').classList.add('hidden');
+    };
+
+    window.filterStudentList = function() {
+        const query = document.getElementById('studentSearchInput').value.toLowerCase().trim();
+        let filtered = allStudents.filter(s => s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query));
+        if (studentSearchSort.column) {
+            filtered.sort((a, b) => {
+                let aVal = a[studentSearchSort.column];
+                let bVal = b[studentSearchSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return studentSearchSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return studentSearchSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+        renderStudentList(filtered);
+    };
+
+    window.selectStudent = function(studentId) {
+        const student = allStudents.find(s => s.id === studentId);
+        if (!student) return;
+        if (currentContext === 'new') {
+            document.getElementById('newRequestStudentId').value = student.id;
+            document.getElementById('newRequestStudentDisplay').value = `${student.name} (${student.id})`;
+        }
+        closeStudentSearch();
+    };
+
+    window.clearStudentSelection = function(context) {
+        if (context === 'new') {
+            document.getElementById('newRequestStudentId').value = '';
+            document.getElementById('newRequestStudentDisplay').value = '';
+        }
+    };
+
+    // ===== Main Table Sorting =====
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('#torTable .sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`#torTable .sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    // ===== Apply Filters =====
+    function applyFilters() {
+        const search = document.getElementById('torSearch').value.toLowerCase().trim();
+        const status = document.getElementById('statusFilter').value;
+
+        filteredData = torRequests.filter(r => {
+            const matchSearch = r.studentName.toLowerCase().includes(search) || r.id.toLowerCase().includes(search) || r.studentId.toLowerCase().includes(search);
+            const matchStatus = status === 'all' || r.status === status;
+            return matchSearch && matchStatus;
+        });
+
+        // Sort
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (currentSort.column === 'copies' || currentSort.column === 'requestDate') {
+                    // Keep as-is for numbers/dates
+                }
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // Update stats
+        const total = torRequests.length;
+        const pending = torRequests.filter(r => r.status === 'Pending').length;
+        const processing = torRequests.filter(r => r.status === 'Processing').length;
+        const ready = torRequests.filter(r => r.status === 'Ready for Pickup' || r.status === 'Released').length;
+
+        document.getElementById('torTotal').textContent = total;
+        document.getElementById('torPending').textContent = pending;
+        document.getElementById('torProcessing').textContent = processing;
+        document.getElementById('torReady').textContent = ready;
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('torBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('emptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('emptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((r, index) => {
+                const statusMap = {
+                    'Pending': 'status-badge--pending',
+                    'Processing': 'status-badge--review',
+                    'Ready for Pickup': 'status-badge--approved',
+                    'Released': 'status-badge--approved',
+                    'Cancelled': 'status-badge--hold'
+                };
+                const statusClass = statusMap[r.status] || 'status-badge--pending';
+                const isCancelled = r.status === 'Cancelled';
+                return `
+                    <tr>
+                        <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                        <td class="p-3 font-mono font-bold text-slate-900">${r.id}</td>
+                        <td class="p-3 font-mono text-slate-700">${r.studentId}</td>
+                        <td class="p-3 font-bold text-slate-900">${r.studentName}</td>
+                        <td class="p-3 text-center">${r.copies}</td>
+                        <td class="p-3">${r.purpose}</td>
+                        <td class="p-3"><span class="status-badge ${statusClass}">${r.status}</span></td>
+                        <td class="p-3 font-mono text-slate-700">${r.requestDate}</td>
+                        <td class="p-3 text-right whitespace-nowrap">
+                            <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                                ${!isCancelled ? `
+                                    <button type="button"
+                                            data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                                            ondblclick="openActionModal('${r.id}', 'process')"
+                                            class="btn btn-secondary text-xs py-1 px-2.5">
+                                        Process
+                                    </button>
+                                    <button type="button"
+                                            data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                                            ondblclick="openActionModal('${r.id}', 'ready')"
+                                            class="btn btn-primary text-xs py-1 px-2.5">
+                                        Ready
+                                    </button>
+                                    <button type="button"
+                                            data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                                            ondblclick="openActionModal('${r.id}', 'release')"
+                                            class="btn btn-success text-xs py-1 px-2.5">
+                                        Release
+                                    </button>
+                                    <button type="button"
+                                            data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Registrar Officer actions."
+                                            ondblclick="openActionModal('${r.id}', 'cancel')"
+                                            class="btn btn-danger text-xs py-1 px-2.5">
+                                        Cancel
+                                    </button>
+                                ` : `
+                                    <span class="text-xs text-slate-400">Cancelled</span>
+                                `}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Re-initialise tooltips for dynamic buttons
+        initTooltips();
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+
+        let html = '';
+
+        // Rows per page dropdown (first)
+        html += `
+            <div class="flex items-center gap-1.5 mr-2">
+                <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+                <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        `;
+
+        // Previous
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+
+        // Next
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+        controls.innerHTML = html;
+
+        // Set the rows per page dropdown to the current value
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = rowsPerPage;
+    }
+
+    function goToPage(page) {
+        if (page < 1 || page > Math.ceil(filteredData.length / rowsPerPage)) return;
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function resetFilters() {
+        document.getElementById('torSearch').value = '';
+        document.getElementById('statusFilter').value = 'all';
+        applyFilters();
+    }
+
+    // ===== New Request =====
+    window.openNewRequest = function() {
+        document.getElementById('newRequestStudentId').value = '';
+        document.getElementById('newRequestStudentDisplay').value = '';
+        document.getElementById('newRequestCopies').value = 1;
+        document.getElementById('newRequestPurpose').value = 'Employment';
+        document.getElementById('newRequestModal').classList.remove('hidden');
+    };
+
+    window.closeNewRequest = function() {
+        document.getElementById('newRequestModal').classList.add('hidden');
+    };
+
+    window.submitNewRequest = function(e) {
+        e.preventDefault();
+        const studentId = document.getElementById('newRequestStudentId').value;
+        const copies = parseInt(document.getElementById('newRequestCopies').value);
+        const purpose = document.getElementById('newRequestPurpose').value;
+        if (!studentId) {
+            showNotification('Please select a student.', 'warning');
+            return;
+        }
+        const student = allStudents.find(s => s.id === studentId);
+        if (!student) return;
+        const newId = 'TR-' + String(torRequests.length + 1).padStart(6, '0');
+        const today = new Date().toISOString().split('T')[0];
+        torRequests.push({
+            id: newId,
+            studentId: student.id,
+            studentName: student.name,
+            program: student.program,
+            copies: copies,
+            purpose: purpose,
+            status: 'Pending',
+            requestDate: today,
+            releaseDate: null,
+            notes: ''
+        });
+        showNotification(`TOR request ${newId} created for ${student.name}.`, 'success');
+        closeNewRequest();
+        applyFilters();
+    };
+
+    // ===== Action Modals =====
+    window.openActionModal = function(requestId, action) {
+        actionTarget = requestId;
+        actionType = action;
+        const request = torRequests.find(r => r.id === requestId);
+        if (!request) return;
+        const actionMap = {
+            'process': { title: 'Process Request', body: `Mark request ${requestId} as Processing?`, btnClass: 'btn-primary' },
+            'ready': { title: 'Mark Ready for Pickup', body: `Mark ${requestId} as Ready for Pickup?`, btnClass: 'btn-primary' },
+            'release': { title: 'Release TOR', body: `Confirm release of ${requestId} to ${request.studentName}?`, btnClass: 'btn-success' },
+            'cancel': { title: 'Cancel Request', body: `Cancel request ${requestId}?`, btnClass: 'btn-danger' }
+        };
+        const info = actionMap[action];
+        if (!info) return;
+        document.getElementById('actionModalTitle').textContent = info.title;
+        document.getElementById('actionModalBody').textContent = info.body;
+        document.getElementById('actionConfirmBtn').className = `btn ${info.btnClass} text-xs`;
+        document.getElementById('actionModal').classList.remove('hidden');
+    };
+
+    window.closeActionModal = function() {
+        document.getElementById('actionModal').classList.add('hidden');
+        actionTarget = null;
+    };
+
+    window.confirmAction = function() {
+        if (!actionTarget) return;
+        const request = torRequests.find(r => r.id === actionTarget);
+        if (!request) return;
+        const statusMap = {
+            'process': 'Processing',
+            'ready': 'Ready for Pickup',
+            'release': 'Released',
+            'cancel': 'Cancelled'
+        };
+        request.status = statusMap[actionType] || request.status;
+        if (actionType === 'release') {
+            request.releaseDate = new Date().toISOString().split('T')[0];
+        }
+        showNotification(`Request ${actionTarget} updated to ${request.status}.`, 'success');
+        closeActionModal();
+        applyFilters();
+    };
+
+    // Attach confirm action to the button
+    document.getElementById('actionConfirmBtn').onclick = window.confirmAction;
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+        applyFilters();
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+        initTooltips();
+        console.log('✅ Registrar Transcript submodule initialised.');
+    });
+
+    window.applyFilters = applyFilters;
+    window.goToPage = goToPage;
+    window.resetFilters = resetFilters;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.sortTable = sortTable;
+    window.sortStudentTable = sortStudentTable;
+</script>

@@ -1,0 +1,374 @@
+<!-- ===== GRADE SYSTEM SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='academic.html?tab=policies'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Academic Administration
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Policies</span>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Grade System</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Grade System</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Define grading scales, grade points, and remarks</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="grade-system.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Grade System</a>
+                <a href="grade-remarks.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Grade Remarks</a>
+                <a href="score-settings.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Score Settings</a>
+                <a href="autolapse-control.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Autolapse Control</a>
+            </div>
+        </div>
+        <button type="button" onclick="openAddGradeModal()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Add Grade
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Grades (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Grades
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of grade entries.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalGrades">12</h2>
+            <span class="text-sm text-emerald-700 font-semibold">Active</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Grade Schemes (Blue) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Grade Schemes
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of active grade schemes.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalSchemes">3</h2>
+            <span class="text-sm text-slate-500">Academic, Law, Grad</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Passing Grade (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Passing Grade
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Minimum passing grade requirement.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="passingGrade">75%</h2>
+            <span class="text-sm text-slate-500">Minimum</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 4th – Highest Grade (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Highest Grade
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Highest possible grade.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-brand-600 font-mono" id="highestGrade">1.0</h2>
+            <span class="text-sm text-slate-500">Excellent</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 14 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="gradeSearch" placeholder="Search grades..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="window.applyFilters_GradeSystem()" />
+            <button onclick="window.resetFilters_GradeSystem()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="schemeFilter" class="select-field text-sm w-40" onchange="window.applyFilters_GradeSystem()">
+            <option value="all">All Schemes</option>
+            <option value="Academic">Academic</option>
+            <option value="Law">Law</option>
+            <option value="Grad">Grad</option>
+        </select>
+    </div>
+    <span class="text-xs text-slate-400 font-mono" id="gradeCount">12 grades</span>
+</div>
+
+<!-- ===== GRADES TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="gradeSystemTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">#</th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="grade" onclick="window.sortGradeSystem('grade')">
+                        Grade <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[90px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="points" onclick="window.sortGradeSystem('points')">
+                        Points <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="description" onclick="window.sortGradeSystem('description')">
+                        Description <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="scheme" onclick="window.sortGradeSystem('scheme')">
+                        Scheme <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="status" onclick="window.sortGradeSystem('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[120px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="gradeSystemBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by JavaScript -->
+                <!-- Empty state row -->
+                <tr id="gradeSystemEmptyState" class="hidden">
+                    <td colspan="7" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            <p class="font-bold text-slate-700">No grade entries found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    <div id="gradeSystemPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<!-- ===== ADD/EDIT GRADE MODAL ===== -->
+<div id="gradeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="gradeModalTitle">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="gradeModalTitle" class="text-lg font-bold text-slate-900">Add Grade</h3>
+            <button type="button" onclick="closeGradeModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="gradeForm" onsubmit="saveGrade(event)" class="space-y-4">
+            <input type="hidden" id="editGradeId" value="" />
+            <div>
+                <label for="gradeLetter" class="block font-bold text-sm text-slate-700 mb-1">Grade *</label>
+                <input type="text" id="gradeLetter" required placeholder="e.g. A, B+, 1.0" class="input-field" />
+            </div>
+            <div>
+                <label for="gradePoints" class="block font-bold text-sm text-slate-700 mb-1">Grade Points *</label>
+                <input type="number" id="gradePoints" required step="0.01" min="0" max="5" placeholder="e.g. 4.0" class="input-field" />
+            </div>
+            <div>
+                <label for="gradeDescription" class="block font-bold text-sm text-slate-700 mb-1">Description</label>
+                <input type="text" id="gradeDescription" placeholder="e.g. Excellent, Very Good" class="input-field" />
+            </div>
+            <div>
+                <label for="gradeScheme" class="block font-bold text-sm text-slate-700 mb-1">Scheme *</label>
+                <select id="gradeScheme" required class="select-field">
+                    <option value="">Select scheme</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Law">Law</option>
+                    <option value="Grad">Grad</option>
+                </select>
+            </div>
+            <div>
+                <label for="gradeStatus" class="block font-bold text-sm text-slate-700 mb-1">Status</label>
+                <select id="gradeStatus" class="select-field">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Archived">Archived</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeGradeModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Save Grade</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    import { gradeSystem, getGradeSystem, addGrade, updateGrade, deleteGrade } from './assets/js/data.js';
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== CRUD Functions =====
+    window.openAddGradeModal = function() {
+        document.getElementById('gradeModalTitle').textContent = 'Add Grade';
+        document.getElementById('editGradeId').value = '';
+        document.getElementById('gradeForm').reset();
+        document.getElementById('gradeModal').classList.remove('hidden');
+    };
+
+    window.editGrade = function(id) {
+        const grade = getGradeSystem().find(g => g.id === id);
+        if (!grade) return;
+        document.getElementById('gradeModalTitle').textContent = 'Edit Grade';
+        document.getElementById('editGradeId').value = id;
+        document.getElementById('gradeLetter').value = grade.grade;
+        document.getElementById('gradePoints').value = grade.points;
+        document.getElementById('gradeDescription').value = grade.description;
+        document.getElementById('gradeScheme').value = grade.scheme;
+        document.getElementById('gradeStatus').value = grade.status;
+        document.getElementById('gradeModal').classList.remove('hidden');
+    };
+
+    window.closeGradeModal = function() {
+        document.getElementById('gradeModal').classList.add('hidden');
+    };
+
+    window.saveGrade = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editGradeId').value;
+        const grade = document.getElementById('gradeLetter').value.trim();
+        const points = parseFloat(document.getElementById('gradePoints').value);
+        const description = document.getElementById('gradeDescription').value.trim();
+        const scheme = document.getElementById('gradeScheme').value;
+        const status = document.getElementById('gradeStatus').value;
+
+        if (!grade || isNaN(points) || !scheme) {
+            showNotification('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        if (id) {
+            updateGrade(parseInt(id), { grade, points, description, scheme, status });
+            showNotification('Grade updated successfully!', 'success');
+        } else {
+            addGrade({ grade, points, description, scheme, status });
+            showNotification('Grade added successfully!', 'success');
+        }
+
+        closeGradeModal();
+        window.refreshGradeSystem();
+    };
+
+    window.deleteGrade = function(id) {
+        if (!confirm('Are you sure you want to delete this grade?')) return;
+        deleteGrade(id);
+        showNotification('Grade deleted.', 'warning');
+        window.refreshGradeSystem();
+    };
+
+    // ===== Quick Jump Toggle =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'gradeSystemTable',
+        tbodyId: 'gradeSystemBody',
+        paginationContainerId: 'gradeSystemPaginationContainer',
+        emptyStateId: 'gradeSystemEmptyState',
+        countDisplayId: 'gradeCount',
+        searchInputId: 'gradeSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'schemeFilter', field: 'scheme' }
+        ],
+        searchFields: ['grade', 'description'],
+        sortMap: {
+            grade: (a, b) => a.grade.localeCompare(b.grade),
+            points: (a, b) => a.points - b.points,
+            description: (a, b) => a.description.localeCompare(b.description),
+            scheme: (a, b) => a.scheme.localeCompare(b.scheme),
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: getGradeSystem,
+        updateStats: (data) => {
+            const total = data.length;
+            const schemes = new Set(data.map(g => g.scheme));
+            const passing = data.find(g => g.grade === 'C') || data.find(g => g.grade === '3.0') || data[0];
+            const highest = data.reduce((max, g) => g.points > max.points ? g : max, data[0]);
+            document.getElementById('totalGrades').textContent = total;
+            document.getElementById('totalSchemes').textContent = schemes.size;
+            document.getElementById('passingGrade').textContent = passing ? passing.grade : '—';
+            document.getElementById('highestGrade').textContent = highest ? highest.grade : '—';
+        },
+        renderRow: (grade, index) => {
+            const statusMap = {
+                'Active': 'status-badge--approved',
+                'Inactive': 'status-badge--hold',
+                'Archived': 'status-badge--pending'
+            };
+            return `
+                <tr>
+                    <td class="p-3">${index}</td>
+                    <td class="p-3 font-bold text-slate-900">${grade.grade}</td>
+                    <td class="p-3 font-mono font-bold">${grade.points.toFixed(2)}</td>
+                    <td class="p-3">${grade.description}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${grade.scheme}</span></td>
+                    <td class="p-3"><span class="status-badge ${statusMap[grade.status] || 'status-badge--pending'}">${grade.status}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="editGrade(${grade.id})" class="btn btn-secondary text-xs py-1 px-2">Edit</button>
+                        <button onclick="deleteGrade(${grade.id})" class="btn btn-danger text-xs py-1 px-2">Delete</button>
+                    </td>
+                </tr>
+            `;
+        },
+        defaultSort: 'grade',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'grades'
+    });
+
+    // Expose functions globally
+    window.refreshGradeSystem = tableModule.refresh;
+    window.applyFilters_GradeSystem = tableModule.applyFilters;
+    window.goToPage_GradeSystem = tableModule.goToPage;
+    window.changeRowsPerPage_GradeSystem = tableModule.changeRowsPerPage;
+    window.resetFilters_GradeSystem = tableModule.resetFilters;
+    window.sortGradeSystem = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.column);
+    });
+
+    // Set default rows per page
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+    });
+</script>

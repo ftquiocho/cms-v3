@@ -1,0 +1,135 @@
+<!-- ===== SCHOOL INFORMATION SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='academic.html?tab=institution'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Academic Administration / Institution
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">School Information</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">School Information</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Update institutional details, accreditation, and contact information</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="school-info.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">School Information</a>
+                <a href="logo-signature.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Logo &amp; Signature</a>
+                <a href="institution-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Institution</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">AcademiaOS</p>
+        <span class="text-sm text-emerald-700 font-semibold">Accredited</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Established</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">1985</p>
+        <span class="text-sm text-slate-500">40 years</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Accreditation</p>
+        <p class="text-2xl font-black text-emerald-600 font-mono">Level III</p>
+        <span class="text-sm text-slate-500">CHED</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Students</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">1,420</p>
+        <span class="text-sm text-slate-500">AY 2021-2022</span>
+    </div>
+</div>
+
+<!-- ===== SCHOOL INFORMATION FORM ===== -->
+<div class="card">
+    <form id="schoolInfoForm" onsubmit="saveSchoolInfo(event)" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="schoolName" class="block font-bold text-sm text-slate-700 mb-1">Institution Name *</label>
+                <input type="text" id="schoolName" value="AcademiaOS University" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolCode" class="block font-bold text-sm text-slate-700 mb-1">Institution Code</label>
+                <input type="text" id="schoolCode" value="AOS-UNI" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolEstablished" class="block font-bold text-sm text-slate-700 mb-1">Year Established</label>
+                <input type="number" id="schoolEstablished" value="1985" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolAccreditation" class="block font-bold text-sm text-slate-700 mb-1">Accreditation Level</label>
+                <select id="schoolAccreditation" class="select-field">
+                    <option value="Level I">Level I</option>
+                    <option value="Level II">Level II</option>
+                    <option value="Level III" selected>Level III</option>
+                    <option value="Level IV">Level IV</option>
+                </select>
+            </div>
+            <div>
+                <label for="schoolAddress" class="block font-bold text-sm text-slate-700 mb-1">Address *</label>
+                <input type="text" id="schoolAddress" value="123 Academic Ave, University City" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolPhone" class="block font-bold text-sm text-slate-700 mb-1">Phone Number</label>
+                <input type="text" id="schoolPhone" value="+63 (2) 8123-4567" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolEmail" class="block font-bold text-sm text-slate-700 mb-1">Email</label>
+                <input type="email" id="schoolEmail" value="info@academiaos.edu.ph" class="input-field" />
+            </div>
+            <div>
+                <label for="schoolWebsite" class="block font-bold text-sm text-slate-700 mb-1">Website</label>
+                <input type="url" id="schoolWebsite" value="https://www.academiaos.edu.ph" class="input-field" />
+            </div>
+        </div>
+        <div>
+            <label for="schoolMission" class="block font-bold text-sm text-slate-700 mb-1">Mission Statement</label>
+            <textarea id="schoolMission" rows="3" class="input-field">To provide quality education and foster academic excellence.</textarea>
+        </div>
+        <div>
+            <label for="schoolVision" class="block font-bold text-sm text-slate-700 mb-1">Vision Statement</label>
+            <textarea id="schoolVision" rows="3" class="input-field">To be a leading institution in the region, producing globally competitive graduates.</textarea>
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" class="btn btn-primary text-xs">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ===== Save =====
+    function saveSchoolInfo(e) {
+        e.preventDefault();
+        showNotification('School information updated successfully!', 'success');
+    }
+
+    // ===== Quick Jump =====
+    function toggleQuickJump() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (!container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // Expose to global
+    window.saveSchoolInfo = saveSchoolInfo;
+    window.toggleQuickJump = toggleQuickJump;
+</script>

@@ -1,0 +1,382 @@
+<!-- ===== MANAGE HUB PAGE CONTENT ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Console
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Academic Setup</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Academic Setup</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Centralised management for academic structure, colleges, departments, courses, and curriculums</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" onclick="showNotification('Opening Academic Setup Settings...')" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Manage Settings
+        </button>
+        <button type="button" onclick="showNotification('Opening New Course Creation Form...')" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + Add New Course
+        </button>
+    </div>
+</div>
+
+<!-- ===== QUICK STATS ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Colleges</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">6</p>
+        <span class="text-sm text-emerald-700 font-semibold">100% Accredited</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Departments</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">28</p>
+        <span class="text-sm text-slate-500">Across 6 Colleges</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Degree Programs</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">42</p>
+        <span class="text-sm text-brand-700 font-semibold">3 Pending Review</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Subjects</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">1,240</p>
+        <span class="text-sm text-slate-500">AY 2021-2022 Catalog</span>
+    </div>
+</div>
+
+<!-- ===== SUB-MENU / FILTERS ===== -->
+<div class="card">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+            <label for="manageSearch" class="sr-only">Search modules</label>
+            <input type="search" id="manageSearch" placeholder="Search modules, functions, or keywords..." class="input-field text-sm w-64" oninput="filterManageTiles(this.value)" />
+            <select class="select-field text-sm w-auto" onchange="filterManageCategory(this.value)">
+                <option value="all">All Categories (17)</option>
+                <option value="academic">Academic Structure (6)</option>
+                <option value="curriculum">Curriculum & Courses (5)</option>
+                <option value="enrollment">Enrollment & Scheduling (3)</option>
+                <option value="reports">Reports & Analytics (3)</option>
+            </select>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" onclick="resetManageFilters()" class="btn btn-secondary text-xs">Reset Filters</button>
+            <span class="text-sm text-slate-500" id="manageCount">17 modules</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ACTION TILES GRID (17 Modules) ===== -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="manageGrid">
+
+    <!-- 1. Colleges (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening Colleges Directory...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">6 Active</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Colleges</h3>
+        <p class="text-sm text-slate-500 mt-1">View and assign Deans, college codes, seal logos, and academic divisions.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Colleges</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 2. Departments (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening Departments list...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">28 Total</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Departments</h3>
+        <p class="text-sm text-slate-500 mt-1">Academic departments, department chairs, and faculty staff assignments.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Departments</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 3. Degree Programs (Courses) (Curriculum) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="curriculum" onclick="showNotification('Opening Degree Courses Catalog...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">42 Offerings</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Degree Programs</h3>
+        <p class="text-sm text-slate-500 mt-1">Master list of Degree, Diploma, and Postgraduate academic degree programs.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>View Catalog</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 4. Subjects (Curriculum) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="curriculum" onclick="showNotification('Opening Master Subjects Catalog...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">1,240 Listed</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Subjects</h3>
+        <p class="text-sm text-slate-500 mt-1">Master subject catalog, course descriptions, lecture/lab credit units, and course codes.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Master Subject Catalog</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 5. Curriculum (Curriculum) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="curriculum" onclick="showNotification('Opening Curriculum Manager...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Prerequisites</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Curriculum</h3>
+        <p class="text-sm text-slate-500 mt-1">Map year-level subject sequences, unit requisites, and graduation requirements.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Edit Curriculums</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 6. Composites (Curriculum) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="curriculum" onclick="showNotification('Opening Composites module...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Grades</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Composites</h3>
+        <p class="text-sm text-slate-500 mt-1">Define subject weighting rules, lecture-lab combinations, and compute formulas.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Configure Composites</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 7. Admission Settings (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening Admission Settings module...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Config</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Admission Settings</h3>
+        <p class="text-sm text-slate-500 mt-1">Configure cut-off scores, entrance exam thresholds, and quota caps per program.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Settings</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 8. Enrollment Offering (Enrollment) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="enrollment" onclick="showNotification('Opening Enrollment Offerings Schedule...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">Term Active</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Enrollment Offering</h3>
+        <p class="text-sm text-slate-500 mt-1">Open class sections, set room allocations, assign instructors, and max capacities.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Class Schedules</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 9. Faculty Assignments (Enrollment) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="enrollment" onclick="showNotification('Opening Faculty Assignments...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">112 Faculty</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Faculty Assignments</h3>
+        <p class="text-sm text-slate-500 mt-1">Assign instructors to sections, manage overload permits, and track teaching load.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Assignments</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 10. Room & Facility Management (Enrollment) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="enrollment" onclick="showNotification('Opening Room & Facility Management...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">45 Rooms</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Room & Facility Management</h3>
+        <p class="text-sm text-slate-500 mt-1">Manage classrooms, labs, auditoriums, and facility availability.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Facilities</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 11. Reports (Reports) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="reports" onclick="showNotification('Opening Academic Reports Center...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Exports</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Reports</h3>
+        <p class="text-sm text-slate-500 mt-1">Generate official statistical summaries, offering loads, and CHED/DepEd compliance logs.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Generate Reports</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 12. Data Import/Export (Reports) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="reports" onclick="showNotification('Opening Data Import/Export...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">Integration</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Data Import/Export</h3>
+        <p class="text-sm text-slate-500 mt-1">Bulk import of student records, grade sheets, and course offerings.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Import/Export Data</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 13. Audit Logs (Reports) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="reports" onclick="showNotification('Opening Audit Logs...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Compliance</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Audit Logs</h3>
+        <p class="text-sm text-slate-500 mt-1">Track system changes, approvals, and user activity for compliance.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>View Audit Logs</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 14. System Settings (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="openSystemSettingsModal()">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">System</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">System Settings</h3>
+        <p class="text-sm text-slate-500 mt-1">Configure grading scales, semester rules, master schedules, and system-wide parameters.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Configure System</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 15. User Management (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening User Management...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">Roles</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">User Management</h3>
+        <p class="text-sm text-slate-500 mt-1">Manage user accounts, roles, permissions, and access control.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Users</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 16. Academic Calendar (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening Academic Calendar...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Schedule</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Academic Calendar</h3>
+        <p class="text-sm text-slate-500 mt-1">Define semesters, term start/end dates, holidays, and registration periods.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Calendar</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 17. Accreditation & Compliance (Academic) -->
+    <div class="manage-tile card card-hover cursor-pointer hover:border-brand-400 transition-colors" data-category="academic" onclick="showNotification('Opening Accreditation & Compliance...')">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">CHED</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Accreditation & Compliance</h3>
+        <p class="text-sm text-slate-500 mt-1">Track program accreditations, compliance reports, and regulatory submissions.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Compliance</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== RECENT ACTIVITY (Manage-specific) ===== -->
+<div class="card space-y-3 mt-6">
+    <div class="flex items-center justify-between">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Master Data Changes</h2>
+        <button type="button" onclick="showNotification('Opening full change log...')" class="btn btn-ghost text-brand-600 text-sm font-bold">View All →</button>
+    </div>
+    <div class="space-y-2 text-xs">
+        <div class="flex items-start gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200/60">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" aria-hidden="true"></span>
+            <div>
+                <p class="font-bold text-slate-900">Course Added</p>
+                <p class="text-slate-500">New subject: "Advanced Accounting Analytics" (ACC 401)</p>
+                <span class="text-[10px] text-slate-400">2 hours ago &bull; by Dr. Mateo Alcantara</span>
+            </div>
+        </div>
+        <div class="flex items-start gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200/60">
+            <span class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" aria-hidden="true"></span>
+            <div>
+                <p class="font-bold text-slate-900">Curriculum Updated</p>
+                <p class="text-slate-500">BS Accountancy 2024 curriculum revised (5 units changed)</p>
+                <span class="text-[10px] text-slate-400">Yesterday, 15:30 &bull; by Prof. Alan Vance</span>
+            </div>
+        </div>
+        <div class="flex items-start gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200/60">
+            <span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" aria-hidden="true"></span>
+            <div>
+                <p class="font-bold text-slate-900">Faculty Assignment</p>
+                <p class="text-slate-500">Prof. Maria Reyes assigned to LAW 401 (Juris Doctor)</p>
+                <span class="text-[10px] text-slate-400">2 days ago &bull; by Registrar Office</span>
+            </div>
+        </div>
+    </div>
+</div>

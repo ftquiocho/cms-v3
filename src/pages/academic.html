@@ -1,0 +1,1293 @@
+<!-- ===== ACADEMIC ADMINISTRATION PAGE ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Dashboard
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Academic Administration</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Academic Administration</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage academic structure, policies, calendar, and institutional
+            settings</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" onclick="openHelpModal()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Help
+        </button>
+        <!-- Commented out: Add New Course button (kept for future) -->
+        <!-- <button type="button" onclick="showNotification('Opening New Course Creation Form...')" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + Add New Course
+        </button> -->
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <!-- 1st – Active Colleges (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Active Colleges
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of active colleges in the institution.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono">6</h2>
+            <span class="text-sm text-emerald-700 font-semibold">100% Accredited</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Academic Departments (Blue) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Academic Departments
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total academic departments across all colleges.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono">28</h2>
+            <span class="text-sm text-slate-500">Across 6 Colleges</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Degree Programs (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Degree Programs
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total degree programs offered, including pending review.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono">42</h2>
+            <span class="text-sm text-brand-700 font-semibold">3 Pending Review</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 4th – Active Subjects (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Active Subjects
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total active subjects in the current catalog.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono">1,240</h2>
+            <span class="text-sm text-slate-500">AY 2021-2022 Catalog</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TABS (with "All" as first tab) ===== -->
+<div class="card p-2 flex items-center gap-1.5 overflow-x-auto">
+    <button type="button" onclick="switchAcademicTab('all')" id="acadTabAll"
+        class="acad-tab btn btn-primary text-xs shrink-0 flex items-center gap-2">
+        All <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-700 text-slate-200 font-mono">15</span>
+    </button>
+    <button type="button" onclick="switchAcademicTab('structure')" id="acadTabStructure"
+        class="acad-tab btn btn-secondary text-xs shrink-0 flex items-center gap-2">
+        Structure <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-mono">5</span>
+    </button>
+    <button type="button" onclick="switchAcademicTab('policies')" id="acadTabPolicies"
+        class="acad-tab btn btn-secondary text-xs shrink-0 flex items-center gap-2">
+        Policies <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-mono">4</span>
+    </button>
+    <button type="button" onclick="switchAcademicTab('calendar')" id="acadTabCalendar"
+        class="acad-tab btn btn-secondary text-xs shrink-0 flex items-center gap-2">
+        Calendar <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-mono">3</span>
+    </button>
+    <button type="button" onclick="switchAcademicTab('institution')" id="acadTabInstitution"
+        class="acad-tab btn btn-secondary text-xs shrink-0 flex items-center gap-2">
+        Institution <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-mono">3</span>
+    </button>
+</div>
+
+<!-- ===== VIEW TOGGLE & SEARCH ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500 font-medium">View:</span>
+        <button id="gridViewBtn" onclick="setAcademicView('grid')"
+            class="text-brand-600 hover:text-brand-700 transition-colors p-1" aria-label="Grid view" title="Grid view">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+        </button>
+        <button id="listViewBtn" onclick="setAcademicView('list')"
+            class="text-slate-400 hover:text-brand-600 transition-colors p-1" aria-label="List view" title="List view">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+        </button>
+        <span class="text-xs text-slate-400 font-mono ml-1" id="acadCount">15 modules</span>
+    </div>
+    <div class="flex items-center gap-2">
+        <div class="relative">
+            <input type="search" id="academicSearch" placeholder="Search modules..."
+                class="input-field text-sm w-48 sm:w-64 pr-8" oninput="filterAcademicModules(this.value)" />
+            <button id="clearSearchBtn" onclick="resetAcademicFilters()"
+                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                aria-label="Clear search">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONTENT PANELS ===== -->
+
+<!-- Panel: All (aggregates all tiles from Structure, Policies, Calendar, Institution) -->
+<div id="acadPanelAll" class="space-y-4">
+    <!-- Grid view – all tiles from other panels combined -->
+    <div id="allGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Structure tiles -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='colleges.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">6
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Colleges</h3>
+            <p class="text-sm text-slate-500 mt-1">View and assign Deans, college codes, seal logos, and academic
+                divisions.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='departments.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">28
+                    Total</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Departments</h3>
+            <p class="text-sm text-slate-500 mt-1">Academic departments, department chairs, and faculty staff
+                assignments.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='courses.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 14l9-5-9-5-9 5 9 5z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">42
+                    Offerings</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Courses (Degree Programs)</h3>
+            <p class="text-sm text-slate-500 mt-1">Master list of Degree, Diploma, and Postgraduate academic degree
+                programs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>View</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='subjects.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">1,240
+                    Listed</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Subjects</h3>
+            <p class="text-sm text-slate-500 mt-1">Master subject catalog, course descriptions, lecture/lab credit
+                units, and course codes.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Catalog</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='curriculum.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Prerequisites</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Curriculum</h3>
+            <p class="text-sm text-slate-500 mt-1">Map year‑level subject sequences, unit requisites, and graduation
+                requirements.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Edit</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <!-- Policies tiles -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='grade-system.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">3
+                    Schemes</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Grade System</h3>
+            <p class="text-sm text-slate-500 mt-1">Define grading scales, weightings, and computation rules for all
+                academic programs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='grade-remarks.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Legend</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Grade Remarks</h3>
+            <p class="text-sm text-slate-500 mt-1">Define PASS, FAIL, INCOMPLETE, WITHDRAWN, and other grade remarks.
+            </p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='score-settings.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-indigo-100 text-indigo-900 px-2 py-0.5 rounded-md">Exam
+                    Config</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Score Settings</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure entrance exam scoring, cut‑off thresholds, and scaling for
+                admissions.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='autolapse-control.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Rules</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Autolapse Control</h3>
+            <p class="text-sm text-slate-500 mt-1">Define automatic grade/record lapses for incomplete courses and
+                expired enrolments.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <!-- Calendar tiles -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='semester-definitions.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">2
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Semester Definitions</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure academic years, semesters, start/end dates, and
+                registration periods.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='schedules.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">4
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Schedules</h3>
+            <p class="text-sm text-slate-500 mt-1">Define master class schedule templates, time slots, and term
+                calendars.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='graduation-dates.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 14l9-5-9-5-9 5 9 5z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-rose-100 text-rose-900 px-2 py-0.5 rounded-md">Ceremony</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Dates</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure graduation ceremony dates, application deadlines, and
+                clearance cutoff.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <!-- Institution tiles -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='school-info.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Institution</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">School Information</h3>
+            <p class="text-sm text-slate-500 mt-1">Update institutional details, accreditation, contact info, and
+                official seal.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Update</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='logo-signature.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-purple-100 text-purple-900 px-2 py-0.5 rounded-md">Branding</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Logo &amp; Signature</h3>
+            <p class="text-sm text-slate-500 mt-1">Upload institutional logos, official signatures, and branding for
+                official documents.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Update</span><span aria-hidden="true">→</span></div>
+        </div>
+
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='institution-reports.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Exports</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Reports</h3>
+            <p class="text-sm text-slate-500 mt-1">Generate official statistical summaries, offering loads, and
+                CHED/DepEd compliance logs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Generate</span><span aria-hidden="true">→</span></div>
+        </div>
+    </div>
+
+    <!-- List view (hidden by default) – all tiles aggregated -->
+    <div id="allList" class="hidden table-wrap">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Module</th>
+                    <th class="p-3">Category</th>
+                    <th class="p-3">Description</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <!-- Structure -->
+                <tr>
+                    <td class="p-3 font-bold">Colleges</td>
+                    <td class="p-3 text-xs text-slate-500">Structure</td>
+                    <td class="p-3">Manage academic divisions</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">6 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='colleges.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Departments</td>
+                    <td class="p-3 text-xs text-slate-500">Structure</td>
+                    <td class="p-3">Manage academic departments</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">28 Total</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='departments.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Courses</td>
+                    <td class="p-3 text-xs text-slate-500">Structure</td>
+                    <td class="p-3">Degree program catalog</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">42 Offerings</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='courses.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Subjects</td>
+                    <td class="p-3 text-xs text-slate-500">Structure</td>
+                    <td class="p-3">Master subject catalog</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">1,240 Listed</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='subjects.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Curriculum</td>
+                    <td class="p-3 text-xs text-slate-500">Structure</td>
+                    <td class="p-3">Sequences and prerequisites</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">In Review</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='curriculum.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <!-- Policies -->
+                <tr>
+                    <td class="p-3 font-bold">Grade System</td>
+                    <td class="p-3 text-xs text-slate-500">Policies</td>
+                    <td class="p-3">Scales and weightings</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">3 Schemes</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='grade-system.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Grade Remarks</td>
+                    <td class="p-3 text-xs text-slate-500">Policies</td>
+                    <td class="p-3">PASS/FAIL etc.</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Legend</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='grade-remarks.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Score Settings</td>
+                    <td class="p-3 text-xs text-slate-500">Policies</td>
+                    <td class="p-3">Entrance exam config</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Exam Config</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='score-settings.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Autolapse Control</td>
+                    <td class="p-3 text-xs text-slate-500">Policies</td>
+                    <td class="p-3">Record lapse rules</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Rules</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='autolapse-control.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <!-- Calendar -->
+                <tr>
+                    <td class="p-3 font-bold">Semester Definitions</td>
+                    <td class="p-3 text-xs text-slate-500">Calendar</td>
+                    <td class="p-3">Academic years and terms</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">2 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='semester-definitions.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Schedules</td>
+                    <td class="p-3 text-xs text-slate-500">Calendar</td>
+                    <td class="p-3">Class schedule templates</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">4 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='schedules.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Graduation Dates</td>
+                    <td class="p-3 text-xs text-slate-500">Calendar</td>
+                    <td class="p-3">Ceremony dates and deadlines</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Ceremony</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='graduation-dates.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <!-- Institution -->
+                <tr>
+                    <td class="p-3 font-bold">School Information</td>
+                    <td class="p-3 text-xs text-slate-500">Institution</td>
+                    <td class="p-3">Institutional details</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Institution</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='school-info.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Logo &amp; Signature</td>
+                    <td class="p-3 text-xs text-slate-500">Institution</td>
+                    <td class="p-3">Branding assets</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Branding</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='logo-signature.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Reports</td>
+                    <td class="p-3 text-xs text-slate-500">Institution</td>
+                    <td class="p-3">Statistical exports</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Exports</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='institution-reports.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Panel: Structure -->
+<div id="acadPanelStructure" class="hidden space-y-4">
+    <div id="structureGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Structure tiles (same as in All) – 5 tiles -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='colleges.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">6
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Colleges</h3>
+            <p class="text-sm text-slate-500 mt-1">View and assign Deans, college codes, seal logos, and academic
+                divisions.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='departments.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">28
+                    Total</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Departments</h3>
+            <p class="text-sm text-slate-500 mt-1">Academic departments, department chairs, and faculty staff
+                assignments.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='courses.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 14l9-5-9-5-9 5 9 5z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">42
+                    Offerings</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Courses (Degree Programs)</h3>
+            <p class="text-sm text-slate-500 mt-1">Master list of Degree, Diploma, and Postgraduate academic degree
+                programs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>View</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='subjects.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">1,240
+                    Listed</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Subjects</h3>
+            <p class="text-sm text-slate-500 mt-1">Master subject catalog, course descriptions, lecture/lab credit
+                units, and course codes.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Catalog</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="structure"
+            onclick="window.location.href='curriculum.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Prerequisites</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Curriculum</h3>
+            <p class="text-sm text-slate-500 mt-1">Map year‑level subject sequences, unit requisites, and graduation
+                requirements.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Edit</span><span aria-hidden="true">→</span></div>
+        </div>
+    </div>
+    <div id="structureList" class="hidden table-wrap">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Module</th>
+                    <th class="p-3">Description</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr>
+                    <td class="p-3 font-bold">Colleges</td>
+                    <td class="p-3">Manage academic divisions</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">6 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='colleges.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Departments</td>
+                    <td class="p-3">Manage academic departments</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">28 Total</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='departments.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Courses</td>
+                    <td class="p-3">Degree program catalog</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">42 Offerings</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='courses.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Subjects</td>
+                    <td class="p-3">Master subject catalog</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">1,240 Listed</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='subjects.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Curriculum</td>
+                    <td class="p-3">Sequences and prerequisites</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">In Review</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='curriculum.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Panel: Policies -->
+<div id="acadPanelPolicies" class="hidden space-y-4">
+    <div id="policiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Policies tiles (4 tiles) – same as in All -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='grade-system.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">3
+                    Schemes</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Grade System</h3>
+            <p class="text-sm text-slate-500 mt-1">Define grading scales, weightings, and computation rules for all
+                academic programs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='grade-remarks.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Legend</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Grade Remarks</h3>
+            <p class="text-sm text-slate-500 mt-1">Define PASS, FAIL, INCOMPLETE, WITHDRAWN, and other grade remarks.
+            </p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='score-settings.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-indigo-100 text-indigo-900 px-2 py-0.5 rounded-md">Exam
+                    Config</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Score Settings</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure entrance exam scoring, cut‑off thresholds, and scaling for
+                admissions.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="policies"
+            onclick="window.location.href='autolapse-control.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Rules</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Autolapse Control</h3>
+            <p class="text-sm text-slate-500 mt-1">Define automatic grade/record lapses for incomplete courses and
+                expired enrolments.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Configure</span><span aria-hidden="true">→</span></div>
+        </div>
+    </div>
+    <div id="policiesList" class="hidden table-wrap">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Module</th>
+                    <th class="p-3">Description</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr>
+                    <td class="p-3 font-bold">Grade System</td>
+                    <td class="p-3">Scales and weightings</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">3 Schemes</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='grade-system.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Grade Remarks</td>
+                    <td class="p-3">PASS/FAIL etc.</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Legend</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='grade-remarks.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Score Settings</td>
+                    <td class="p-3">Entrance exam config</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Exam Config</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='score-settings.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Autolapse Control</td>
+                    <td class="p-3">Record lapse rules</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Rules</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='autolapse-control.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Panel: Calendar -->
+<div id="acadPanelCalendar" class="hidden space-y-4">
+    <div id="calendarGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Calendar tiles (3 tiles) – same as in All -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='semester-definitions.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">2
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Semester Definitions</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure academic years, semesters, start/end dates, and
+                registration periods.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='schedules.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">4
+                    Active</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Schedules</h3>
+            <p class="text-sm text-slate-500 mt-1">Define master class schedule templates, time slots, and term
+                calendars.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="calendar"
+            onclick="window.location.href='graduation-dates.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 14l9-5-9-5-9 5 9 5z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-rose-100 text-rose-900 px-2 py-0.5 rounded-md">Ceremony</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Dates</h3>
+            <p class="text-sm text-slate-500 mt-1">Configure graduation ceremony dates, application deadlines, and
+                clearance cutoff.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Manage</span><span aria-hidden="true">→</span></div>
+        </div>
+    </div>
+    <div id="calendarList" class="hidden table-wrap">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Module</th>
+                    <th class="p-3">Description</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr>
+                    <td class="p-3 font-bold">Semester Definitions</td>
+                    <td class="p-3">Academic years and terms</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">2 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='semester-definitions.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Schedules</td>
+                    <td class="p-3">Class schedule templates</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">4 Active</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='schedules.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Graduation Dates</td>
+                    <td class="p-3">Ceremony dates and deadlines</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Ceremony</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='graduation-dates.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Panel: Institution -->
+<div id="acadPanelInstitution" class="hidden space-y-4">
+    <div id="institutionGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Institution tiles (3 tiles) – same as in All -->
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='school-info.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Institution</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">School Information</h3>
+            <p class="text-sm text-slate-500 mt-1">Update institutional details, accreditation, contact info, and
+                official seal.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Update</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='logo-signature.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-purple-100 text-purple-900 px-2 py-0.5 rounded-md">Branding</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Logo &amp; Signature</h3>
+            <p class="text-sm text-slate-500 mt-1">Upload institutional logos, official signatures, and branding for
+                official documents.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Update</span><span aria-hidden="true">→</span></div>
+        </div>
+        <div class="acad-tile card cursor-pointer hover:border-brand-400 transition-colors" data-category="institution"
+            onclick="window.location.href='institution-reports.html'">
+            <div class="flex items-start justify-between">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200"
+                    aria-hidden="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <span
+                    class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Exports</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mt-3">Reports</h3>
+            <p class="text-sm text-slate-500 mt-1">Generate official statistical summaries, offering loads, and
+                CHED/DepEd compliance logs.</p>
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+                <span>Generate</span><span aria-hidden="true">→</span></div>
+        </div>
+    </div>
+    <div id="institutionList" class="hidden table-wrap">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Module</th>
+                    <th class="p-3">Description</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr>
+                    <td class="p-3 font-bold">School Information</td>
+                    <td class="p-3">Institutional details</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Institution</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='school-info.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Logo &amp; Signature</td>
+                    <td class="p-3">Branding assets</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Branding</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='logo-signature.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-bold">Reports</td>
+                    <td class="p-3">Statistical exports</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Exports</span></td>
+                    <td class="p-3 text-right"><button onclick="window.location.href='institution-reports.html'"
+                            class="btn btn-ghost text-brand-600 text-xs">Open</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ===== RECENT ACTIVITY ===== -->
+<div class="card space-y-3 mt-6">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Academic Administration Activity</h2>
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th class="p-3">Timestamp</th>
+                    <th class="p-3">Action</th>
+                    <th class="p-3">Entity</th>
+                    <th class="p-3">User</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-right">Details</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100" id="academicActivityBody">
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-24 14:32</td>
+                    <td class="p-3 font-bold text-slate-900">Updated</td>
+                    <td class="p-3">BS Accountancy Curriculum</td>
+                    <td class="p-3 text-slate-700">Dr. Mateo Alcantara</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Published</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing details...')"
+                            class="btn btn-ghost text-brand-600 text-xs">View</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-24 11:15</td>
+                    <td class="p-3 font-bold text-slate-900">Added</td>
+                    <td class="p-3">New Subject: LAW 405</td>
+                    <td class="p-3 text-slate-700">Registrar Staff</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Pending Approval</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Reviewing subject...')"
+                            class="btn btn-ghost text-brand-600 text-xs">Review</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-23 16:45</td>
+                    <td class="p-3 font-bold text-slate-900">Modified</td>
+                    <td class="p-3">College of Business Structure</td>
+                    <td class="p-3 text-slate-700">Dr. Mateo Alcantara</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Applied</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing changes...')"
+                            class="btn btn-ghost text-brand-600 text-xs">View</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-23 09:20</td>
+                    <td class="p-3 font-bold text-slate-900">Archived</td>
+                    <td class="p-3">2020 Legacy Curriculum</td>
+                    <td class="p-3 text-slate-700">Registrar Staff</td>
+                    <td class="p-3"><span class="status-badge status-badge--hold">Archived</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Restoring...')"
+                            class="btn btn-ghost text-brand-600 text-xs">Restore</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-22 13:50</td>
+                    <td class="p-3 font-bold text-slate-900">Imported</td>
+                    <td class="p-3">Subject Catalog (1,240 Subjects)</td>
+                    <td class="p-3 text-slate-700">System Admin</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Completed</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing log...')"
+                            class="btn btn-ghost text-brand-600 text-xs">Log</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Empty state (hidden – static rows remain for demo) -->
+    <div id="activityEmptyState"
+        class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg"
+            aria-hidden="true">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        </div>
+        <h3 class="font-bold text-slate-800">No recent activity</h3>
+        <p class="text-sm text-slate-500">Academic administration activity will appear here.</p>
+    </div>
+</div>
+
+<!-- ===== HELP MODAL ===== -->
+<div id="helpModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog">
+    <div
+        class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                Academic Administration – Help
+            </h3>
+            <button type="button" onclick="closeHelpModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+        <div class="space-y-3 text-sm text-slate-700">
+            <p><strong class="text-slate-900">Academic Administration</strong> is your central hub for managing the
+                academic structure, policies, calendar, and institutional settings.</p>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                <p><span class="font-bold text-brand-600">STRUCTURE</span> – Manage Colleges, Departments, Courses,
+                    Subjects, and Curriculum mappings.</p>
+                <p><span class="font-bold text-brand-600">POLICIES</span> – Configure grading systems, grade remarks,
+                    score settings, and autolapse rules.</p>
+                <p><span class="font-bold text-brand-600">CALENDAR</span> – Define semesters, schedules, and
+                    graduation dates.</p>
+                <p><span class="font-bold text-brand-600">INSTITUTION</span> – Update school info, branding
+                    (logo/signature), and generate reports.</p>
+            </div>
+
+            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-1">
+                <p><span class="font-bold text-amber-800">Tip</span></p>
+                <ul class="list-disc list-inside space-y-0.5 text-amber-800">
+                    <li>Use the <strong>Search</strong> box to filter modules by name.</li>
+                    <li>Switch between <strong>Grid</strong> and <strong>List</strong> views using the toggle buttons.
+                    </li>
+                    <li>Click any tile to navigate directly to that submodule.</li>
+                    <li>The <strong>All</strong> tab shows every submodule in one unified view.</li>
+                    <li>Recent activity shows the latest updates – click <strong>View</strong> or
+                        <strong>Review</strong> for details.</li>
+                </ul>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-2">For additional support, contact the System Administrator.</p>
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeHelpModal()" class="btn btn-primary text-xs">Got it</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    import {
+        switchAcademicTab,
+        setAcademicView,
+        filterAcademicModules,
+        resetAcademicFilters,
+        openHelpModal,
+        closeHelpModal,
+        showNotification
+    } from './assets/js/ui.js';
+
+    // Expose them globally for inline onclick
+    window.switchAcademicTab = switchAcademicTab;
+    window.setAcademicView = setAcademicView;
+    window.filterAcademicModules = filterAcademicModules;
+    window.resetAcademicFilters = resetAcademicFilters;
+    window.openHelpModal = openHelpModal;
+    window.closeHelpModal = closeHelpModal;
+    window.showNotification = showNotification;
+
+    // Initialise on DOM ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedTab = localStorage.getItem('academicTab') || 'all';
+        switchAcademicTab(savedTab);
+        const savedView = localStorage.getItem('academicView') || 'grid';
+        setAcademicView(savedView);
+        // Initial count
+        filterAcademicModules('');
+    });
+</script>

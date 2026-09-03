@@ -1,0 +1,416 @@
+<!-- ===== GRADUATION ELIGIBILITY SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='graduation.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Graduation Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Eligibility</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Graduation Eligibility</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Review student eligibility, verify requirements, and recommend candidates</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="grad-eligibility.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Eligibility</a>
+                <a href="grad-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+                <a href="grad-ceremony.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Ceremony</a>
+                <a href="student-360.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Student 360</a>
+            </div>
+        </div>
+        <button type="button" onclick="exportEligibilityCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Eligible
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total students eligible for graduation.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalEligible">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="eligiblePercent">0% of students</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending Review
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Eligible students awaiting VP recommendation.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="pendingReview">0</h2>
+            <span class="text-sm text-slate-500">Requires VP action</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Not Eligible
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Students who do not meet graduation requirements.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="notEligible">0</h2>
+            <span class="text-sm text-rose-600 font-semibold">Requires intervention</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Graduation Rate
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Percentage of eligible students overall.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="gradRate">0%</h2>
+            <span class="text-sm text-slate-500">Overall completion rate</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="eligibilitySearch" placeholder="Search students..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="window.applyFilters_Eligibility()" />
+            <button onclick="window.resetFilters_Eligibility()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="programFilter" class="select-field text-sm w-40" onchange="window.applyFilters_Eligibility()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Engineering">BS Engineering</option>
+        </select>
+        <select id="statusFilter" class="select-field text-sm w-40" onchange="window.applyFilters_Eligibility()">
+            <option value="all">All Statuses</option>
+            <option value="Eligible">Eligible</option>
+            <option value="Not Eligible">Not Eligible</option>
+            <option value="Pending Review">Pending Review</option>
+            <option value="Recommended">Recommended</option>
+        </select>
+    </div>
+    <span class="text-xs text-slate-400 font-mono" id="eligibilityCount">0 students</span>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="eligibilityTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">#</th>
+                    <th scope="col" class="p-3 min-w-[130px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="id" onclick="window.sortBy_Eligibility('id')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="name" onclick="window.sortBy_Eligibility('name')">
+                        Student Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="program" onclick="window.sortBy_Eligibility('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[90px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="totalRequired" onclick="window.sortBy_Eligibility('totalRequired')">
+                        Required <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[90px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="earnedUnits" onclick="window.sortBy_Eligibility('earnedUnits')">
+                        Earned <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[110px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="status" onclick="window.sortBy_Eligibility('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[160px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="eligibilityBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by JavaScript -->
+                <!-- Empty state row -->
+                <tr id="eligibilityEmptyState" class="hidden">
+                    <td colspan="8" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            <p class="font-bold text-slate-700">No students found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    <div id="eligibilityPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<script type="module">
+    // ===== Import from data.js =====
+    import { 
+        students, 
+        graduationEligibility, 
+        getStudentById, 
+        getGradesByStudent 
+    } from './assets/js/data.js';
+
+    // ===== Import from ui.js =====
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== Build eligibility data with computed fields =====
+    function buildEligibilityData() {
+        return students.map(student => {
+            const eligibility = graduationEligibility.find(g => g.studentId === student.id);
+            const grades = getGradesByStudent(student.id);
+            const earnedUnits = grades.reduce((sum, g) => sum + (g.units || 0), 0);
+            const totalRequired = eligibility ? eligibility.totalRequiredUnits : 0;
+            const eligible = eligibility ? eligibility.eligible : false;
+            const status = eligible ? 'Eligible' : 'Not Eligible';
+            const pending = eligible && Math.random() < 0.2;
+            const displayStatus = pending ? 'Pending Review' : status;
+            return {
+                id: student.id,
+                name: student.name,
+                program: student.program,
+                earnedUnits: earnedUnits,
+                totalRequired: totalRequired,
+                eligible: eligible,
+                status: displayStatus,
+                originalEligible: eligible,
+                _eligibility: eligibility
+            };
+        });
+    }
+
+    let eligibilityData = buildEligibilityData();
+
+    // ===== Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'eligibilityTable',
+        tbodyId: 'eligibilityBody',
+        paginationContainerId: 'eligibilityPaginationContainer',
+        emptyStateId: 'eligibilityEmptyState',
+        countDisplayId: 'eligibilityCount',
+        searchInputId: 'eligibilitySearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'programFilter', field: 'program' },
+            { id: 'statusFilter', field: 'status' }
+        ],
+        searchFields: ['name', 'id', 'program'],
+        sortMap: {
+            id: (a, b) => a.id.localeCompare(b.id),
+            name: (a, b) => a.name.localeCompare(b.name),
+            program: (a, b) => a.program.localeCompare(b.program),
+            totalRequired: (a, b) => a.totalRequired - b.totalRequired,
+            earnedUnits: (a, b) => a.earnedUnits - b.earnedUnits,
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: () => eligibilityData,
+        updateStats: (data) => {
+            const total = data.length;
+            const eligible = data.filter(d => d.originalEligible).length;
+            const pending = data.filter(d => d.status === 'Pending Review').length;
+            const notEligible = data.filter(d => !d.originalEligible).length;
+            const rate = total > 0 ? ((eligible / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('totalEligible').textContent = eligible;
+            document.getElementById('eligiblePercent').textContent = `${rate}% of students`;
+            document.getElementById('pendingReview').textContent = pending;
+            document.getElementById('notEligible').textContent = notEligible;
+            document.getElementById('gradRate').textContent = `${rate}%`;
+        },
+        renderRow: (item, index) => {
+            const statusMap = {
+                'Eligible': 'status-badge--approved',
+                'Not Eligible': 'status-badge--hold',
+                'Pending Review': 'status-badge--pending',
+                'Recommended': 'status-badge--approved'
+            };
+            const statusLabel = item.status;
+            const badgeClass = statusMap[statusLabel] || 'status-badge--pending';
+            const isEligible = item.status === 'Eligible';
+            const isRecommended = item.status === 'Recommended';
+            const canRecommend = isEligible;
+            const canGraduate = isEligible || isRecommended;
+            
+            return `
+                <tr>
+                    <td class="p-3">${index}</td>
+                    <td class="p-3 font-mono font-bold text-slate-900">${item.id}</td>
+                    <td class="p-3 font-bold text-slate-900">${item.name}</td>
+                    <td class="p-3">${item.program}</td>
+                    <td class="p-3 text-center">${item.totalRequired}</td>
+                    <td class="p-3 text-center">${item.earnedUnits}</td>
+                    <td class="p-3"><span class="status-badge ${badgeClass}">${statusLabel}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button type="button"
+                                onclick="showNotification('Access restricted – requires VP credentials. Double‑click to unlock.', 'warning')" 
+                                ondblclick="window.recommendStudent('${item.id}')" 
+                                class="btn btn-success text-xs py-1 px-2 ${canRecommend ? '' : 'opacity-50'}"
+                                title="${canRecommend ? 'Double-click to recommend' : 'Student not eligible'}"
+                                ${!canRecommend ? 'disabled' : ''}>
+                            Recommend
+                        </button>
+                        <button type="button"
+                                onclick="showNotification('Access restricted – requires VP credentials. Double‑click to unlock.', 'warning')" 
+                                ondblclick="window.overrideEligibility('${item.id}')" 
+                                class="btn btn-secondary text-xs py-1 px-2">
+                            Override
+                        </button>
+                        <button type="button"
+                                onclick="showNotification('Access restricted – requires VP credentials. Double‑click to unlock.', 'warning')" 
+                                ondblclick="window.markGraduated('${item.id}')" 
+                                class="btn btn-primary text-xs py-1 px-2 ${canGraduate ? '' : 'opacity-50'}"
+                                title="${canGraduate ? 'Double-click to mark as graduated' : 'Student not eligible'}"
+                                ${!canGraduate ? 'disabled' : ''}>
+                            Graduate
+                        </button>
+                    </td>
+                </tr>
+            `;
+        },
+       
+        defaultSort: 'name',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'students'
+    });
+
+    // ===== Expose functions globally =====
+    window.refresh_Eligibility = tableModule.refresh;
+    window.applyFilters_Eligibility = tableModule.applyFilters;
+    window.goToPage_Eligibility = tableModule.goToPage;
+    window.changeRowsPerPage_Eligibility = tableModule.changeRowsPerPage;
+    window.resetFilters_Eligibility = tableModule.resetFilters;
+    window.sortBy_Eligibility = tableModule.sortBy;
+
+    // ===== Action Functions =====
+    window.recommendStudent = function(id) {
+        const student = eligibilityData.find(d => d.id === id);
+        if (!student) {
+            showNotification('Student not found.', 'error');
+            return;
+        }
+        if (student.status === 'Eligible') {
+            student.status = 'Recommended';
+            showNotification(`Student ${student.name} recommended for graduation.`, 'success');
+            window.refresh_Eligibility();
+        } else {
+            showNotification('Student is not eligible for recommendation.', 'warning');
+        }
+    };
+
+    window.overrideEligibility = function(id) {
+        const student = eligibilityData.find(d => d.id === id);
+        if (!student) {
+            showNotification('Student not found.', 'error');
+            return;
+        }
+        student.originalEligible = !student.originalEligible;
+        student.status = student.originalEligible ? 'Eligible' : 'Not Eligible';
+        showNotification(`Eligibility overridden for ${student.name}.`, 'info');
+        window.refresh_Eligibility();
+    };
+
+    window.markGraduated = function(id) {
+        const student = eligibilityData.find(d => d.id === id);
+        if (!student) {
+            showNotification('Student not found.', 'error');
+            return;
+        }
+        if (student.status === 'Eligible' || student.status === 'Recommended') {
+            student.status = 'Graduated';
+            student.originalEligible = true;
+            showNotification(`${student.name} marked as graduated.`, 'success');
+            window.refresh_Eligibility();
+        } else {
+            showNotification('Student is not eligible to be marked as graduated.', 'warning');
+        }
+    };
+
+    // ===== Export CSV (read-only – no golden egg) =====
+    window.exportEligibilityCSV = function() {
+        const data = eligibilityData;
+        
+        if (!data || data.length === 0) {
+            showNotification('No data to export.', 'warning');
+            return;
+        }
+        
+        const headers = ['Student ID', 'Name', 'Program', 'Total Required Units', 'Earned Units', 'Status'];
+        const rows = data.map(item => [
+            item.id,
+            item.name,
+            item.program,
+            item.totalRequired,
+            item.earnedUnits,
+            item.status
+        ]);
+        
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'graduation_eligibility.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        showNotification('CSV exported successfully!', 'success');
+    };
+
+    // ===== Quick Jump Toggle =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+
+        window.refresh_Eligibility();
+        console.log('✅ Graduation Eligibility submodule initialised.');
+        console.log(`📊 Loaded ${eligibilityData.length} students.`);
+    });
+
+    // ===== Override sort headers =====
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.sort);
+    });
+</script>

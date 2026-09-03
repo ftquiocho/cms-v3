@@ -1,0 +1,569 @@
+<!-- ===== ENROLMENT REPORTS SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='enrol.html'"
+                class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Enrollment Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Reports</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Enrolment Reports</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Generate and download enrolment reports, statistics, and summaries</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()"
+                class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="quickJumpMenu"
+                class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="view-evaluation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View
+                    Evaluation</a>
+                <a href="view-grades.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View
+                    Grades</a>
+                <a href="pre-enrol-subjects.html"
+                    class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Pre-Enrol Subjects</a>
+                <a href="enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Enrol
+                    Subjects</a>
+                <a href="change-matriculation.html"
+                    class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Change Matriculation</a>
+                <a href="subject-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Subject
+                    Override</a>
+                <a href="unit-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Unit
+                    Override</a>
+                <a href="enrol-reports.html"
+                    class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Reports</a>
+                <a href="student-360.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Student
+                    360</a>
+            </div>
+        </div>
+        <button type="button" onclick="exportReportsCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
+        </button>
+        <button type="button" onclick="openGenerateReportModal()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            + Generate Report
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (dynamic) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Reports (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Reports
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of reports generated.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalCount">180</h2>
+            <span class="text-sm text-slate-500">AY 2021-2022</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Completed (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Completed
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Reports that have been successfully generated.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="completedCount">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="completedPercent">0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Processing (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Processing
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Reports currently being generated.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="processingCount">0</h2>
+            <span class="text-sm text-slate-500">In progress</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 4th – Failed (Rose) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Failed
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Reports that failed to generate.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="failedCount">0</h2>
+            <span class="text-sm text-rose-600 font-semibold" id="failedPercent">0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="reportSearch" placeholder="Search by report name or type..."
+                class="input-field text-sm w-full sm:w-48 pr-8" oninput="window.applyFilters_Reports()" />
+            <button onclick="window.resetFilters_Reports()"
+                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <select id="typeFilter" class="select-field text-sm w-36" onchange="window.applyFilters_Reports()">
+            <option value="all">All Types</option>
+            <option value="Enrolment Statistics">Enrolment Statistics</option>
+            <option value="Grade Summary">Grade Summary</option>
+            <option value="Student List">Student List</option>
+            <option value="Department Report">Department Report</option>
+            <option value="Program Report">Program Report</option>
+        </select>
+        <select id="statusFilter" class="select-field text-sm w-32" onchange="window.applyFilters_Reports()">
+            <option value="all">All Statuses</option>
+            <option value="Completed">Completed</option>
+            <option value="Processing">Processing</option>
+            <option value="Failed">Failed</option>
+        </select>
+        <select id="semesterFilter" class="select-field text-sm w-36" onchange="window.applyFilters_Reports()">
+            <option value="all">All Semesters</option>
+            <option value="2021-2022 1st">AY 2021-2022 1st</option>
+            <option value="2021-2022 2nd">AY 2021-2022 2nd</option>
+            <option value="2021-2022 Summer">AY 2021-2022 Summer</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 180</span>
+        <span class="text-xs text-slate-400 font-mono" id="filteredCount">180 results</span>
+    </div>
+</div>
+
+<!-- ===== TABLE WITH BULK ACTIONS ===== -->
+<div class="card space-y-4">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <select id="bulkAction" class="select-field text-sm w-40">
+                <option value="">Bulk Actions</option>
+                <option value="delete">Delete Selected</option>
+            </select>
+            <button onclick="applyBulkAction()" class="btn btn-secondary text-xs">Apply</button>
+            <span id="selectedCount" class="text-xs text-slate-500">0 selected</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+            <select id="rowsPerPage" class="select-field text-sm w-20" onchange="window.changeRowsPerPage_Reports()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="reportTable">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">
+                        <input type="checkbox" id="selectAll" onchange="toggleAllCheckboxes()"
+                            class="rounded border-slate-300 text-brand-600" />
+                    </th>
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col"
+                        class="p-3 min-w-[110px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="reportId" onclick="window.sortReports('reportId')">
+                        Report ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="name" onclick="window.sortReports('name')">
+                        Report Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="type" onclick="window.sortReports('type')">
+                        Type <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="date" onclick="window.sortReports('date')">
+                        Date Generated <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[80px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="size" onclick="window.sortReports('size')">
+                        Size <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="status" onclick="window.sortReports('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[140px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="reportBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by initTableModule -->
+                <!-- Empty state row -->
+                <tr id="reportEmptyState" class="hidden">
+                    <td colspan="9" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="font-bold text-slate-700">No reports found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria, or generate a new report.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div id="reportsPaginationContainer"
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<!-- ===== GENERATE REPORT MODAL ===== -->
+<div id="generateModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="generateModalTitle">
+    <div
+        class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 id="generateModalTitle" class="text-lg font-bold text-slate-900">Generate Report</h3>
+            <button type="button" onclick="closeGenerateModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+        <form id="generateForm" onsubmit="generateReport(event)" class="space-y-4">
+            <div>
+                <label for="reportType" class="block font-bold text-sm text-slate-700 mb-1">Report Type *</label>
+                <select id="reportType" required class="select-field">
+                    <option value="">Select type</option>
+                    <option value="Enrolment Statistics">Enrolment Statistics</option>
+                    <option value="Grade Summary">Grade Summary</option>
+                    <option value="Student List">Student List</option>
+                    <option value="Department Report">Department Report</option>
+                    <option value="Program Report">Program Report</option>
+                </select>
+            </div>
+            <div>
+                <label for="reportSemester" class="block font-bold text-sm text-slate-700 mb-1">Semester</label>
+                <select id="reportSemester" class="select-field">
+                    <option value="2021-2022 1st">AY 2021-2022 1st</option>
+                    <option value="2021-2022 2nd">AY 2021-2022 2nd</option>
+                    <option value="2021-2022 Summer">AY 2021-2022 Summer</option>
+                </select>
+            </div>
+            <div>
+                <label for="reportFormat" class="block font-bold text-sm text-slate-700 mb-1">Format</label>
+                <select id="reportFormat" class="select-field">
+                    <option value="CSV">CSV</option>
+                    <option value="PDF">PDF</option>
+                    <option value="Excel">Excel</option>
+                </select>
+            </div>
+            <div>
+                <label for="reportName" class="block font-bold text-sm text-slate-700 mb-1">Report Name
+                    (optional)</label>
+                <input type="text" id="reportName" placeholder="e.g. Enrolment_Summary_2021-2022" class="input-field" />
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeGenerateModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Generate</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    import { enrolmentReports, getEnrolmentReports, getEnrolmentReportById, addEnrolmentReport, updateEnrolmentReport, deleteEnrolmentReport } from './assets/js/data.js';
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== Download Report =====
+    window.downloadReport = function (id) {
+        const report = getEnrolmentReportById(id);
+        if (!report) return;
+        showNotification(`Downloading "${report.name}" (${report.size})...`, 'success');
+    };
+
+    // ===== Delete Report =====
+    window.deleteReport = function (id) {
+        if (!confirm('Are you sure you want to delete this report?')) return;
+        const deleted = deleteEnrolmentReport(id);
+        if (deleted) {
+            showNotification('Report deleted.', 'warning');
+            window.refreshReports();
+        } else {
+            showNotification('Failed to delete report.', 'error');
+        }
+    };
+
+    // ===== Generate Report Modal =====
+    window.openGenerateReportModal = function () {
+        document.getElementById('generateModal').classList.remove('hidden');
+        document.getElementById('generateForm').reset();
+    };
+
+    window.closeGenerateModal = function () {
+        document.getElementById('generateModal').classList.add('hidden');
+    };
+
+    window.generateReport = function (e) {
+        e.preventDefault();
+        const type = document.getElementById('reportType').value;
+        const semester = document.getElementById('reportSemester').value;
+        const format = document.getElementById('reportFormat').value;
+        let name = document.getElementById('reportName').value.trim();
+        if (!name) {
+            name = type.replace(/\s/g, '_') + '_' + semester.replace(/\s/g, '_');
+        }
+
+        if (!type) {
+            showNotification('Please select a report type.', 'warning');
+            return;
+        }
+
+        showNotification('Generating report... This may take a moment.', 'info');
+
+        // Add a new report entry with status "Processing"
+        const newId = getEnrolmentReports().length + 1;
+        const newReport = {
+            id: newId,
+            reportId: 'RPT-2021-' + String(newId).padStart(4, '0'),
+            name: name,
+            type: type,
+            date: new Date().toISOString().split('T')[0],
+            size: '—',
+            semester: semester,
+            status: 'Processing'
+        };
+        addEnrolmentReport(newReport);
+        window.refreshReports();
+        closeGenerateModal();
+
+        // Simulate completion after 3 seconds
+        setTimeout(() => {
+            const idx = getEnrolmentReports().findIndex(r => r.id === newId);
+            if (idx !== -1) {
+                const sizes = ['0.8 MB', '1.2 MB', '2.1 MB', '0.5 MB', '1.6 MB'];
+                updateEnrolmentReport(newId, {
+                    status: 'Completed',
+                    size: sizes[Math.floor(Math.random() * sizes.length)]
+                });
+                window.refreshReports();
+                showNotification(`Report "${name}" generated successfully!`, 'success');
+            }
+        }, 3000);
+    };
+
+    // ===== Export CSV (list of reports) =====
+    window.exportReportsCSV = function () {
+        const data = getEnrolmentReports();
+        const headers = ['Report ID', 'Name', 'Type', 'Date Generated', 'Size', 'Status'];
+        const rows = data.map(item => [
+            item.reportId, item.name, item.type, item.date, item.size, item.status
+        ]);
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reports_list.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Export completed.', 'success');
+    };
+
+    // ===== Bulk Actions =====
+    window.toggleAllCheckboxes = function () {
+        const checked = document.getElementById('selectAll').checked;
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = checked);
+        updateSelectedCount();
+    };
+
+    function updateSelectedCount() {
+        const checked = document.querySelectorAll('.row-checkbox:checked').length;
+        document.getElementById('selectedCount').textContent = checked + ' selected';
+    }
+
+    window.applyBulkAction = function () {
+        const action = document.getElementById('bulkAction').value;
+        if (!action) {
+            showNotification('Please select a bulk action.', 'warning');
+            return;
+        }
+        const selectedIds = [];
+        document.querySelectorAll('.row-checkbox:checked').forEach(cb => {
+            selectedIds.push(parseInt(cb.dataset.id));
+        });
+        if (selectedIds.length === 0) {
+            showNotification('No items selected.', 'warning');
+            return;
+        }
+        if (!confirm(`Are you sure you want to ${action} ${selectedIds.length} report(s)?`)) return;
+
+        selectedIds.forEach(id => {
+            deleteEnrolmentReport(id);
+        });
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+        document.getElementById('selectAll').checked = false;
+        updateSelectedCount();
+        window.refreshReports();
+        showNotification(`Bulk ${action} completed.`, 'success');
+    };
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function () {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function (e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'reportTable',
+        tbodyId: 'reportBody',
+        paginationContainerId: 'reportsPaginationContainer',
+        emptyStateId: 'reportEmptyState',
+        countDisplayId: 'filteredCount',
+        searchInputId: 'reportSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'typeFilter', field: 'type' },
+            { id: 'statusFilter', field: 'status' },
+            { id: 'semesterFilter', field: 'semester' }
+        ],
+        searchFields: ['name', 'type', 'reportId'],
+        sortMap: {
+            reportId: (a, b) => a.reportId.localeCompare(b.reportId),
+            name: (a, b) => a.name.localeCompare(b.name),
+            type: (a, b) => a.type.localeCompare(b.type),
+            date: (a, b) => a.date.localeCompare(b.date),
+            size: (a, b) => a.size.localeCompare(b.size),
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: getEnrolmentReports,
+        updateStats: (data) => {
+            const total = data.length;
+            const completed = data.filter(d => d.status === 'Completed').length;
+            const processing = data.filter(d => d.status === 'Processing').length;
+            const failed = data.filter(d => d.status === 'Failed').length;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('processingCount').textContent = processing;
+            document.getElementById('failedCount').textContent = failed;
+            document.getElementById('completedPercent').textContent = total > 0 ? (completed / total * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('failedPercent').textContent = total > 0 ? (failed / total * 100).toFixed(1) + '%' : '0%';
+        },
+        renderRow: (item, index) => {
+            const statusMap = {
+                'Completed': 'status-badge--approved',
+                'Processing': 'status-badge--pending',
+                'Failed': 'status-badge--hold'
+            };
+            return `
+                <tr>
+                    <td class="p-3"><input type="checkbox" class="rounded border-slate-300 text-brand-600 row-checkbox" data-id="${item.id}" onchange="updateSelectedCount()" /></td>
+                    <td class="p-3 text-center font-mono text-slate-500">${index}</td>
+                    <td class="p-3 font-mono font-bold text-slate-900">${item.reportId}</td>
+                    <td class="p-3 font-bold text-slate-900">${item.name}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${item.type}</span></td>
+                    <td class="p-3 font-mono text-slate-700">${item.date}</td>
+                    <td class="p-3 font-mono text-slate-600">${item.size}</td>
+                    <td class="p-3"><span class="status-badge ${statusMap[item.status] || 'status-badge--pending'}">${item.status}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        ${item.status === 'Completed' ? `<button onclick="downloadReport(${item.id})" class="btn btn-primary text-xs py-1 px-2">Download</button>` : `<button class="btn btn-secondary text-xs py-1 px-2 opacity-50 cursor-not-allowed" disabled>Download</button>`}
+                        <button onclick="deleteReport(${item.id})" class="btn btn-danger text-xs py-1 px-2">Delete</button>
+                    </td>
+                </tr>
+            `;
+        },
+        defaultSort: 'reportId',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'reports'
+    });
+
+    // Expose functions globally
+    window.refreshReports = tableModule.refresh;
+    window.applyFilters_Reports = tableModule.applyFilters;
+    window.goToPage_Reports = tableModule.goToPage;
+    window.changeRowsPerPage_Reports = tableModule.changeRowsPerPage;
+    window.resetFilters_Reports = tableModule.resetFilters;
+    window.sortReports = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.column);
+    });
+
+    // Set default rows per page
+    document.addEventListener('DOMContentLoaded', function () {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+        tableModule.applyFilters();
+    });
+
+    // Expose updateSelectedCount to global for inline onclick
+    window.updateSelectedCount = updateSelectedCount;
+</script>

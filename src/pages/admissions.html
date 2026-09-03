@@ -1,0 +1,693 @@
+<!-- ===== ADMISSIONS PAGE CONTENT ===== -->
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Dashboard
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Admissions</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Admissions</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage applicant pipeline, evaluations, and enrolment conversion</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <!-- Admission Rules (Golden Egg) -->
+        <!-- <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Admissions Officer actions."
+                ondblclick="showNotification('Opening Admission Rules...')"
+                class="btn btn-secondary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Admission Rules
+        </button> -->
+        <!-- + New Applicant (Golden Egg) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Admissions Officer actions."
+                ondblclick="switchAdmissionsTab('student-creation')"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Applicant
+        </button>
+    </div>
+</div>
+
+<!-- ===== KPI STRIP (Clickable – no golden egg, just navigation) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <!-- Total Pipeline -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="switchAdmissionsTab('undergrad')"
+        data-tooltip="Total number of applicants in the admissions pipeline. Click to view full list.">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Total Pipeline
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of applicants in the admissions pipeline. Click to view full list.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono">1,420</h2>
+            <span class="text-sm text-emerald-600 font-semibold">↑ +12.4% vs AY 2024</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Evaluation Queue -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="switchAdmissionsTab('undergrad'); setTimeout(function(){ filterAdmissionsList('preadmission', null); }, 100);"
+        data-tooltip="Applicants currently in the evaluation queue awaiting review. Click to view Pre-Admission list.">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Evaluation Queue
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Applicants currently in the evaluation queue awaiting review. Click to view Pre-Admission list.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono">38</h2>
+            <span class="text-sm text-slate-500">Requires VP Action</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Official Registry -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="switchAdmissionsTab('undergrad'); setTimeout(function(){ filterAdmissionsList('official', null); }, 100);"
+        data-tooltip="Applicants who have been formally admitted and are ready for enrolment. Click to view Official list.">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Official Registry
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Applicants who have been formally admitted and are ready for enrolment. Click to view Official list.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono">500</h2>
+            <span class="text-sm text-slate-500">Ready for Enrolment</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Target Yield Rate -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="switchAdmissionsTab('statistics')"
+        data-tooltip="Current yield rate compared to the target. Click to view statistics.">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Target Yield Rate
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Current yield rate compared to the target. Click to view statistics.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-brand-600 font-mono">64.6%</h2>
+            <span class="text-sm text-emerald-700 font-semibold">Target: 60.0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TABS ===== -->
+<div class="card p-2 flex items-center gap-1.5 overflow-x-auto">
+    <button type="button" onclick="switchAdmissionsTab('undergrad')" id="admTabUndergrad"
+        class="adm-tab btn btn-primary text-xs shrink-0 flex items-center gap-2">
+        Undergrad <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-700 text-slate-200 font-mono">15</span>
+    </button>
+    <button type="button" onclick="switchAdmissionsTab('postgrad')" id="admTabPostgrad"
+        class="adm-tab btn btn-secondary text-xs shrink-0 flex items-center gap-2">
+        Postgrad <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-mono">20</span>
+    </button>
+    <button type="button" onclick="switchAdmissionsTab('student-creation')" id="admTabStudentCreation"
+        class="adm-tab btn btn-secondary text-xs shrink-0">Student Creation</button>
+    <button type="button" onclick="switchAdmissionsTab('import')" id="admTabImport"
+        class="adm-tab btn btn-secondary text-xs shrink-0">Import Data</button>
+    <button type="button" onclick="switchAdmissionsTab('statistics')" id="admTabStatistics"
+        class="adm-tab btn btn-secondary text-xs shrink-0">Statistics</button>
+</div>
+
+<!-- ===== TAB 1: UNDERGRAD ADMISSIONS ===== -->
+<div id="admPanelUndergrad" class="card space-y-4">
+    <!-- Filters -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-slate-100">
+        <div
+            class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700">
+            <button type="button" onclick="filterAdmissionsList('all', this)"
+                class="adm-seg-btn px-3.5 py-1.5 rounded-lg bg-white text-slate-900 font-bold shadow-xs">Full List
+                (15)</button>
+            <button type="button" onclick="filterAdmissionsList('preadmission', this)"
+                class="adm-seg-btn px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">Pre-Admission
+                (8)</button>
+            <button type="button" onclick="filterAdmissionsList('official', this)"
+                class="adm-seg-btn px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">Official (7)</button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <input type="search" placeholder="Search Name, ID, LRN…" class="input-field text-sm w-60"
+                oninput="searchAdmissionsTable(this.value)" />
+            <select class="select-field text-sm w-auto" onchange="filterAdmissionsProgram(this.value)">
+                <option value="all">All Programs</option>
+                <option value="BS Accountancy">BS Accountancy</option>
+                <option value="BS Accounting Tech">BS Accounting Tech</option>
+                <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+                <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+                <option value="Juris Doctor">Juris Doctor</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="undergradTable">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">
+                        <input type="checkbox" class="rounded border-slate-300 text-brand-600" aria-label="Select all"
+                            onchange="toggleAllAdmissions(this, 'undergradBody')" />
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px]">App ID / LRN</th>
+                    <th scope="col" class="p-3 min-w-[140px]">Applicant</th>
+                    <th scope="col" class="p-3 min-w-[120px]">Desired Program</th>
+                    <th scope="col" class="p-3 min-w-[100px]">HS Track</th>
+                    <th scope="col" class="p-3 min-w-[90px]">Exam Score</th>
+                    <th scope="col" class="p-3 min-w-[120px]">Pipeline Status</th>
+                    <th scope="col" class="p-3 min-w-[120px]">Admitted By</th>
+                    <th scope="col" class="p-3 min-w-[120px] text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100" id="undergradBody">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    <div id="undergradPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initPagination -->
+    </div>
+</div>
+
+<!-- ===== TAB 2: POSTGRAD ADMISSIONS ===== -->
+<div id="admPanelPostgrad" class="hidden card space-y-4">
+    <!-- Filters -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-slate-100">
+        <div
+            class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700">
+            <button type="button" onclick="filterPostgradList('all', this)"
+                class="post-seg-btn px-3.5 py-1.5 rounded-lg bg-white text-slate-900 font-bold shadow-xs">Full List
+                (20)</button>
+            <button type="button" onclick="filterPostgradList('screening', this)"
+                class="post-seg-btn px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">Screening (5)</button>
+            <button type="button" onclick="filterPostgradList('interview', this)"
+                class="post-seg-btn px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">Interview (5)</button>
+            <button type="button" onclick="filterPostgradList('official', this)"
+                class="post-seg-btn px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">Official (10)</button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+            <select class="select-field text-sm w-auto" onchange="filterPostgradProgram(this.value)">
+                <option value="all">All Postgrad Programs</option>
+                <option value="Juris Doctor">Juris Doctor</option>
+                <option value="MS Accountancy">MS Accountancy</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="postgradTable">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 min-w-[120px]">Candidate ID</th>
+                    <th scope="col" class="p-3 min-w-[160px]">Candidate Name</th>
+                    <th scope="col" class="p-3 min-w-[140px]">Bachelor's Origin</th>
+                    <th scope="col" class="p-3 min-w-[120px]">Eligibility</th>
+                    <th scope="col" class="p-3 min-w-[90px]">Rating</th>
+                    <th scope="col" class="p-3 min-w-[120px]">Pipeline Status</th>
+                    <th scope="col" class="p-3 min-w-[160px] text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100" id="postgradBody">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    <div id="postgradPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initPagination -->
+    </div>
+</div>
+
+<!-- ===== TAB 3: STUDENT CREATION (FORM) ===== -->
+<div id="admPanelStudentCreation" class="hidden card space-y-6">
+    <div>
+        <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">New Applicant / Student Master Record</h3>
+        <p class="text-sm text-slate-500 mt-0.5">Standardised personal, academic, and credential data.</p>
+    </div>
+
+    <form
+        id="studentCreationForm"
+        onsubmit="event.preventDefault(); showNotification('Student master record committed successfully!', 'success');"
+        class="space-y-6">
+        <!-- Personal Information -->
+        <div class="space-y-3">
+            <h4 class="text-xs font-extrabold text-brand-600 uppercase tracking-wider border-b border-slate-100 pb-1">1.
+                Personal Information</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="firstName" class="block font-bold text-sm text-slate-700 mb-1">First Legal Name
+                        *</label>
+                    <input type="text" id="firstName" required placeholder="Juan" class="input-field" />
+                </div>
+                <div>
+                    <label for="middleName" class="block font-bold text-sm text-slate-700 mb-1">Middle Name</label>
+                    <input type="text" id="middleName" placeholder="Santos" class="input-field" />
+                </div>
+                <div>
+                    <label for="lastName" class="block font-bold text-sm text-slate-700 mb-1">Last Legal Name *</label>
+                    <input type="text" id="lastName" required placeholder="Dela Cruz" class="input-field" />
+                </div>
+                <div>
+                    <label for="gender" class="block font-bold text-sm text-slate-700 mb-1">Gender *</label>
+                    <select id="gender" required class="select-field">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="dob" class="block font-bold text-sm text-slate-700 mb-1">Date of Birth *</label>
+                    <input type="date" id="dob" required class="input-field" />
+                </div>
+                <div>
+                    <label for="civilStatus" class="block font-bold text-sm text-slate-700 mb-1">Civil Status</label>
+                    <select id="civilStatus" class="select-field">
+                        <option>Single</option>
+                        <option>Married</option>
+                        <option>Widowed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="nationality" class="block font-bold text-sm text-slate-700 mb-1">Nationality *</label>
+                    <input type="text" id="nationality" value="Filipino" required class="input-field" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="space-y-3">
+            <h4 class="text-xs font-extrabold text-brand-600 uppercase tracking-wider border-b border-slate-100 pb-1">2.
+                Contact Information</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="email" class="block font-bold text-sm text-slate-700 mb-1">Email Address *</label>
+                    <input type="email" id="email" required placeholder="student@email.com" class="input-field" />
+                </div>
+                <div>
+                    <label for="mobile" class="block font-bold text-sm text-slate-700 mb-1">Mobile Number *</label>
+                    <input type="tel" id="mobile" required placeholder="+63 912 345 6789" class="input-field" />
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="address" class="block font-bold text-sm text-slate-700 mb-1">Permanent Address *</label>
+                    <input type="text" id="address" required placeholder="House No., Street, Barangay"
+                        class="input-field" />
+                </div>
+                <div>
+                    <label for="city" class="block font-bold text-sm text-slate-700 mb-1">City / Municipality *</label>
+                    <input type="text" id="city" required placeholder="Makati City" class="input-field" />
+                </div>
+                <div>
+                    <label for="province" class="block font-bold text-sm text-slate-700 mb-1">Province *</label>
+                    <input type="text" id="province" required placeholder="Metro Manila" class="input-field" />
+                </div>
+                <div>
+                    <label for="zip" class="block font-bold text-sm text-slate-700 mb-1">Postal Zip</label>
+                    <input type="text" id="zip" placeholder="1200" class="input-field" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic -->
+        <div class="space-y-3">
+            <h4 class="text-xs font-extrabold text-brand-600 uppercase tracking-wider border-b border-slate-100 pb-1">3.
+                Academic Background</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="lrn" class="block font-bold text-sm text-slate-700 mb-1">LRN</label>
+                    <input type="text" id="lrn" placeholder="12-digit LRN" class="input-field" />
+                </div>
+                <div>
+                    <label for="college" class="block font-bold text-sm text-slate-700 mb-1">Target College *</label>
+                    <select id="college" required class="select-field">
+                        <option>College of Business & Accountancy</option>
+                        <option>College of Law</option>
+                        <option>College of Agriculture</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="program" class="block font-bold text-sm text-slate-700 mb-1">Degree Program *</label>
+                    <select id="program" required class="select-field">
+                        <option>BS Accountancy</option>
+                        <option>BS Accounting Tech</option>
+                        <option>Juris Doctor</option>
+                        <option>Diploma Ag Tech</option>
+                        <option>ABMT Entrepreneurship</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="curriculum" class="block font-bold text-sm text-slate-700 mb-1">Curriculum *</label>
+                    <select id="curriculum" required class="select-field">
+                        <option>2024 Revised Curriculum</option>
+                        <option>2020 Legacy</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents -->
+        <div class="space-y-3">
+            <h4 class="text-xs font-extrabold text-brand-600 uppercase tracking-wider border-b border-slate-100 pb-1">4.
+                Submitted Credentials</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="form-check p-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="checkbox" checked /> Form 137 / Transcript
+                </label>
+                <label class="form-check p-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="checkbox" checked /> PSA Birth Certificate
+                </label>
+                <label class="form-check p-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="checkbox" /> Good Moral Certificate
+                </label>
+                <label class="form-check p-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="checkbox" /> Medical Clearance
+                </label>
+            </div>
+        </div>
+
+        <!-- Duplicate check -->
+        <div
+            class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-900 flex items-center justify-between">
+            <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Real‑time duplicate check active across LRN and name index.</span>
+            </span>
+            <span class="font-bold text-blue-700">0 Matches Found ✓</span>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button type="button" onclick="switchAdmissionsTab('undergrad')"
+                class="btn btn-secondary text-xs">Cancel</button>
+            <!-- Save & Commit Record (Golden Egg) -->
+            <button type="submit"
+                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Admissions Officer actions."
+                    ondblclick="document.getElementById('studentCreationForm').dispatchEvent(new Event('submit'));"
+                    class="btn btn-primary text-xs">
+                Save & Commit Record
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- ===== TAB 4: IMPORT DATA ===== -->
+<div id="admPanelImport" class="hidden card space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Batch Ingestion & Tracking</h3>
+            <p class="text-sm text-slate-500 mt-0.5">Upload .CSV / .XLSX score datasets and inspect batch logs.</p>
+        </div>
+        <button type="button" onclick="showNotification('Downloading CSV Template...')"
+            class="btn btn-secondary text-xs">Download CSV Template</button>
+    </div>
+
+    <div
+        class="p-8 border-2 border-dashed border-brand-300 bg-brand-50/40 rounded-2xl text-center space-y-2 cursor-pointer hover:bg-brand-50 transition-colors">
+        <svg class="w-8 h-8 text-brand-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <p class="text-sm font-bold text-slate-900">Drag & drop entrance exam scores or applicant spreadsheets here</p>
+        <p class="text-xs text-slate-500">Supports .CSV, .XLSX up to 25MB &bull; Automatic validation</p>
+    </div>
+
+    <div class="space-y-3">
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Recent Ingestion Logs</h4>
+        <div class="table-wrap">
+            <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                <thead>
+                    <tr
+                        class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th scope="col" class="p-3">Batch ID</th>
+                        <th scope="col" class="p-3">File</th>
+                        <th scope="col" class="p-3">Uploaded By</th>
+                        <th scope="col" class="p-3">Timestamp</th>
+                        <th scope="col" class="p-3">Processed</th>
+                        <th scope="col" class="p-3">Status</th>
+                        <th scope="col" class="p-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-slate-900">BATCH-2026-0812</td>
+                        <td class="p-3 font-bold text-slate-800">Exam_Results_Oct2025.csv</td>
+                        <td class="p-3 text-slate-700">Registrar #04</td>
+                        <td class="p-3 text-slate-500">Oct 12, 14:22</td>
+                        <td class="p-3 font-mono font-bold text-slate-800">2,000/2,000</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">100% Valid</span></td>
+                        <td class="p-3 text-right">
+                            <button type="button" onclick="showNotification('Downloading source CSV...')"
+                                class="btn btn-secondary text-xs">Re‑download</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-slate-900">BATCH-2026-0798</td>
+                        <td class="p-3 font-bold text-slate-800">Transferee_Batch_2.xlsx</td>
+                        <td class="p-3 text-slate-700">Dr. Mateo Alcantara</td>
+                        <td class="p-3 text-slate-500">Sep 28, 09:10</td>
+                        <td class="p-3 font-mono font-bold text-amber-700">142/145</td>
+                        <td class="p-3"><span class="status-badge status-badge--pending">3 Exceptions</span></td>
+                        <td class="p-3 text-right">
+                            <!-- Export Errors (Golden Egg) -->
+                            <button type="button"
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Admissions Officer actions."
+                                    ondblclick="showNotification('Exporting error rows...')"
+                                    class="btn btn-danger text-xs">
+                                Export Errors
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-slate-900">BATCH-2026-0756</td>
+                        <td class="p-3 font-bold text-slate-800">Scholarship_List_2026.csv</td>
+                        <td class="p-3 text-slate-700">Scholarship Office</td>
+                        <td class="p-3 text-slate-500">Sep 15, 11:45</td>
+                        <td class="p-3 font-mono font-bold text-slate-800">184/184</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">100% Valid</span></td>
+                        <td class="p-3 text-right">
+                            <button type="button" onclick="showNotification('Downloading source CSV...')"
+                                class="btn btn-secondary text-xs">Re‑download</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TAB 5: STATISTICS ===== -->
+<div id="admPanelStatistics" class="hidden card space-y-6">
+    <!-- === Funnel Section === -->
+    <div>
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Admissions Conversion Funnel</h3>
+                <p class="text-sm text-slate-500 mt-0.5">Real‑time transition rates from inquiry to enrolled.</p>
+            </div>
+            <span class="px-3 py-1.5 bg-emerald-100 text-emerald-900 font-mono font-bold text-sm rounded-lg border border-emerald-200">47.8% Conversion</span>
+        </div>
+
+        <!-- Funnel Bars -->
+        <div class="space-y-3 text-sm">
+            <div>
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-slate-800">1. Inquiries Submitted</span>
+                    <span class="font-mono font-bold text-slate-900">1,420 (100%)</span>
+                </div>
+                <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-slate-800 rounded-full transition-all" style="width:100%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-slate-800">2. Passed Entrance Exam</span>
+                    <span class="font-mono font-bold text-brand-700">680 (47.8%)</span>
+                </div>
+                <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-brand-600 rounded-full transition-all" style="width:47.8%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-slate-800">3. Formally Admitted</span>
+                    <span class="font-mono font-bold text-blue-700">500 (35.2%)</span>
+                </div>
+                <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-blue-600 rounded-full transition-all" style="width:35.2%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between mb-1">
+                    <span class="font-bold text-slate-800">4. Enrolled (Paid &amp; Advised)</span>
+                    <span class="font-mono font-bold text-emerald-700">323 (22.7%)</span>
+                </div>
+                <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-emerald-600 rounded-full transition-all" style="width:22.7%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === Key Metrics Grid === -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-center">
+            <p class="text-xs text-slate-500 font-bold uppercase">Avg. Time to Admit</p>
+            <p class="text-xl font-black text-slate-900">14.2 days</p>
+            <span class="text-xs text-emerald-600 font-semibold">↓ -2.1 days</span>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-center">
+            <p class="text-xs text-slate-500 font-bold uppercase">Yield Rate</p>
+            <p class="text-xl font-black text-slate-900">47.8%</p>
+            <span class="text-xs text-emerald-600 font-semibold">↑ +1.2%</span>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-center">
+            <p class="text-xs text-slate-500 font-bold uppercase">Admit/Deny Ratio</p>
+            <p class="text-xl font-black text-slate-900">3.2:1</p>
+            <span class="text-xs text-slate-500">500 / 156</span>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 text-center">
+            <p class="text-xs text-slate-500 font-bold uppercase">Deposit Rate</p>
+            <p class="text-xl font-black text-slate-900">76.4%</p>
+            <span class="text-xs text-emerald-600 font-semibold">↑ +0.8%</span>
+        </div>
+    </div>
+
+    <!-- === Charts Section === -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+        <!-- Applications by Program -->
+        <div class="space-y-3">
+            <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Applications by Program
+                    <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of applications received per degree program.">ⓘ</span>
+                </h4>
+                <span class="text-[11px] text-slate-500 font-mono">AY 2021-2022</span>
+            </div>
+            <div class="h-48 relative w-full">
+                <canvas id="programBarChart" aria-label="Applications by program bar chart" role="img"></canvas>
+            </div>
+        </div>
+
+        <!-- Monthly Application Trend -->
+        <div class="space-y-3">
+            <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Monthly Application Trend
+                    <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of applications submitted per month.">ⓘ</span>
+                </h4>
+                <span class="text-[11px] text-slate-500 font-mono">Last 12 Months</span>
+            </div>
+            <div class="h-48 relative w-full">
+                <canvas id="monthlyTrendChart" aria-label="Monthly application trend line chart" role="img"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    import { students, postgradApplicants } from './assets/js/data.js';
+    import { 
+        renderUndergradTable, 
+        renderPostgradTable, 
+        initPagination, 
+        switchAdmissionsTab, 
+        filterAdmissionsList, 
+        filterPostgradList, 
+        searchAdmissionsTable, 
+        filterAdmissionsProgram, 
+        filterPostgradProgram, 
+        toggleAllAdmissions, 
+        showNotification,
+        toggleAdmissionCheckbox,
+        bulkAdmitAdmissions,
+        bulkExportAdmissions,
+        initTooltips
+    } from './assets/js/ui.js';
+
+    // Expose all functions needed by inline onclick
+    window.switchAdmissionsTab = switchAdmissionsTab;
+    window.filterAdmissionsList = filterAdmissionsList;
+    window.filterPostgradList = filterPostgradList;
+    window.searchAdmissionsTable = searchAdmissionsTable;
+    window.filterAdmissionsProgram = filterAdmissionsProgram;
+    window.filterPostgradProgram = filterPostgradProgram;
+    window.toggleAllAdmissions = toggleAllAdmissions;
+    window.showNotification = showNotification;
+    window.toggleAdmissionCheckbox = toggleAdmissionCheckbox;
+    window.bulkAdmitAdmissions = bulkAdmitAdmissions;
+    window.bulkExportAdmissions = bulkExportAdmissions;
+
+    // Render tables
+    const undergradData = students.slice(0, 15);
+    const postgradData = postgradApplicants;
+
+    renderUndergradTable('undergradBody', undergradData);
+    renderPostgradTable('postgradBody', postgradData);
+
+    // Init pagination
+    initPagination('undergradTable', [10, 25, 50, 100], 'undergradPaginationContainer');
+    initPagination('postgradTable', [10, 25, 50, 100], 'postgradPaginationContainer');
+
+    // Initialize filters
+    document.querySelector('.adm-seg-btn')?.click();
+    document.querySelector('.post-seg-btn')?.click();
+
+    // Update counts after render
+    const updateCounts = () => {
+        const totalUndergrad = document.querySelectorAll('#undergradBody .adm-row').length;
+        const totalPostgrad = document.querySelectorAll('#postgradBody .post-row').length;
+        document.querySelector('#admTabUndergrad span').textContent = totalUndergrad;
+        document.querySelector('#admTabPostgrad span').textContent = totalPostgrad;
+    };
+    updateCounts();
+
+    // Init tooltips for golden egg buttons
+    initTooltips();
+</script>

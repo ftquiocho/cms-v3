@@ -1,0 +1,750 @@
+<!-- ===== APPROVALS PAGE CONTENT ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Dashboard
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Approvals &amp; Requests</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Executive Approvals Center</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Central authorization for grade submissions, holds, admissions, and
+            financial requests</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" onclick="exportApprovalsCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (with icons & tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Total Pending
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of requests awaiting your review and approval.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="statTotalPending">17</h2>
+            <span class="text-sm text-amber-600 font-semibold">Requires VP Action</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Grade Submissions
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Grade sheets pending VP review and approval.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="statGradeSubmissions">8</h2>
+            <span class="text-sm text-slate-500">Due this week</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Clearance Holds
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Student clearance holds requiring VP intervention.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="statClearanceHolds">4</h2>
+            <span class="text-sm text-slate-500">Urgent review needed</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Admissions &amp; Scholarships
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Admission and scholarship applications awaiting review.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="statAdmissions">5</h2>
+            <span class="text-sm text-slate-500">Pending evaluation</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== APPROVALS TABLE (with integrated filters) ===== -->
+<!-- Filters -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="searchApprovals" placeholder="Search by ID, name, or department..."
+                class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+            <button onclick="resetApprovalFilters()"
+                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <select id="filterCategory" class="select-field text-sm w-36" onchange="applyFilters()">
+            <option value="all">All Categories</option>
+            <option value="grades">Grade Submissions</option>
+            <option value="clearance">Clearance Holds</option>
+            <option value="admissions">Admissions</option>
+            <option value="scholarship">Scholarships</option>
+        </select>
+        <select id="filterStatus" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="pending_review">Pending Review</option>
+            <option value="in_review">In Review</option>
+            <option value="hold">On Hold</option>
+            <option value="consultation">Under Consultation</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-14 of 17</span>
+    </div>
+</div>
+
+<!-- Table with filters -->
+<div class="card space-y-4">
+    <!-- Bulk Actions + Table -->
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <select id="bulkAction" class="select-field text-sm w-40" disabled>
+                <option value="">Bulk Actions</option>
+                <option value="approve">Approve Selected</option>
+                <option value="reject">Reject Selected</option>
+            </select>
+            <button id="applyBulkBtn" onclick="openBulkConfirmModal()" class="btn btn-secondary text-xs"
+                disabled>Apply</button>
+            <span id="selectedCount" class="text-xs text-slate-500">0 selected</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+            <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="approvalsTable">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">
+                        <input type="checkbox" id="selectAll" class="rounded border-slate-300 text-brand-600"
+                            onchange="toggleAllCheckboxes()" />
+                    </th>
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col"
+                        class="p-3 min-w-[110px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="id" onclick="sortTable('id')">
+                        Request ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="type" onclick="sortTable('type')">
+                        Type <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="requester" onclick="sortTable('requester')">
+                        Requester <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="department" onclick="sortTable('department')">
+                        Department <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="submitted" onclick="sortTable('submitted')">
+                        Submitted <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[130px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="deadline" onclick="sortTable('deadline')">
+                        Deadline <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[110px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[180px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="approvalsBody" class="divide-y divide-slate-100">
+                <!-- Rows rendered by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg"
+            aria-hidden="true">✓</div>
+        <h3 class="font-bold text-slate-800">All Queue Items Actioned</h3>
+        <p class="text-sm text-slate-500">No pending items match this filter.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <p class="text-sm text-slate-500">
+            Showing <span id="pageStart">1</span>–<span id="pageEnd">14</span> of <span id="totalItems">17</span>
+            entries
+        </p>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== DETAIL MODALS (Request-Specific) ===== -->
+
+<!-- Grade Details Modal -->
+<div id="gradeDetailsModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog">
+    <div
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <div>
+                <h3 id="gradeDetailTitle" class="text-lg font-bold text-slate-900">Grade Sheet Review</h3>
+                <p id="gradeDetailSubtitle" class="text-sm text-slate-500">Reviewing final grade submissions</p>
+            </div>
+            <button type="button" onclick="closeDetailModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+        <div id="gradeDetailContent" class="space-y-4">
+            <!-- Rendered by JavaScript -->
+        </div>
+        <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
+            <button type="button" onclick="closeDetailModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" id="detailApproveBtn" class="btn btn-success text-xs">Approve</button>
+            <button type="button" id="detailRejectBtn" class="btn btn-danger text-xs">Reject</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== BULK CONFIRMATION MODAL ===== -->
+<div id="bulkConfirmModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900" id="bulkConfirmTitle">Confirm Bulk Action</h3>
+            <button type="button" onclick="closeBulkConfirmModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600" id="bulkConfirmBody">Are you sure you want to approve <span id="bulkCount"
+                class="font-bold">0</span> selected request(s)?</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeBulkConfirmModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" id="bulkConfirmBtn" class="btn btn-primary text-xs">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ============================================================
+    //  APPROVALS DATA (17 items – matches stats)
+    // ============================================================
+    let approvalData = [
+        { id: 'REQ-2021-901', type: 'Grade Submission', requester: 'Prof. Alan Vance', department: 'College of Law', submitted: '2021-10-24 09:30', deadline: '2021-10-24 17:00', status: 'Pending Review', category: 'grades', details: { course: 'LAW 401', students: 42, submittedBy: 'Prof. Alan Vance', dueDate: 'Today 17:00' } },
+        { id: 'REQ-2021-882', type: 'Clearance Hold', requester: 'Office of Registrar', department: 'Student Affairs', submitted: '2021-10-23 16:15', deadline: '2021-10-25 12:00', status: 'On Hold', category: 'clearance', details: { student: 'STU-2021-0001', reason: 'Library Fine Settlement', receipt: '#88219' } },
+        { id: 'REQ-2021-740', type: 'Admission', requester: 'Gabriel Mercer', department: 'Admissions Office', submitted: '2021-10-23 11:00', deadline: '2021-10-28 16:00', status: 'In Review', category: 'admissions', details: { program: 'BS Accountancy', transferCredits: 42, gpa: 3.8 } },
+        { id: 'REQ-2021-703', type: 'Scholarship', requester: 'Katrina Holbrook', department: 'Scholarship Committee', submitted: '2021-10-22 14:30', deadline: '2021-10-30 17:00', status: 'Pending Review', category: 'scholarship', details: { type: 'Presidential Scholarship', amount: 'Full Tuition', gpa: 3.95 } },
+        { id: 'REQ-2021-690', type: 'Grade Submission', requester: 'Prof. Alan Vance', department: 'College of Law', submitted: '2021-10-20 10:00', deadline: '2021-10-26 12:00', status: 'Under Consultation', category: 'grades', details: { course: 'LAW 201', students: 28, submittedBy: 'Prof. Alan Vance', dueDate: 'Oct 26, 12:00' } },
+        { id: 'REQ-2021-650', type: 'Grade Submission', requester: 'Prof. Maria Reyes', department: 'Graduate School', submitted: '2021-10-19 15:45', deadline: '2021-10-27 17:00', status: 'Pending Review', category: 'grades', details: { course: 'MSA 501', students: 18, submittedBy: 'Prof. Maria Reyes', dueDate: 'Oct 27, 17:00' } },
+        { id: 'REQ-2021-612', type: 'Clearance Hold', requester: 'Student Affairs Office', department: 'Student Affairs', submitted: '2021-10-18 09:20', deadline: '2021-10-25 12:00', status: 'On Hold', category: 'clearance', details: { student: 'STU-2021-0005', reason: 'Discipline Case', receipt: '—' } },
+        { id: 'REQ-2021-581', type: 'Admission', requester: 'Elena Rostova', department: 'Admissions Office', submitted: '2021-10-17 14:00', deadline: '2021-11-01 17:00', status: 'In Review', category: 'admissions', details: { program: 'Juris Doctor', transferCredits: 0, gpa: 4.2 } },
+        { id: 'REQ-2021-545', type: 'Scholarship', requester: 'Student Finance Office', department: 'Finance', submitted: '2021-10-16 11:30', deadline: '2021-11-05 17:00', status: 'Under Consultation', category: 'scholarship', details: { type: 'Financial Aid Appeal', amount: '₱50,000', gpa: 3.2 } },
+        { id: 'REQ-2021-512', type: 'Grade Submission', requester: 'Prof. David Chen', department: 'Accountancy', submitted: '2021-10-15 16:00', deadline: '2021-10-29 17:00', status: 'Pending Review', category: 'grades', details: { course: 'ACCT 401', students: 12, submittedBy: 'Prof. David Chen', dueDate: 'Oct 29, 17:00' } },
+        { id: 'REQ-2021-489', type: 'Admission', requester: 'Student #2023-7890', department: 'Registrar Office', submitted: '2021-10-14 13:45', deadline: '2021-10-31 12:00', status: 'In Review', category: 'admissions', details: { program: 'BS Accountancy (Transfer)', transferCredits: 60, gpa: 3.5 } },
+        { id: 'REQ-2021-456', type: 'Grade Submission', requester: 'Student #2023-3456', department: 'Academic Advising', submitted: '2021-10-13 10:15', deadline: '2021-11-10 17:00', status: 'Under Consultation', category: 'grades', details: { course: 'MATH 301', students: 8, submittedBy: 'Student', dueDate: 'Nov 10, 17:00' } },
+        { id: 'REQ-2021-423', type: 'Clearance Hold', requester: 'HR Office', department: 'Human Resources', submitted: '2021-10-12 09:00', deadline: '2021-11-15 17:00', status: 'Pending Review', category: 'clearance', details: { student: 'FAC-2021-0001', reason: 'Faculty Hiring', receipt: '—' } },
+        { id: 'REQ-2021-398', type: 'Scholarship', requester: 'Prof. Maria Reyes', department: 'Research Office', submitted: '2021-10-10 14:30', deadline: '2021-11-01 17:00', status: 'On Hold', category: 'scholarship', details: { type: 'Research Grant', amount: '₱250,000', gpa: 4.5 } },
+        { id: 'REQ-2021-377', type: 'Grade Submission', requester: 'Prof. Marcus Thorne', department: 'Accounting Tech', submitted: '2021-10-09 11:20', deadline: '2021-11-02 17:00', status: 'Pending Review', category: 'grades', details: { course: 'ACCT 201', students: 24, submittedBy: 'Prof. Marcus Thorne', dueDate: 'Nov 02, 17:00' } },
+        { id: 'REQ-2021-356', type: 'Clearance Hold', requester: 'Registrar Staff', department: 'Registrar Office', submitted: '2021-10-08 08:45', deadline: '2021-10-30 17:00', status: 'On Hold', category: 'clearance', details: { student: 'STU-2021-0012', reason: 'Incomplete Records', receipt: '—' } },
+        { id: 'REQ-2021-335', type: 'Admission', requester: 'Carlos Mendoza', department: 'Admissions Office', submitted: '2021-10-07 15:30', deadline: '2021-11-08 17:00', status: 'Pending Review', category: 'admissions', details: { program: 'BS Engineering', transferCredits: 28, gpa: 3.6 } }
+    ];
+
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let filteredData = [];
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let currentSort = { column: 'submitted', direction: 'desc' };
+    let selectedIds = new Set();
+    let currentDetailRequestId = null;
+
+    // ============================================================
+    //  RENDER FUNCTIONS
+    // ============================================================
+    function applyFilters() {
+        const search = document.getElementById('searchApprovals').value.toLowerCase().trim();
+        const category = document.getElementById('filterCategory').value;
+        const status = document.getElementById('filterStatus').value;
+
+        filteredData = approvalData.filter(item => {
+            const matchSearch = item.id.toLowerCase().includes(search) ||
+                item.requester.toLowerCase().includes(search) ||
+                item.department.toLowerCase().includes(search);
+            const matchCategory = category === 'all' || item.category === category;
+            const matchStatus = status === 'all' || item.status.replace(/\s/g, '_').toLowerCase() === status;
+            return matchSearch && matchCategory && matchStatus;
+        });
+
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // Update stats
+        const total = approvalData.length;
+        const grades = approvalData.filter(d => d.category === 'grades').length;
+        const clearance = approvalData.filter(d => d.category === 'clearance').length;
+        const admissions = approvalData.filter(d => d.category === 'admissions' || d.category === 'scholarship').length;
+
+        document.getElementById('statTotalPending').textContent = total;
+        document.getElementById('statGradeSubmissions').textContent = grades;
+        document.getElementById('statClearanceHolds').textContent = clearance;
+        document.getElementById('statAdmissions').textContent = admissions;
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+        updateSelectedCount();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('approvalsBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('emptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('emptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((item, index) => {
+                const statusClass = item.status === 'Pending Review' ? 'status-badge--pending' :
+                    item.status === 'In Review' ? 'status-badge--review' :
+                        item.status === 'On Hold' ? 'status-badge--hold' :
+                            'status-badge--consultation';
+                const deadlineClass = new Date(item.deadline) < new Date() ? 'text-rose-600 font-semibold' :
+                    new Date(item.deadline) < new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) ? 'text-amber-600 font-semibold' :
+                        'text-slate-600';
+                return `
+                <tr>
+                    <td class="p-3"><input type="checkbox" class="rounded border-slate-300 text-brand-600 approval-checkbox" data-id="${item.id}" onchange="updateSelectedCount()" /></td>
+                    <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                    <td class="p-3 font-mono font-bold text-slate-900">${item.id}</td>
+                    <td class="p-3 font-bold text-slate-900">${item.type}</td>
+                    <td class="p-3 text-slate-700">${item.requester}</td>
+                    <td class="p-3 text-slate-600">${item.department}</td>
+                    <td class="p-3 text-slate-500 font-mono text-xs">${item.submitted}</td>
+                    <td class="p-3 ${deadlineClass} font-mono text-xs">${item.deadline}</td>
+                    <td class="p-3"><span class="status-badge ${statusClass}">${item.status}</span></td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="openDetailModal('${item.id}')" class="btn btn-secondary text-xs py-1 px-2.5">Review</button>
+                            <button onclick="approveItem('${item.id}')" class="btn btn-success text-xs py-1 px-2.5">Approve</button>
+                            <button onclick="rejectItem('${item.id}')" class="btn btn-danger text-xs py-1 px-2.5">Reject</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            }).join('');
+        }
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) {
+            controls.innerHTML = '';
+            return;
+        }
+        let html = '';
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+        controls.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    // ============================================================
+    //  SORTING
+    // ============================================================
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-column="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    // ============================================================
+    //  FILTERS & SEARCH
+    // ============================================================
+    function resetApprovalFilters() {
+        document.getElementById('searchApprovals').value = '';
+        document.getElementById('filterCategory').value = 'all';
+        document.getElementById('filterStatus').value = 'all';
+        applyFilters();
+    }
+
+    // ============================================================
+    //  BULK ACTIONS
+    // ============================================================
+    function toggleAllCheckboxes() {
+        const checked = document.getElementById('selectAll').checked;
+        document.querySelectorAll('.approval-checkbox').forEach(cb => cb.checked = checked);
+        updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.approval-checkbox:checked');
+        selectedIds = new Set();
+        checkboxes.forEach(cb => selectedIds.add(cb.dataset.id));
+        const count = selectedIds.size;
+        document.getElementById('selectedCount').textContent = count + ' selected';
+        const bulkSelect = document.getElementById('bulkAction');
+        const applyBtn = document.getElementById('applyBulkBtn');
+        if (count > 0) {
+            bulkSelect.disabled = false;
+            applyBtn.disabled = false;
+        } else {
+            bulkSelect.disabled = true;
+            applyBtn.disabled = true;
+        }
+    }
+
+    function openBulkConfirmModal() {
+        const action = document.getElementById('bulkAction').value;
+        if (!action) {
+            showNotification('Please select a bulk action.', 'warning');
+            return;
+        }
+        if (selectedIds.size === 0) {
+            showNotification('No items selected.', 'warning');
+            return;
+        }
+        document.getElementById('bulkConfirmTitle').textContent = `Confirm Bulk ${action.charAt(0).toUpperCase() + action.slice(1)}`;
+        document.getElementById('bulkConfirmBody').innerHTML = `Are you sure you want to <strong>${action}</strong> <span id="bulkCount" class="font-bold">${selectedIds.size}</span> selected request(s)? This action cannot be undone.`;
+        document.getElementById('bulkConfirmBtn').dataset.action = action;
+        document.getElementById('bulkConfirmModal').classList.remove('hidden');
+    }
+
+    function closeBulkConfirmModal() {
+        document.getElementById('bulkConfirmModal').classList.add('hidden');
+    }
+
+    function executeBulkAction() {
+        const action = document.getElementById('bulkConfirmBtn').dataset.action;
+        if (!action) return;
+
+        const toRemove = new Set(selectedIds);
+        toRemove.forEach(id => {
+            const idx = approvalData.findIndex(item => item.id === id);
+            if (idx !== -1) {
+                approvalData[idx].status = action === 'approve' ? 'Approved' : 'Rejected';
+            }
+        });
+
+        // Remove approved/rejected items from view
+        approvalData = approvalData.filter(item => !toRemove.has(item.id) || (item.status !== 'Approved' && item.status !== 'Rejected'));
+
+        document.querySelectorAll('.approval-checkbox').forEach(cb => cb.checked = false);
+        document.getElementById('selectAll').checked = false;
+        selectedIds.clear();
+        closeBulkConfirmModal();
+        applyFilters();
+        showNotification(`Bulk ${action} completed for ${toRemove.size} item(s).`, 'success');
+    }
+
+    document.getElementById('bulkConfirmBtn').addEventListener('click', executeBulkAction);
+
+    // ============================================================
+    //  INDIVIDUAL ACTIONS
+    // ============================================================
+    function approveItem(id) {
+        const item = approvalData.find(d => d.id === id);
+        if (!item) return;
+        if (!confirm(`Approve request ${id}?`)) return;
+        item.status = 'Approved';
+        approvalData = approvalData.filter(d => d.id !== id);
+        applyFilters();
+        showNotification(`Request ${id} approved.`, 'success');
+    }
+
+    function rejectItem(id) {
+        const item = approvalData.find(d => d.id === id);
+        if (!item) return;
+        if (!confirm(`Reject request ${id}?`)) return;
+        item.status = 'Rejected';
+        approvalData = approvalData.filter(d => d.id !== id);
+        applyFilters();
+        showNotification(`Request ${id} rejected.`, 'error');
+    }
+
+    // ============================================================
+    //  DETAIL MODAL (Request-Specific)
+    // ============================================================
+    function openDetailModal(id) {
+        const item = approvalData.find(d => d.id === id);
+        if (!item) return;
+        currentDetailRequestId = id;
+
+        const modal = document.getElementById('gradeDetailsModal');
+        document.getElementById('gradeDetailTitle').textContent = `${item.type} – ${item.id}`;
+        document.getElementById('gradeDetailSubtitle').textContent = `Submitted by ${item.requester} • ${item.department}`;
+
+        let content = '';
+        if (item.category === 'grades') {
+            const d = item.details;
+            content = `
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Course:</span> ${d.course}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Students:</span> ${d.students}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Submitted By:</span> ${d.submittedBy}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Due Date:</span> ${d.dueDate}</div>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+                <p class="font-bold">📋 Grade Summary</p>
+                <p class="text-xs mt-1">Passing: 38/42 students • Failing: 4 students • Pending: 0</p>
+            </div>
+            <div class="table-wrap">
+                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                    <thead><tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th class="p-2">Student ID</th><th class="p-2">Name</th><th class="p-2">Final Grade</th><th class="p-2">Status</th>
+                    </tr></thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr><td class="p-2">STU-2021-0001</td><td>James Smith</td><td class="font-bold text-emerald-700">A-</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2">STU-2021-0002</td><td>Emma Johnson</td><td class="font-bold text-emerald-700">B</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2">STU-2021-0003</td><td>Liam Williams</td><td class="font-bold text-amber-700">C</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2">STU-2021-0004</td><td>Olivia Brown</td><td class="font-bold text-rose-700">D</td><td><span class="status-badge status-badge--hold">Failed</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-slate-400 italic">Showing 4 of ${d.students} students. Full list available in the grade sheet.</p>
+        `;
+        } else if (item.category === 'clearance') {
+            const d = item.details;
+            content = `
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Student:</span> ${d.student}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Reason:</span> ${d.reason}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Receipt:</span> ${d.receipt}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Status:</span> <span class="status-badge status-badge--hold">On Hold</span></div>
+            </div>
+            <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 text-sm text-rose-800">
+                <p class="font-bold">⚠️ Clearance Hold</p>
+                <p class="text-xs mt-1">This student has a pending hold. Review the reason and verify resolution before granting clearance.</p>
+            </div>
+        `;
+        } else if (item.category === 'admissions') {
+            const d = item.details;
+            content = `
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Program:</span> ${d.program}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Transfer Credits:</span> ${d.transferCredits || '0'}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa || '—'}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Status:</span> <span class="status-badge status-badge--review">In Review</span></div>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-800">
+                <p class="font-bold">🎓 Admission Recommendation</p>
+                <p class="text-xs mt-1">Applicant meets academic requirements. Recommended for admission to ${d.program}.</p>
+            </div>
+        `;
+        } else if (item.category === 'scholarship') {
+            const d = item.details;
+            content = `
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Type:</span> ${d.type}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Amount:</span> ${d.amount}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa}</div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Status:</span> <span class="status-badge status-badge--pending">Pending Review</span></div>
+            </div>
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-3 text-sm text-purple-800">
+                <p class="font-bold">💰 Scholarship Review</p>
+                <p class="text-xs mt-1">Applicant qualifies based on academic merit. Recommended for ${d.type}.</p>
+            </div>
+        `;
+        }
+
+        document.getElementById('gradeDetailContent').innerHTML = content;
+
+        // Set approve/reject buttons
+        document.getElementById('detailApproveBtn').onclick = function () {
+            if (confirm(`Approve request ${id}?`)) {
+                approveItem(id);
+                closeDetailModal();
+            }
+        };
+        document.getElementById('detailRejectBtn').onclick = function () {
+            if (confirm(`Reject request ${id}?`)) {
+                rejectItem(id);
+                closeDetailModal();
+            }
+        };
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+        document.getElementById('gradeDetailsModal').classList.add('hidden');
+        currentDetailRequestId = null;
+    }
+
+    // ============================================================
+    //  EXPORT CSV
+    // ============================================================
+    function exportApprovalsCSV() {
+        const headers = ['Request ID', 'Type', 'Requester', 'Department', 'Submitted', 'Deadline', 'Status'];
+        const rows = filteredData.map(item => [
+            item.id, item.type, item.requester, item.department,
+            item.submitted, item.deadline, item.status
+        ]);
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'approvals_export.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Export completed.', 'success');
+    }
+
+    // ============================================================
+    //  FALLBACK: showNotification & modals
+    // ============================================================
+    if (typeof showNotification !== 'function') {
+        window.showNotification = function (msg, type) {
+            alert(msg);
+        };
+    }
+    if (typeof openReviewModal !== 'function') {
+        window.openReviewModal = function (title, body) {
+            alert(title + '\n' + body);
+        };
+    }
+    if (typeof closeReviewModal !== 'function') {
+        window.closeReviewModal = function () { };
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function () {
+        applyFilters();
+        document.getElementById('rowsPerPage').value = '25';
+    });
+
+    // ============================================================
+    //  EXPOSE GLOBALS
+    // ============================================================
+    window.applyFilters = applyFilters;
+    window.resetApprovalFilters = resetApprovalFilters;
+    window.sortTable = sortTable;
+    window.goToPage = goToPage;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.toggleAllCheckboxes = toggleAllCheckboxes;
+    window.updateSelectedCount = updateSelectedCount;
+    window.openBulkConfirmModal = openBulkConfirmModal;
+    window.closeBulkConfirmModal = closeBulkConfirmModal;
+    window.approveItem = approveItem;
+    window.rejectItem = rejectItem;
+    window.openDetailModal = openDetailModal;
+    window.closeDetailModal = closeDetailModal;
+    window.exportApprovalsCSV = exportApprovalsCSV;
+    window.openReviewModal = openReviewModal;
+    window.closeReviewModal = closeReviewModal;
+</script>

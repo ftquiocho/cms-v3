@@ -1,0 +1,259 @@
+<!-- ===== SYSTEM SETTINGS HUB PAGE ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Console
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Academic Configuration</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Academic Configuration</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Global configuration for academic rules, grading, scheduling, and institutional preferences</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" onclick="showNotification('Opening Academic Configuration Audit Log...')" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Audit Log
+        </button>
+        <button type="button" onclick="showNotification('Opening New Setting Configuration...')" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + Add New Setting
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Semesters</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">2</p>
+        <span class="text-sm text-slate-500">Current: AY 2021-2022 2nd Sem</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Grade Systems</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">3</p>
+        <span class="text-sm text-slate-500">Active &amp; Ready</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Schedules</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">4</p>
+        <span class="text-sm text-brand-700 font-semibold">Templates Configured</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Document Templates</p>
+        <p class="text-2xl font-black text-slate-900 font-mono">6</p>
+        <span class="text-sm text-emerald-700 font-semibold">All Active</span>
+    </div>
+</div>
+
+<!-- ===== 9 SUBMODULE TILES ===== -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- 1. Autolapse Control -->
+    <div onclick="showNotification('Opening Autolapse Control...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">Rules</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Autolapse Control</h3>
+        <p class="text-sm text-slate-500 mt-1">Define automatic grade/record lapse rules for incompletes and expiring academic standing.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Configure Rules</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 2. Semester Definitions -->
+    <div onclick="showNotification('Opening Semester Definitions...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">2 Active</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Semester Definitions</h3>
+        <p class="text-sm text-slate-500 mt-1">Configure academic years, semester start/end dates, and term registration periods.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Semesters</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 3. Grade System -->
+    <div onclick="showNotification('Opening Grade System...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-md">3 Systems</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Grade System</h3>
+        <p class="text-sm text-slate-500 mt-1">Define grading scales (letter, numeric, GPA), weightings, and computation rules.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Configure Grades</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 4. Grade Remarks -->
+    <div onclick="showNotification('Opening Grade Remarks...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-purple-100 text-purple-900 px-2 py-0.5 rounded-md">12 Remarks</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Grade Remarks</h3>
+        <p class="text-sm text-slate-500 mt-1">Define remarks like PASS, FAIL, INCOMPLETE, WITHDRAWN, and other grade annotations.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Remarks</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 5. School Information -->
+    <div onclick="showNotification('Opening School Information...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">Institution</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">School Information</h3>
+        <p class="text-sm text-slate-500 mt-1">Manage institutional details, accreditation, contact info, and official name/address.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Edit Details</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 6. Schedules -->
+    <div onclick="showNotification('Opening Master Schedules...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md">4 Templates</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Schedules</h3>
+        <p class="text-sm text-slate-500 mt-1">Create and manage master class schedule templates, time slots, and room allocations.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Schedules</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 7. Logo & Signature -->
+    <div onclick="showNotification('Opening Logo & Signature Settings...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md">Branding</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Logo &amp; Signature</h3>
+        <p class="text-sm text-slate-500 mt-1">Upload institutional logos, official signatures, and brand assets for documents.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Manage Assets</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 8. Graduation Dates -->
+    <div onclick="showNotification('Opening Graduation Dates...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-purple-100 text-purple-900 px-2 py-0.5 rounded-md">Ceremony</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Dates</h3>
+        <p class="text-sm text-slate-500 mt-1">Configure graduation ceremony schedules, application deadlines, and clearance cut-offs.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Set Dates</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 9. Score Settings -->
+    <div onclick="showNotification('Opening Score Settings...')" class="card cursor-pointer hover:border-brand-400 transition-colors action-card">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center border border-brand-200" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-rose-100 text-rose-900 px-2 py-0.5 rounded-md">Cut-Offs</span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Score Settings</h3>
+        <p class="text-sm text-slate-500 mt-1">Define exam score configurations, cut-off thresholds, and admission test scaling rules.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-700">
+            <span>Configure Scores</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== RECENT ACTIVITY LOG ===== -->
+<div class="card space-y-3">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Settings Activity</h2>
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3">Timestamp</th>
+                    <th scope="col" class="p-3">User</th>
+                    <th scope="col" class="p-3">Action</th>
+                    <th scope="col" class="p-3">Setting Affected</th>
+                    <th scope="col" class="p-3">Status</th>
+                    <th scope="col" class="p-3 text-right">Details</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-24 15:22</td>
+                    <td class="p-3 font-bold text-slate-700">Dr. Mateo Alcantara</td>
+                    <td class="p-3 font-bold text-slate-900">Updated</td>
+                    <td class="p-3">Semester Definitions (AY 2021-2022)</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Applied</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing details for semester update...')" class="btn btn-ghost text-brand-600 text-xs">View</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-24 11:45</td>
+                    <td class="p-3 font-bold text-slate-700">System Admin</td>
+                    <td class="p-3 font-bold text-slate-900">Configured</td>
+                    <td class="p-3">Grade System (New Grading Scale)</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Pending Review</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Reviewing grade system changes...')" class="btn btn-ghost text-brand-600 text-xs">Review</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-23 14:30</td>
+                    <td class="p-3 font-bold text-slate-700">Registrar Staff</td>
+                    <td class="p-3 font-bold text-slate-900">Uploaded</td>
+                    <td class="p-3">Logo &amp; Signature (Official Seal)</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Active</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing logo upload...')" class="btn btn-ghost text-brand-600 text-xs">View</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-22 09:10</td>
+                    <td class="p-3 font-bold text-slate-700">Dr. Mateo Alcantara</td>
+                    <td class="p-3 font-bold text-slate-900">Modified</td>
+                    <td class="p-3">Autolapse Control (Incomplete Rules)</td>
+                    <td class="p-3"><span class="status-badge status-badge--approved">Applied</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Viewing autolapse rule changes...')" class="btn btn-ghost text-brand-600 text-xs">View</button></td>
+                </tr>
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">2026-08-21 16:00</td>
+                    <td class="p-3 font-bold text-slate-700">System Admin</td>
+                    <td class="p-3 font-bold text-slate-900">Added</td>
+                    <td class="p-3">Score Settings (New Exam Cut-Off)</td>
+                    <td class="p-3"><span class="status-badge status-badge--pending">Pending Review</span></td>
+                    <td class="p-3 text-right"><button onclick="showNotification('Reviewing score settings...')" class="btn btn-ghost text-brand-600 text-xs">Review</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

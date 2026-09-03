@@ -1,0 +1,706 @@
+<!-- ===== DASHBOARD PAGE CONTENT ===== -->
+
+<!-- ===== WELCOME BANNER ===== -->
+<div class="card flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+        <p class="text-xs font-bold text-brand-600 uppercase tracking-wider">Executive Overview</p>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Welcome back, Dr. Mateo R. Alcantara
+        </h1>
+        <p class="text-sm text-slate-500 mt-0.5">Today's campus operational summary and approval queue.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2.5">
+        <button type="button" onclick="window.location.href='enrol.html'" class="btn btn-secondary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Enrollment Hub
+        </button>
+        <button type="button" onclick="window.location.href='approvals.html'" class="btn btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Review Approvals
+        </button>
+        <button type="button" onclick="openHelpModal()"
+            class="btn btn-ghost text-slate-500 hover:text-brand-600 p-2.5 min-h-[44px] min-w-[44px]"
+            aria-label="Dashboard Help">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- ===== KPI METRICS ===== -->
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+    <!-- Total Enrolled -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="showEnrol()">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Total Enrolled
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of active students enrolled in the current term.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 mt-1 font-mono">1,420</h2>
+            <p class="text-sm text-emerald-600 font-bold flex items-center gap-1">↑ +5.2% <span
+                    class="text-slate-400 font-normal">vs last term</span></p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Scholarships -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="showAdmissions()">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Scholarships
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of active scholarship grants.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 mt-1 font-mono">184</h2>
+            <p class="text-sm text-brand-600 font-bold">12 New Grants</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Faculty -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="showAcademic()">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Faculty
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of faculty members.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 mt-1 font-mono">112</h2>
+            <p class="text-sm text-slate-500">3 on leave</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Degree Programs -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="showAcademic()">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Degree Programs
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of degree programs offered.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 mt-1 font-mono">42</h2>
+            <p class="text-sm text-slate-500">Accredited</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Graduation Rate -->
+    <div class="card flex items-center justify-between cursor-pointer hover:border-brand-300 transition-colors"
+        onclick="showGraduation()">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Graduation Rate
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Percentage of students eligible for graduation.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 mt-1 font-mono">68.3%</h2>
+            <p class="text-sm text-emerald-600 font-bold flex items-center gap-1">↑ +1.2% <span
+                    class="text-slate-400 font-normal">vs last term</span></p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-green-50 text-green-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ACTION QUEUE ===== -->
+<div class="card space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div>
+            <h2 class="text-base font-bold text-slate-900">
+                Critical Action Queue
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Items pending VP review and approval. Click category tabs to filter.">ⓘ</span>
+            </h2>
+            <p class="text-sm text-slate-500" id="queueSubtext">Pending VP Academic review</p>
+        </div>
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+            <button type="button" onclick="filterActionQueue('all', this)" class="queue-tab btn btn-primary text-xs">All
+                (<span id="queueCountAll">5</span>)</button>
+            <button type="button" onclick="filterActionQueue('grades', this)"
+                class="queue-tab btn btn-secondary text-xs">Grades</button>
+            <button type="button" onclick="filterActionQueue('clearance', this)"
+                class="queue-tab btn btn-secondary text-xs">Clearance</button>
+            <button type="button" onclick="filterActionQueue('admissions', this)"
+                class="queue-tab btn btn-secondary text-xs">Admissions</button>
+            <button type="button" onclick="filterActionQueue('scholarships', this)"
+                class="queue-tab btn btn-secondary text-xs">Scholarships</button>
+        </div>
+    </div>
+
+    <div id="queueContainer" class="space-y-3">
+        <!-- 1. Grades -->
+        <div
+            class="queue-item grades p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-bold text-slate-900">Juris Doctor — Final Grade Sheet (LAW 401)</span>
+                    <span class="status-badge status-badge--pending">Pending Review</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-0.5">Submitted by Prof. Alan Vance • 42 students • Due today 17:00
+                </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+                <button type="button" onclick="openGradeDetailsModal()"
+                    class="btn btn-secondary text-xs">Details</button>
+               <button type="button" onclick="approveQueueItem(this, 'LAW 401 Grade Sheet')" class="btn btn-primary text-xs">Approve & Sign</button>
+            </div>
+        </div>
+
+        <!-- 2. Clearance -->
+        <div
+            class="queue-item clearance p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-bold text-slate-900">Clearance Hold Override — Student #STU-2021-0001</span>
+                    <span class="status-badge status-badge--hold">High Priority</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-0.5">Requested by Registrar Office • Reason: Library Fine Settlement
+                </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+                <button type="button"
+                    onclick="openReviewModal('Clearance Override #2022-8810', 'Student has cleared library fines with official receipt #88219.')"
+                    class="btn btn-secondary text-xs">Details</button>
+                <button type="button" onclick="approveQueueItem(this, 'Clearance Override #2022-8810')"
+                    class="btn btn-primary text-xs">Grant Clearance</button>
+            </div>
+        </div>
+
+        <!-- 3. Admissions -->
+        <div
+            class="queue-item admissions p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-bold text-slate-900">Transferee Special Admission — Gabriel Mercer</span>
+                    <span class="status-badge status-badge--review">Evaluation</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-0.5">Recommending VP Academic Approval for BS Accountancy Transfer
+                    Credit</p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+                <button type="button"
+                    onclick="openReviewModal('Admission App #9901', 'Evaluating transferred credits from State University for Gabriel Mercer.')"
+                    class="btn btn-secondary text-xs">Details</button>
+                <button type="button" onclick="approveQueueItem(this, 'Gabriel Mercer Admission')"
+                    class="btn btn-primary text-xs">Approve Admission</button>
+            </div>
+        </div>
+
+        <!-- 4. Faculty Overload (Grades category) -->
+        <div
+            class="queue-item grades p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-bold text-slate-900">Faculty Overload Permit — Prof. Alan Vance</span>
+                    <span class="status-badge status-badge--review">24 Teaching Units</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-0.5">Requested by College of Law • Exceeds standard 18-unit limit
+                </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+                <button type="button"
+                    onclick="openReviewModal('Overload Permit Alan Vance', 'Reviewing faculty teaching load exception for 2nd Semester.')"
+                    class="btn btn-secondary text-xs">Details</button>
+                <button type="button" onclick="approveQueueItem(this, 'Alan Vance Overload Permit')"
+                    class="btn btn-primary text-xs">Approve Overload</button>
+            </div>
+        </div>
+
+        <!-- Empty state -->
+        <div id="queueEmptyState"
+            class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+            <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-2 font-bold text-lg"
+                aria-hidden="true">✓</div>
+            <h3 class="font-bold text-slate-800">All Queue Items Actioned</h3>
+            <p class="text-sm text-slate-500">No pending items match this filter.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CHARTS SECTION ===== -->
+<div class="card space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+        <h2 class="text-base font-bold text-slate-900">
+            Institutional Statistics
+            <span class="text-brand-500 ml-1 cursor-help"
+                data-tooltip="Key institutional metrics and trends. Hover over charts for more details.">ⓘ</span>
+        </h2>
+        <div class="flex items-center gap-1.5 overflow-x-auto">
+            <button type="button" onclick="switchChartMetric(this, 'Total Students')"
+                class="chart-tab-btn btn btn-primary text-xs">Total Students</button>
+            <button type="button" onclick="switchChartMetric(this, 'Degree/Program')"
+                class="chart-tab-btn btn btn-secondary text-xs">Degree/Program</button>
+            <button type="button" onclick="switchChartMetric(this, 'Scholarship')"
+                class="chart-tab-btn btn btn-secondary text-xs">Scholarship</button>
+            <button type="button" onclick="switchChartMetric(this, 'College')"
+                class="chart-tab-btn btn btn-secondary text-xs">College</button>
+            <button type="button" onclick="switchChartMetric(this, 'Admission Type')"
+                class="chart-tab-btn btn btn-secondary text-xs">Admission Type</button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Bar Chart -->
+        <div class="lg:col-span-2 space-y-3">
+            <div class="flex items-center justify-between text-sm">
+                <span class="font-bold text-slate-800">
+                    Enrollment Headcount (Monthly Trend)
+                    <span class="text-brand-500 ml-1 cursor-help"
+                        data-tooltip="Monthly enrolment headcount showing seasonal trends.">ⓘ</span>
+                </span>
+                <div class="flex gap-2 text-slate-500">
+                    <button type="button" onclick="updateMainChartData('sem1')"
+                        class="hover:text-brand-600 font-semibold">1st Sem</button>
+                    <span aria-hidden="true">&bull;</span>
+                    <button type="button" onclick="updateMainChartData('sem2')"
+                        class="hover:text-brand-600 font-semibold text-brand-600">2nd Sem</button>
+                </div>
+            </div>
+            <div class="h-64 relative w-full">
+                <canvas id="enrollmentBarChart" aria-label="Enrollment bar chart" role="img"></canvas>
+            </div>
+            <p class="text-xs text-slate-400 italic">Monthly headcount trend showing enrolment peaks and drops across
+                the academic year.</p>
+        </div>
+
+        <!-- College Ranking -->
+        <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-200/80 flex flex-col justify-between">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                College Ranking
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Colleges ranked by total student enrolment.">ⓘ</span>
+            </h3>
+            <div class="space-y-2 text-sm mt-2">
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span class="flex items-center gap-2.5"><span
+                            class="w-5 h-5 rounded-full bg-slate-900 text-white text-xs font-extrabold flex items-center justify-center"
+                            aria-hidden="true">1</span> BS Accountancy</span>
+                    <span class="font-mono font-bold text-brand-600">600</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span class="flex items-center gap-2.5"><span
+                            class="w-5 h-5 rounded-full bg-slate-800 text-white text-xs font-extrabold flex items-center justify-center"
+                            aria-hidden="true">2</span> BS Accounting Tech</span>
+                    <span class="font-mono font-bold text-slate-700">514</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span class="flex items-center gap-2.5"><span
+                            class="w-5 h-5 rounded-full bg-slate-700 text-white text-xs font-extrabold flex items-center justify-center"
+                            aria-hidden="true">3</span> Diploma Ag Tech</span>
+                    <span class="font-mono font-bold text-slate-700">500</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span class="flex items-center gap-2.5"><span
+                            class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 text-xs font-extrabold flex items-center justify-center"
+                            aria-hidden="true">4</span> Juris Doctor</span>
+                    <span class="font-mono font-bold text-slate-600">323</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span class="flex items-center gap-2.5"><span
+                            class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 text-xs font-extrabold flex items-center justify-center"
+                            aria-hidden="true">5</span> ABMT Entrepreneurship</span>
+                    <span class="font-mono font-bold text-slate-600">323</span>
+                </div>
+            </div>
+            <button type="button" onclick="showNotification('Opening full College Ranking report...')"
+                class="btn btn-ghost text-brand-600 hover:text-brand-700 text-sm font-bold justify-center mt-3"
+                data-tooltip="View detailed college statistics and reports.">View Full Rankings →</button>
+        </div>
+    </div>
+
+    <!-- Additional Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Transferee Line Chart -->
+        <div class="card space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Transferee Applicants vs Accepted
+                    <span class="text-brand-500 ml-1 cursor-help"
+                        data-tooltip="Shows the number of transferee applicants vs. accepted over time.">ⓘ</span>
+                </h2>
+                <span class="text-[11px] text-slate-500 font-mono font-semibold">AY 2021-2022</span>
+            </div>
+            <div class="h-48 relative w-full">
+                <canvas id="transfereeLineChart" aria-label="Transferee applicants line chart" role="img"></canvas>
+            </div>
+            <p class="text-xs text-slate-400 italic">Comparison of new applicants vs. accepted transfers over the
+                academic year.</p>
+        </div>
+
+        <!-- Doughnut Chart -->
+        <div class="card space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Course Offerings Distribution
+                    <span class="text-brand-500 ml-1 cursor-help"
+                        data-tooltip="Distribution of students across different degree programs.">ⓘ</span>
+                </h2>
+                <span class="text-[11px] text-slate-500 font-mono font-semibold">5 Main Tracks</span>
+            </div>
+            <div class="h-48 relative w-full">
+                <canvas id="programDoughnutChart" aria-label="Course distribution doughnut chart" role="img"></canvas>
+            </div>
+            <p class="text-xs text-slate-400 italic">Student distribution across degree programs.</p>
+        </div>
+    </div>
+
+    <!-- Radar Chart -->
+    <div class="cursor-pointer hover:opacity-80 transition-opacity" onclick="showTER()"
+        data-tooltip="Faculty performance ratings across key metrics. Click to view detailed TER records.">
+        <div class="card space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Faculty Performance Ratings
+                    <span class="text-brand-500 ml-1 cursor-help"
+                        data-tooltip="Faculty performance ratings across teaching, research, mentorship, administrative work, and community engagement.">ⓘ</span>
+                </h2>
+                <span class="text-[11px] text-slate-500 font-mono font-semibold">5 Key Metrics</span>
+            </div>
+            <div class="h-52 relative w-full">
+                <canvas id="facultyRadarChart" aria-label="Faculty performance radar chart" role="img"></canvas>
+            </div>
+            <p class="text-xs text-slate-400 italic">Faculty performance ratings across teaching, research, mentorship,
+                administrative work, and community engagement – broken down by college. <strong
+                    class="text-brand-600">Click to view detailed TER records.</strong></p>
+        </div>
+    </div>
+
+    <!-- Stacked Bar Chart -->
+    <div class="card space-y-3">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">
+                Enrolment by College (Stacked by Year Level)
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Enrolment by college and year level, showing distribution and balance.">ⓘ</span>
+            </h2>
+            <span class="text-[11px] text-slate-500 font-mono font-semibold">AY 2021-2022</span>
+        </div>
+        <div class="h-52 relative w-full">
+            <canvas id="stackedEnrollmentChart" aria-label="Stacked enrollment by college chart" role="img"></canvas>
+        </div>
+        <p class="text-xs text-slate-400 italic">Student distribution by year level across different colleges.</p>
+    </div>
+</div>
+
+<!-- ===== GRADE DETAILS MODAL ===== -->
+<div id="gradeDetailsModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="gradeDetailsTitle">
+    <div
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <div>
+                <h3 id="gradeDetailsTitle" class="text-lg font-bold text-slate-900">Grade Sheet Preview – LAW 401</h3>
+                <p class="text-sm text-slate-500">Submitted by Prof. Alan Vance • 42 students • Due: Today 17:00</p>
+            </div>
+            <button type="button" onclick="closeGradeDetailsModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+
+        <!-- Live Prototype Notice -->
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 flex items-start gap-2">
+            <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+                <p class="font-bold">Live Prototype Preview</p>
+                <p class="text-xs">This is a sample preview of what the VP would see when reviewing a final grade sheet.
+                    In the production system, this would show the actual grade records for all 42 students.</p>
+            </div>
+        </div>
+
+        <!-- Grade Table Preview -->
+        <div class="table-wrap">
+            <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                <thead>
+                    <tr
+                        class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th scope="col" class="p-3">Student ID</th>
+                        <th scope="col" class="p-3">Student Name</th>
+                        <th scope="col" class="p-3">Prelim</th>
+                        <th scope="col" class="p-3">Midterm</th>
+                        <th scope="col" class="p-3">Finals</th>
+                        <th scope="col" class="p-3">Final Grade</th>
+                        <th scope="col" class="p-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00001</td>
+                        <td class="p-3 font-bold">James Smith</td>
+                        <td class="p-3">85%</td>
+                        <td class="p-3">88%</td>
+                        <td class="p-3">92%</td>
+                        <td class="p-3 font-bold text-emerald-700">A-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00002</td>
+                        <td class="p-3 font-bold">Emma Johnson</td>
+                        <td class="p-3">78%</td>
+                        <td class="p-3">82%</td>
+                        <td class="p-3">85%</td>
+                        <td class="p-3 font-bold text-emerald-700">B</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00003</td>
+                        <td class="p-3 font-bold">Liam Williams</td>
+                        <td class="p-3">65%</td>
+                        <td class="p-3">70%</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3 font-bold text-amber-700">C</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00004</td>
+                        <td class="p-3 font-bold">Olivia Brown</td>
+                        <td class="p-3">58%</td>
+                        <td class="p-3">62%</td>
+                        <td class="p-3">65%</td>
+                        <td class="p-3 font-bold text-rose-700">D</td>
+                        <td class="p-3"><span class="status-badge status-badge--hold">Failed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00005</td>
+                        <td class="p-3 font-bold">Noah Jones</td>
+                        <td class="p-3">92%</td>
+                        <td class="p-3">94%</td>
+                        <td class="p-3">96%</td>
+                        <td class="p-3 font-bold text-emerald-700">A</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00006</td>
+                        <td class="p-3 font-bold">Ava Garcia</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3">75%</td>
+                        <td class="p-3">78%</td>
+                        <td class="p-3 font-bold text-emerald-700">B-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00007</td>
+                        <td class="p-3 font-bold">William Miller</td>
+                        <td class="p-3">45%</td>
+                        <td class="p-3">50%</td>
+                        <td class="p-3">52%</td>
+                        <td class="p-3 font-bold text-rose-700">F</td>
+                        <td class="p-3"><span class="status-badge status-badge--hold">Failed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00008</td>
+                        <td class="p-3 font-bold">Sophia Davis</td>
+                        <td class="p-3">88%</td>
+                        <td class="p-3">90%</td>
+                        <td class="p-3">91%</td>
+                        <td class="p-3 font-bold text-emerald-700">A-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00009</td>
+                        <td class="p-3 font-bold">Lucas Rodriguez</td>
+                        <td class="p-3">80%</td>
+                        <td class="p-3">83%</td>
+                        <td class="p-3">86%</td>
+                        <td class="p-3 font-bold text-emerald-700">B</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00010</td>
+                        <td class="p-3 font-bold">Mia Martinez</td>
+                        <td class="p-3">68%</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3">74%</td>
+                        <td class="p-3 font-bold text-amber-700">C+</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <span class="text-sm text-slate-500">Showing 10 of 42 students</span>
+            <div class="flex items-center gap-2.5">
+                <button type="button" onclick="closeGradeDetailsModal()"
+                    class="btn btn-secondary text-xs">Close</button>
+                <button type="button"
+                    onclick="closeGradeDetailsModal(); showNotification('Grade sheet approved!', 'success');"
+                    class="btn btn-primary text-xs">Approve All</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT (Full Script) ===== -->
+<script>
+    // ===== Queue Filtering =====
+    function filterActionQueue(category, btn) {
+        const items = document.querySelectorAll('.queue-item');
+        const emptyState = document.getElementById('queueEmptyState');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            if (category === 'all' || item.classList.contains(category)) {
+                item.style.display = '';
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Update active tab styling
+        document.querySelectorAll('.queue-tab').forEach(b => {
+            b.className = 'queue-tab btn btn-secondary text-xs';
+        });
+        if (btn) btn.className = 'queue-tab btn btn-primary text-xs';
+
+        // Show/hide empty state
+        if (visibleCount === 0) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
+
+        // Update count in all tab
+        const allTab = document.querySelector('.queue-tab[onclick*="all"]');
+        if (allTab) {
+            const count = document.querySelectorAll('.queue-item').length;
+            allTab.innerHTML = `All (${count})`;
+        }
+    }
+
+    // ===== Approve Queue Item =====
+    function approveQueueItem(btn, itemName) {
+        if (!btn) return;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Processing…';
+        setTimeout(() => {
+            const card = btn.closest('.queue-item');
+            if (card) {
+                card.style.opacity = '0.4';
+                card.style.pointerEvents = 'none';
+            }
+            btn.innerHTML = 'Approved ✓';
+            btn.className = 'btn btn-secondary text-xs py-1 px-2.5';
+            btn.disabled = false;
+            showNotification('Approved: ' + itemName + '. Audit log updated.', 'success');
+        }, 600);
+    }
+
+    // ===== Reject Queue Item =====
+    function rejectQueueItem(btn, itemName) {
+        if (!btn) return;
+        if (!confirm(`Are you sure you want to reject "${itemName}"?`)) return;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Rejecting…';
+        setTimeout(() => {
+            const card = btn.closest('.queue-item');
+            if (card) {
+                card.style.opacity = '0.4';
+                card.style.pointerEvents = 'none';
+                const badge = card.querySelector('.status-badge');
+                if (badge) {
+                    badge.className = 'status-badge status-badge--rejected';
+                    badge.textContent = 'Rejected';
+                }
+            }
+            btn.innerHTML = 'Rejected ✕';
+            btn.className = 'btn btn-danger text-xs py-1 px-2.5';
+            btn.disabled = false;
+            showNotification('Rejected: ' + itemName + '. Reason noted.', 'error');
+        }, 600);
+    }
+
+    // ===== Open/Close Review Modal (from ui.js) =====
+    // These are already defined in ui.js – we're just exposing them for inline onclick
+    // But we'll define fallbacks in case they're not available.
+    if (typeof openReviewModal !== 'function') {
+        window.openReviewModal = function (title, body) {
+            const modal = document.getElementById('reviewModal');
+            if (modal) {
+                document.getElementById('reviewModalTitle').innerText = title;
+                document.getElementById('reviewModalBody').innerText = body;
+                modal.classList.remove('hidden');
+            }
+        };
+    }
+    if (typeof closeReviewModal !== 'function') {
+        window.closeReviewModal = function () {
+            const modal = document.getElementById('reviewModal');
+            if (modal) modal.classList.add('hidden');
+        };
+    }
+
+    // ===== Grade Details Modal =====
+    function openGradeDetailsModal() {
+        const modal = document.getElementById('gradeDetailsModal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeGradeDetailsModal() {
+        const modal = document.getElementById('gradeDetailsModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    // ===== Show Notification Fallback =====
+    if (typeof showNotification !== 'function') {
+        window.showNotification = function (message, type) {
+            alert(message);
+        };
+    }
+
+    // ===== Expose to global scope for inline onclick =====
+    window.filterActionQueue = filterActionQueue;
+    window.approveQueueItem = approveQueueItem;
+    window.rejectQueueItem = rejectQueueItem;
+    window.openGradeDetailsModal = openGradeDetailsModal;
+    window.closeGradeDetailsModal = closeGradeDetailsModal;
+
+    // ===== On page load – ensure All tab is active =====
+    document.addEventListener('DOMContentLoaded', function () {
+        // Trigger 'all' filter to initialize counts
+        const allTab = document.querySelector('.queue-tab[onclick*="all"]');
+        if (allTab) filterActionQueue('all', allTab);
+    });
+</script>

@@ -1,0 +1,745 @@
+<!-- ===== STUDENT 360 ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='enrol.html'"
+                class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Enrollment Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Student 360</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Student 360</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Complete view of student profile, enrolment, grades, and history</p>
+    </div>
+    <div class="flex flex-col items-end gap-1">
+        <!-- Selected Student Indicator -->
+        <div id="selectedStudentIndicator" class="hidden text-xs text-slate-500">
+            Selected: <span id="selectedStudentName" class="font-bold text-slate-700">James Smith</span>
+            <span class="text-slate-400 font-mono">(<span id="selectedStudentId">STU-2021-00001</span>)</span>
+        </div>
+        <div class="flex items-center gap-3">
+
+            <!-- Quick Jump Dropdown -->
+<div class="relative" id="quickJumpContainer">
+    <button type="button" onclick="toggleQuickJump()"
+        class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+        Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+    <div id="quickJumpMenu"
+        class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+        <a href="view-evaluation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Evaluation</a>
+        <a href="view-grades.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Grades</a>
+        <a href="pre-enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Pre-Enrol Subjects</a>
+        <a href="enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Enrol Subjects</a>
+        <a href="change-matriculation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Change Matriculation</a>
+        <a href="subject-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Subject Override</a>
+        <a href="unit-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Unit Override</a>
+        <a href="enrol-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+        <a href="student-360.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Student 360</a>
+    </div>
+</div>
+
+            <!-- Quick Actions Dropdown -->
+            <div class="relative" id="quickActionsContainer">
+                <button type="button" id="quickActionsBtn"
+                    class="btn btn-secondary text-xs flex items-center gap-1.5 opacity-60 cursor-not-allowed"
+                    disabled
+                    title="Select a student by clicking 'View Profile' first."
+                    onclick="toggleQuickActions()">
+                    Quick Actions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="quickActionsMenu"
+                    class="hidden absolute right-0 mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                    <div class="px-3 py-1.5 text-xs font-bold text-slate-400 uppercase">Actions for Selected Student</div>
+                    <a href="#" onclick="navigateTo('enrol-subjects.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Manage Enrolment</a>
+                    <a href="#" onclick="navigateTo('view-grades.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Full Grades</a>
+                    <a href="#" onclick="navigateTo('view-evaluation.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Evaluation</a>
+                    <a href="#" onclick="navigateTo('change-matriculation.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Change Matriculation</a>
+                    <a href="#" onclick="navigateTo('subject-override.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Subject Override</a>
+                    <a href="#" onclick="navigateTo('unit-override.html')"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Unit Override</a>
+                    <hr class="my-1 border-slate-100">
+                    <a href="#" onclick="window.print()"
+                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">🖨️ Print Profile</a>
+                </div>
+            </div>
+
+            <button type="button" onclick="exportStudentData()" class="btn btn-secondary text-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export CSV
+            </button>
+            <button type="button" onclick="window.location.href='enrol.html'" class="btn btn-secondary text-xs">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Back to Hub
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== STUDENT SEARCH ===== -->
+<div class="card mb-4">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <label for="studentSearch" class="font-bold text-sm text-slate-700 shrink-0">Search Student:</label>
+        <div class="relative flex-1">
+            <input type="search" id="studentSearch" placeholder="Search by name or ID..."
+                class="input-field text-sm w-full pr-8" oninput="window.applyFilters_Students()" />
+            <button onclick="window.applyFilters_Students()"
+                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </button>
+        </div>
+        <select id="studentFilter" class="select-field text-sm w-48" onchange="window.applyFilters_Students()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Engineering">BS Engineering</option>
+        </select>
+        <span class="text-xs text-slate-400 font-mono" id="studentCount">0 students</span>
+    </div>
+</div>
+
+<!-- ===== STUDENT LIST ===== -->
+<div id="studentListContainer" class="card space-y-3">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="studentListTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[130px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="id" onclick="window.sortStudents('id')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="name" onclick="window.sortStudents('name')">
+                        Student Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px]">Program</th>
+                    <th scope="col" class="p-3 text-right min-w-[100px]">Action</th>
+                </tr>
+            </thead>
+            <tbody id="studentListBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination and Rows Per Page -->
+    <div id="studentPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+    <!-- Empty state -->
+    <div id="studentListEmpty"
+        class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg"
+            aria-hidden="true">🔍</div>
+        <h3 class="font-bold text-slate-800">No students found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+</div>
+
+<!-- ===== STUDENT PROFILE (hidden by default) ===== -->
+<div id="studentProfile" class="hidden space-y-6">
+    <!-- Personal Info Card -->
+    <div class="card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-2xl"
+                        id="profileAvatar">JS</div>
+                    <div>
+                        <h2 id="profileName" class="text-xl font-black text-slate-900">James Smith</h2>
+                        <p id="profileId" class="text-sm text-slate-500 font-mono">STU-2021-00001</p>
+                        <p id="profileProgram" class="text-sm text-slate-600">BS Accountancy</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="exportStudentData()" class="btn btn-secondary text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export Data
+                </button>
+                <button onclick="backToStudentList()" class="btn btn-secondary text-xs">Back to List</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="card p-2 flex items-center gap-1.5 overflow-x-auto">
+        <button type="button" onclick="switchProfileTab('summary')" id="profTabSummary"
+            class="prof-tab btn btn-primary text-xs shrink-0">Summary</button>
+        <button type="button" onclick="switchProfileTab('enrolment')" id="profTabEnrolment"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Enrolment</button>
+        <button type="button" onclick="switchProfileTab('grades')" id="profTabGrades"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Grades</button>
+        <button type="button" onclick="switchProfileTab('evaluations')" id="profTabEvaluations"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Evaluations</button>
+        <button type="button" onclick="switchProfileTab('clearance')" id="profTabClearance"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Clearance</button>
+        <button type="button" onclick="switchProfileTab('billing')" id="profTabBilling"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Billing</button>
+        <button type="button" onclick="switchProfileTab('audit')" id="profTabAudit"
+            class="prof-tab btn btn-secondary text-xs shrink-0">Audit Trail</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="profileContent" class="space-y-4">
+        <!-- Filled by JavaScript -->
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT (ES Module) ===== -->
+<script type="module">
+    import { 
+        students, 
+        getStudentById, 
+        getGradesByStudent, 
+        getEnrolmentsByStudent, 
+        getEvaluationsByStudent, 
+        getClearanceByStudent, 
+        getBillingByStudent, 
+        getAuditLogsByStudent,
+        getGraduationEligibilityByStudent
+    } from './assets/js/data.js';
+
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== State =====
+    let selectedStudentId = null;
+
+    // ===== Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'studentListTable',
+        tbodyId: 'studentListBody',
+        paginationContainerId: 'studentPaginationContainer',
+        emptyStateId: 'studentListEmpty',
+        countDisplayId: 'studentCount',
+        searchInputId: 'studentSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'studentFilter', field: 'program' }
+        ],
+        searchFields: ['name', 'id'],
+        sortMap: {
+            id: (a, b) => a.id.localeCompare(b.id),
+            name: (a, b) => a.name.localeCompare(b.name)
+        },
+        getData: () => students,
+        updateStats: (data) => {
+            // No KPIs to update on Student 360
+        },
+        renderRow: (student, index) => `
+            <tr>
+                <td class="p-3 text-center font-mono text-slate-500">${index + 1}</td>
+                <td class="p-3 font-mono font-bold text-slate-900">${student.id}</td>
+                <td class="p-3 font-bold text-slate-900">${student.name}</td>
+                <td class="p-3">${student.program}</td>
+                <td class="p-3 text-right">
+                    <button onclick="window.viewStudent('${student.id}')" class="btn btn-primary text-xs py-1 px-3">View Profile</button>
+                </td>
+            </tr>
+        `,
+        defaultSort: 'name',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'students'
+    });
+
+    // Expose table control functions globally
+    window.refreshStudents = tableModule.refresh;
+    window.applyFilters_Students = tableModule.applyFilters;
+    window.goToPage_Students = tableModule.goToPage;
+    window.changeRowsPerPage_Students = tableModule.changeRowsPerPage;
+    window.resetFilters_Students = tableModule.resetFilters;
+    window.sortStudents = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.sort);
+    });
+
+    // ===== View Student Profile =====
+    window.viewStudent = function(id) {
+        selectedStudentId = id;
+        const student = getStudentById(id);
+        if (!student) {
+            showNotification('Student not found.', 'error');
+            return;
+        }
+
+        // Hide list, show profile
+        document.getElementById('studentListContainer').classList.add('hidden');
+        document.getElementById('studentProfile').classList.remove('hidden');
+
+        // Populate personal info
+        const initials = student.name.split(' ').map(n => n[0]).join('');
+        document.getElementById('profileAvatar').textContent = initials;
+        document.getElementById('profileName').textContent = student.name;
+        document.getElementById('profileId').textContent = student.id;
+        document.getElementById('profileProgram').textContent = student.program;
+
+        // Update selected indicator
+        updateSelectedIndicator(student.name, student.id);
+
+        // Enable Quick Actions
+        enableQuickActions();
+
+        // Switch to Summary tab by default
+        switchProfileTab('summary');
+    };
+
+    window.backToStudentList = function() {
+        selectedStudentId = null;
+        document.getElementById('selectedStudentIndicator').classList.add('hidden');
+        disableQuickActions();
+        document.getElementById('studentProfile').classList.add('hidden');
+        document.getElementById('studentListContainer').classList.remove('hidden');
+        window.refreshStudents();
+    };
+
+    // ===== Selected Indicator =====
+    function updateSelectedIndicator(name, id) {
+        document.getElementById('selectedStudentName').textContent = name;
+        document.getElementById('selectedStudentId').textContent = id;
+        document.getElementById('selectedStudentIndicator').classList.remove('hidden');
+    }
+
+    // ===== Quick Actions Button State =====
+    function enableQuickActions() {
+        const btn = document.getElementById('quickActionsBtn');
+        btn.disabled = false;
+        btn.classList.remove('opacity-60', 'cursor-not-allowed');
+        btn.classList.add('btn-primary');
+        btn.classList.remove('btn-secondary');
+        btn.title = 'Quick actions for selected student';
+        btn.onclick = toggleQuickActions;
+    }
+
+    function disableQuickActions() {
+        const btn = document.getElementById('quickActionsBtn');
+        btn.disabled = true;
+        btn.classList.add('opacity-60', 'cursor-not-allowed');
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        btn.title = 'Select a student by clicking "View Profile" first.';
+        btn.onclick = null;
+        document.getElementById('quickActionsMenu').classList.add('hidden');
+    }
+
+    // ===== Profile Tabs =====
+    window.switchProfileTab = function(tab) {
+        // Update tab styles
+        document.querySelectorAll('.prof-tab').forEach(btn => {
+            btn.className = 'prof-tab btn btn-secondary text-xs shrink-0';
+        });
+        const tabMap = {
+            'summary': 'profTabSummary',
+            'enrolment': 'profTabEnrolment',
+            'grades': 'profTabGrades',
+            'evaluations': 'profTabEvaluations',
+            'clearance': 'profTabClearance',
+            'billing': 'profTabBilling',
+            'audit': 'profTabAudit'
+        };
+        const tabBtn = document.getElementById(tabMap[tab]);
+        if (tabBtn) tabBtn.className = 'prof-tab btn btn-primary text-xs shrink-0';
+
+        // Render content
+        const content = document.getElementById('profileContent');
+        const studentId = selectedStudentId;
+        if (!studentId) return;
+
+        switch (tab) {
+            case 'summary': {
+                const grades = getGradesByStudent(studentId);
+                const enrolments = getEnrolmentsByStudent(studentId);
+                const evaluations = getEvaluationsByStudent(studentId);
+                const clearance = getClearanceByStudent(studentId);
+                const billing = getBillingByStudent(studentId);
+                const audit = getAuditLogsByStudent(studentId);
+                const eligibility = getGraduationEligibilityByStudent(studentId);
+                const gpa = grades.length > 0 ? 
+                    grades.reduce((sum, g) => {
+                        const points = { 'A': 4.0, 'A-': 3.7, 'B+': 3.5, 'B': 3.0, 'B-': 2.7, 'C+': 2.5, 'C': 2.0, 'D': 1.0, 'F': 0.0 };
+                        return sum + (points[g.grade] || 0);
+                    }, 0) / grades.length : 0;
+
+                const totalUnits = grades.reduce((sum, g) => sum + (g.units || 0), 0);
+                const balance = billing.reduce((sum, b) => sum + (b.status === 'Unpaid' ? parseInt(String(b.amount).replace(/[₱,]/g,'')) || 0 : 0), 0);
+                const student = getStudentById(studentId);
+
+                content.innerHTML = `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="card">
+                                <p class="text-xs font-bold text-slate-400 uppercase">Contact</p>
+                                <p class="text-sm font-bold text-slate-900 mt-1">${student.name.toLowerCase().replace(/\s/g, '.')}@university.edu</p>
+                                <p class="text-sm text-slate-600">+63 9${Math.floor(100000000 + Math.random() * 900000000)}</p>
+                                <p class="text-sm text-slate-600">${Math.floor(100 + Math.random() * 900)} Academic Ave, University City</p>
+                            </div>
+                            <div class="card">
+                                <p class="text-xs font-bold text-slate-400 uppercase">Program Details</p>
+                                <p class="text-sm font-bold text-slate-900 mt-1">${student.program}</p>
+                                <p class="text-sm text-slate-600">Year Level: ${Math.min(4, Math.floor(grades.length / 4) + 1)}</p>
+                                <p class="text-sm text-slate-600">Status: ${eligibility ? (eligibility.eligible ? 'Eligible for Graduation' : 'Active') : 'Active'}</p>
+                            </div>
+                            <div class="card">
+                                <p class="text-xs font-bold text-slate-400 uppercase">Quick Stats</p>
+                                <p class="text-sm font-bold text-slate-900 mt-1">GPA: ${gpa.toFixed(2)}</p>
+                                <p class="text-sm text-slate-600">Units Taken: ${totalUnits}</p>
+                                <p class="text-sm text-slate-600">Balance: ₱${balance.toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <p class="text-xs font-bold text-slate-400 uppercase">Recent Activity</p>
+                            <div class="mt-2 space-y-2 text-sm">
+                                ${audit.slice(0, 3).map(a => `
+                                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                        <span>${a.action}</span>
+                                        <span class="text-xs text-slate-400">${a.timestamp}</span>
+                                    </div>
+                                `).join('')}
+                                ${audit.length === 0 ? '<p class="text-slate-500">No recent activity.</p>' : ''}
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'enrolment': {
+                const enrolData = getEnrolmentsByStudent(studentId);
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Subject</th>
+                                            <th class="p-2">Semester</th>
+                                            <th class="p-2">Status</th>
+                                            <th class="p-2">Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${enrolData.map(e => {
+                                            const gradeObj = getGradesByStudent(studentId).find(g => g.subject === e.subject);
+                                            const grade = gradeObj ? gradeObj.grade : '—';
+                                            return `
+                                                <tr>
+                                                    <td class="p-2 font-bold">${e.subject}</td>
+                                                    <td class="p-2">${e.semester}</td>
+                                                    <td class="p-2"><span class="status-badge ${e.status === 'Completed' ? 'status-badge--approved' : 'status-badge--pending'}">${e.status}</span></td>
+                                                    <td class="p-2 font-mono font-bold">${grade}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                        ${enrolData.length === 0 ? '<tr><td colspan="4" class="p-4 text-center text-slate-500">No enrolment records.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'grades': {
+                const gradeData = getGradesByStudent(studentId);
+                const gpaCalc = gradeData.length > 0 ? 
+                    gradeData.reduce((sum, g) => {
+                        const points = { 'A': 4.0, 'A-': 3.7, 'B+': 3.5, 'B': 3.0, 'B-': 2.7, 'C+': 2.5, 'C': 2.0, 'D': 1.0, 'F': 0.0 };
+                        return sum + (points[g.grade] || 0);
+                    }, 0) / gradeData.length : 0;
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-xs font-bold uppercase text-slate-500">Subject Grades</h3>
+                                <span class="text-sm font-bold text-brand-600">GPA: ${gpaCalc.toFixed(2)}</span>
+                            </div>
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Subject</th>
+                                            <th class="p-2">Grade</th>
+                                            <th class="p-2">Units</th>
+                                            <th class="p-2">Semester</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${gradeData.map(g => `
+                                            <tr>
+                                                <td class="p-2 font-bold">${g.subject}</td>
+                                                <td class="p-2 font-mono font-bold text-brand-700">${g.grade}</td>
+                                                <td class="p-2">${g.units}</td>
+                                                <td class="p-2">${g.semester}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${gradeData.length === 0 ? '<tr><td colspan="4" class="p-4 text-center text-slate-500">No grades recorded.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'evaluations': {
+                const evalData = getEvaluationsByStudent(studentId);
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Period</th>
+                                            <th class="p-2">Status</th>
+                                            <th class="p-2">Score</th>
+                                            <th class="p-2">Recommendation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${evalData.map(e => `
+                                            <tr>
+                                                <td class="p-2">${e.period}</td>
+                                                <td class="p-2"><span class="status-badge ${e.status === 'Passed' ? 'status-badge--approved' : 'status-badge--pending'}">${e.status}</span></td>
+                                                <td class="p-2 font-mono">${e.score || '—'}</td>
+                                                <td class="p-2">${e.recommendation || '—'}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${evalData.length === 0 ? '<tr><td colspan="4" class="p-4 text-center text-slate-500">No evaluations.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'clearance': {
+                const clearData = getClearanceByStudent(studentId);
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Item</th>
+                                            <th class="p-2">Status</th>
+                                            <th class="p-2">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${clearData.map(c => `
+                                            <tr>
+                                                <td class="p-2 font-bold">${c.item}</td>
+                                                <td class="p-2"><span class="status-badge ${c.status === 'Cleared' ? 'status-badge--approved' : 'status-badge--pending'}">${c.status}</span></td>
+                                                <td class="p-2">${c.date}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${clearData.length === 0 ? '<tr><td colspan="3" class="p-4 text-center text-slate-500">No clearance records.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'billing': {
+                const billData = getBillingByStudent(studentId);
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Term</th>
+                                            <th class="p-2">Amount</th>
+                                            <th class="p-2">Status</th>
+                                            <th class="p-2">Payment Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${billData.map(b => `
+                                            <tr>
+                                                <td class="p-2 font-bold">${b.term}</td>
+                                                <td class="p-2 font-mono">${b.amount}</td>
+                                                <td class="p-2"><span class="status-badge ${b.status === 'Paid' ? 'status-badge--approved' : 'status-badge--hold'}">${b.status}</span></td>
+                                                <td class="p-2">${b.date}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${billData.length === 0 ? '<tr><td colspan="4" class="p-4 text-center text-slate-500">No billing records.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+
+            case 'audit': {
+                const auditData = getAuditLogsByStudent(studentId);
+                content.innerHTML = `
+                        <div class="card">
+                            <div class="table-wrap">
+                                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                            <th class="p-2">Timestamp</th>
+                                            <th class="p-2">User</th>
+                                            <th class="p-2">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${auditData.map(a => `
+                                            <tr>
+                                                <td class="p-2 font-mono text-xs">${a.timestamp}</td>
+                                                <td class="p-2">${a.user}</td>
+                                                <td class="p-2">${a.action}</td>
+                                            </tr>
+                                        `).join('')}
+                                        ${auditData.length === 0 ? '<tr><td colspan="3" class="p-4 text-center text-slate-500">No audit logs.</td></tr>' : ''}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                break;
+            }
+        }
+    };
+
+    // ===== Export Student Data =====
+    window.exportStudentData = function() {
+        if (!selectedStudentId) {
+            showNotification('No student selected.', 'warning');
+            return;
+        }
+        const student = getStudentById(selectedStudentId);
+        if (!student) return;
+        const grades = getGradesByStudent(selectedStudentId);
+        const enrolments = getEnrolmentsByStudent(selectedStudentId);
+        const clearance = getClearanceByStudent(selectedStudentId);
+        const billing = getBillingByStudent(selectedStudentId);
+        const audit = getAuditLogsByStudent(selectedStudentId);
+
+        const headers = ['Field', 'Value'];
+        const rows = [
+            ['Student ID', student.id],
+            ['Name', student.name],
+            ['Program', student.program],
+            ['---', '---'],
+            ['Enrolment:', ''],
+            ...enrolments.map(e => [`${e.subject} (${e.semester})`, `${e.status}`]),
+            ['---', '---'],
+            ['Grades:', ''],
+            ...grades.map(g => [`${g.subject}`, `${g.grade} (${g.units} units)`]),
+            ['---', '---'],
+            ['Clearance:', ''],
+            ...clearance.map(c => [`${c.item}`, `${c.status} - ${c.date}`]),
+            ['---', '---'],
+            ['Billing:', ''],
+            ...billing.map(b => [`${b.term}`, `${b.amount} - ${b.status}`]),
+            ['---', '---'],
+            ['Audit Logs:', ''],
+            ...audit.map(a => [`${a.timestamp}`, `${a.user}: ${a.action}`])
+        ];
+        let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${student.id}_profile.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Student data exported successfully!', 'success');
+    };
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+
+    // ===== Quick Actions =====
+    window.toggleQuickActions = function() {
+        document.getElementById('quickActionsMenu').classList.toggle('hidden');
+    };
+
+    window.navigateTo = function(page) {
+        if (!selectedStudentId) {
+            showNotification('Please select a student first.', 'warning');
+            return;
+        }
+        window.location.href = page + '?student=' + encodeURIComponent(selectedStudentId);
+    };
+
+    // ===== Load from URL Parameter =====
+    function loadStudentFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const studentId = params.get('student');
+        if (studentId) {
+            const student = getStudentById(studentId);
+            if (student) {
+                window.viewStudent(studentId);
+                document.getElementById('studentProfile').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showNotification(`Student with ID "${studentId}" not found.`, 'warning');
+            }
+        }
+    }
+
+    // ===== Close menus on outside click =====
+    document.addEventListener('click', function(e) {
+        const jumpContainer = document.getElementById('quickJumpContainer');
+        const actionsContainer = document.getElementById('quickActionsContainer');
+        if (jumpContainer && !jumpContainer.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+        if (actionsContainer && !actionsContainer.contains(e.target)) {
+            document.getElementById('quickActionsMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialization =====
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!students || students.length === 0) {
+            showNotification('Warning: No student data found. Check your data.js import.', 'error');
+        }
+        
+        // Set default rows per page
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+        
+        window.refreshStudents();
+        disableQuickActions();
+        loadStudentFromURL();
+    });
+</script>

@@ -1,0 +1,129 @@
+/* Custom overrides – minimal, keep it clean */
+
+/* Queue items hover state */
+.queue-item {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    cursor: default;
+}
+.queue-item:hover {
+    border-color: #fdba74; /* brand-300 */
+    background-color: #fff7ed; /* brand-50 */
+}
+
+/* Interactive elements inside queue items should still show pointer */
+.queue-item button,
+.queue-item .btn {
+    cursor: pointer;
+}
+
+/* Disabled state for buttons */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Loading state for buttons */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.6s linear infinite;
+}
+
+/* Active state for sidebar items (will be applied via JS) */
+.sidebar-active {
+    background-color: #ea580c !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+/* Focus visible for all interactive elements */
+*:focus-visible {
+    outline: 2px solid #ea580c !important;
+    outline-offset: 2px !important;
+}
+
+/* Hover states for cards (minimal) */
+.card-hover:hover {
+    border-color: #fdba74;
+    transition: border-color 0.2s ease;
+}
+
+/* Empty state for tables */
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #94a3b8;
+    border: 2px dashed #e2e8f0;
+    border-radius: 0.75rem;
+    background: #f8fafc;
+}
+
+/* Error state for inputs */
+.input-field--error {
+    border-color: #ef4444 !important;
+}
+.input-field--error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Success state for inputs */
+.input-field--success {
+    border-color: #10b981 !important;
+}
+.input-field--success:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Toast states */
+.toast-success {
+    background: #065f46 !important;
+    border-color: #10b981 !important;
+}
+.toast-error {
+    background: #991b1b !important;
+    border-color: #ef4444 !important;
+}
+.toast-warning {
+    background: #92400e !important;
+    border-color: #f59e0b !important;
+}
+.status-badge--consultation::before {
+    background: #8b5cf6;
+}
+.status-badge--consultation {
+    background: #f5f3ff;
+    border-color: #c4b5fd;
+    color: #5b21b6;
+}
+.status-badge--rejected::before {
+    background: #6b7280;
+}
+.status-badge--rejected {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+/* Help icon hover effect */
+.cursor-help {
+    cursor: help;
+}
+
+.status-badge--recommended::before {
+    background: #8b5cf6;
+}
+.status-badge--recommended {
+    background: #f5f3ff;
+    border-color: #c4b5fd;
+    color: #5b21b6;
+}

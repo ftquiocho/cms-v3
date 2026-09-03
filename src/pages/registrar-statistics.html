@@ -1,0 +1,398 @@
+<!-- ===== REGISTRAR STATISTICS ===== -->
+
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='registrar.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Registrar Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Statistics</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Registrar Statistics</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Enrolment trends, transcript analytics, and record verification metrics</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="registrar.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Registrar Hub</a>
+                <a href="registrar-statistics.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Statistics</a>
+                <a href="registrar-transcript.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Transcript</a>
+                <a href="registrar-misc.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Miscellaneous</a>
+            </div>
+        </div>
+        <button type="button" onclick="exportStats()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export Report
+        </button>
+    </div>
+</div>
+
+<!-- ===== KEY METRICS (with tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Total Students
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of active student records in the system.">ⓘ</span>
+            </p>
+            <p class="text-2xl font-black text-slate-900 font-mono" id="statTotalStudents">—</p>
+            <span class="text-sm text-emerald-600 font-semibold">↑ +5.2% vs last term</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+    </div>
+
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                TOR Requests (Pending)
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Transcript of Records requests currently pending or in process.">ⓘ</span>
+            </p>
+            <p class="text-2xl font-black text-amber-600 font-mono" id="statTORPending">—</p>
+            <span class="text-sm text-slate-500">Awaiting processing</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+    </div>
+
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Certificate Requests
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Pending certificate requests (Good Moral, Enrollment, etc.).">ⓘ</span>
+            </p>
+            <p class="text-2xl font-black text-blue-600 font-mono" id="statCertPending">—</p>
+            <span class="text-sm text-slate-500">Awaiting issuance</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+    </div>
+
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                Records Verified
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of student records that have been verified for accuracy.">ⓘ</span>
+            </p>
+            <p class="text-2xl font-black text-emerald-600 font-mono" id="statRecordsVerified">—</p>
+            <span class="text-sm text-emerald-600 font-semibold">↑ +3.8% vs last term</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ADDITIONAL METRICS ROW ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            TOR Released
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Transcripts that have been released to students.">ⓘ</span>
+        </p>
+        <p class="text-2xl font-black text-slate-900 font-mono" id="statTORReleased">—</p>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            Active Student IDs
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Student ID cards currently active and valid.">ⓘ</span>
+        </p>
+        <p class="text-2xl font-black text-brand-600 font-mono" id="statActiveIDs">—</p>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            Authentication Requests
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Documents pending authentication (CHED, DFA, Notary).">ⓘ</span>
+        </p>
+        <p class="text-2xl font-black text-purple-600 font-mono" id="statAuthPending">—</p>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+            Enrollment Verifications
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Requests for enrollment verification (scholarships, agencies).">ⓘ</span>
+        </p>
+        <p class="text-2xl font-black text-cyan-600 font-mono" id="statEnrolVerification">—</p>
+    </div>
+</div>
+
+<!-- ===== CHARTS ===== -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- TOR Status -->
+    <div class="card space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+            TOR Request Status
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Breakdown of all TOR requests by current status.">ⓘ</span>
+        </h2>
+        <div class="h-64 relative w-full">
+            <canvas id="torStatusChart" aria-label="TOR request status chart" role="img"></canvas>
+        </div>
+        <p class="text-xs text-slate-400 italic">Status distribution of Transcript of Records requests.</p>
+    </div>
+
+    <!-- Certificate Requests by Type -->
+    <div class="card space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+            Certificates by Type
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Breakdown of certificate requests by type.">ⓘ</span>
+        </h2>
+        <div class="h-64 relative w-full">
+            <canvas id="certTypeChart" aria-label="Certificate by type chart" role="img"></canvas>
+        </div>
+        <p class="text-xs text-slate-400 italic">Most requested certificate types.</p>
+    </div>
+
+    <!-- Student ID Status -->
+    <div class="card space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+            Student ID Status
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Active vs Expired student ID cards.">ⓘ</span>
+        </h2>
+        <div class="h-64 relative w-full">
+            <canvas id="idStatusChart" aria-label="Student ID status chart" role="img"></canvas>
+        </div>
+        <p class="text-xs text-slate-400 italic">ID card lifecycle status.</p>
+    </div>
+
+    <!-- Authentication Status -->
+    <div class="card space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+            Document Authentication Status
+            <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Document authentication requests by status.">ⓘ</span>
+        </h2>
+        <div class="h-64 relative w-full">
+            <canvas id="authStatusChart" aria-label="Authentication status chart" role="img"></canvas>
+        </div>
+        <p class="text-xs text-slate-400 italic">Notarized, CHED, DFA, and School Seal authentications.</p>
+    </div>
+</div>
+
+<!-- ===== RECENT ACTIVITY ===== -->
+<div class="card space-y-3">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+        Recent Registrar Activity
+        <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Most recent registrar transactions and updates.">ⓘ</span>
+    </h2>
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3">Timestamp</th>
+                    <th scope="col" class="p-3">Student</th>
+                    <th scope="col" class="p-3">Action</th>
+                    <th scope="col" class="p-3">Reference</th>
+                    <th scope="col" class="p-3">Status</th>
+                    <th scope="col" class="p-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="activityBody" class="divide-y divide-slate-100">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="activityEmptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+        <h3 class="font-bold text-slate-800">No recent activity</h3>
+        <p class="text-sm text-slate-500">Registrar activity will appear here.</p>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { students, auditLogs, registrar } from './assets/js/data.js';
+
+    // ===== Helper =====
+    function formatNumber(num) { return num.toLocaleString(); }
+
+    // ===== Extract data =====
+    const transcriptRequests = registrar?.transcriptRequests || [];
+    const certificateRequests = registrar?.certificateRequests || [];
+    const studentIDs = registrar?.studentIDs || [];
+    const authentications = registrar?.authentications || [];
+
+    // ===== KPIs =====
+    const torPending = transcriptRequests.filter(r => r.status === 'Pending' || r.status === 'Processing').length;
+    const torReleased = transcriptRequests.filter(r => r.status === 'Released').length;
+    const certPending = certificateRequests.filter(r => r.status === 'Pending' || r.status === 'Processing').length;
+    const activeIDs = studentIDs.filter(id => id.status === 'Active').length;
+    const authPending = authentications.filter(a => a.status === 'Pending' || a.status === 'Processing').length;
+    const enrolVerification = Math.floor(students.length * 0.12); // Mock: 12% request verification
+
+    document.getElementById('statTotalStudents').textContent = formatNumber(students.length);
+    document.getElementById('statTORPending').textContent = formatNumber(torPending);
+    document.getElementById('statCertPending').textContent = formatNumber(certPending);
+    document.getElementById('statRecordsVerified').textContent = formatNumber(students.length - Math.floor(students.length * 0.05));
+    document.getElementById('statTORReleased').textContent = formatNumber(torReleased);
+    document.getElementById('statActiveIDs').textContent = formatNumber(activeIDs);
+    document.getElementById('statAuthPending').textContent = formatNumber(authPending);
+    document.getElementById('statEnrolVerification').textContent = formatNumber(enrolVerification);
+
+    // ===== CHARTS =====
+    // 1. TOR Status
+    const torStatuses = {};
+    transcriptRequests.forEach(r => {
+        torStatuses[r.status] = (torStatuses[r.status] || 0) + 1;
+    });
+    new Chart(document.getElementById('torStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(torStatuses),
+            datasets: [{
+                data: Object.values(torStatuses),
+                backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ef4444'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+    });
+
+    // 2. Certificate Types
+    const certTypes = {};
+    certificateRequests.forEach(r => {
+        certTypes[r.certificateType] = (certTypes[r.certificateType] || 0) + 1;
+    });
+    new Chart(document.getElementById('certTypeChart'), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(certTypes),
+            datasets: [{
+                label: 'Requests',
+                data: Object.values(certTypes),
+                backgroundColor: ['#ea580c', '#3b82f6', '#10b981', '#eab308', '#8b5cf6'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+                y: { grid: { color: '#f1f5f9' }, beginAtZero: true }
+            }
+        }
+    });
+
+    // 3. ID Status
+    const idStatuses = {};
+    studentIDs.forEach(id => {
+        idStatuses[id.status] = (idStatuses[id.status] || 0) + 1;
+    });
+    new Chart(document.getElementById('idStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(idStatuses),
+            datasets: [{
+                data: Object.values(idStatuses),
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+    });
+
+    // 4. Authentication Status
+    const authStatuses = {};
+    authentications.forEach(a => {
+        authStatuses[a.status] = (authStatuses[a.status] || 0) + 1;
+    });
+    new Chart(document.getElementById('authStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(authStatuses),
+            datasets: [{
+                data: Object.values(authStatuses),
+                backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+    });
+
+    // ===== Recent Activity =====
+    const registrarKeywords = ['transcript', 'record', 'verify', 'certificate', 'id', 'authentication', 'correction'];
+    let relevantLogs = (auditLogs || []).filter(log =>
+        registrarKeywords.some(kw => log.action.toLowerCase().includes(kw))
+    );
+
+    // Fallback: generate from transcript requests
+    if (relevantLogs.length === 0 && transcriptRequests.length > 0) {
+        relevantLogs = transcriptRequests.slice(0, 7).map(req => ({
+            timestamp: req.requestDate + ' 10:00',
+            studentId: req.studentId,
+            action: `TOR Request ${req.id} - ${req.status}`,
+            id: req.id,
+            status: req.status
+        }));
+    }
+
+    const recent = relevantLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 7);
+
+    const tbody = document.getElementById('activityBody');
+    const empty = document.getElementById('activityEmptyState');
+
+    if (recent.length === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+    } else {
+        empty.classList.add('hidden');
+        tbody.innerHTML = recent.map(log => {
+            const statusClass = log.status === 'Pending' ? 'status-badge--pending' :
+                               log.status === 'Processing' ? 'status-badge--review' :
+                               'status-badge--approved';
+            const statusText = log.status === 'Pending' ? 'Pending' :
+                               log.status === 'Processing' ? 'Processing' :
+                               'Completed';
+            return `
+                <tr>
+                    <td class="p-3 text-slate-500 font-mono text-xs">${log.timestamp}</td>
+                    <td class="p-3 font-bold text-slate-900">${log.studentId}</td>
+                    <td class="p-3">${log.action}</td>
+                    <td class="p-3 font-mono text-slate-600">${log.id || '—'}</td>
+                    <td class="p-3"><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="showNotification('Viewing details...')" class="btn btn-ghost text-brand-600 text-xs">View</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function() {
+        const menu = document.getElementById('quickJumpMenu');
+        if (menu) menu.classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            const menu = document.getElementById('quickJumpMenu');
+            if (menu) menu.classList.add('hidden');
+        }
+    });
+
+    // ===== Export =====
+    window.exportStats = function() {
+        showNotification('📊 Statistics report exported as CSV.', 'success');
+    };
+</script>

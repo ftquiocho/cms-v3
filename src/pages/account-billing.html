@@ -1,0 +1,613 @@
+<!-- ===== ACCOUNT BILLING SUBMODULE ===== -->
+
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='billing.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Billing Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Account Billing</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Account Billing</h1>
+        <p class="text-sm text-slate-500 mt-0.5">View student balances, payment plans, and scholarship details</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="billing.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Billing Hub</a>
+                <a href="account-billing.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Account Billing</a>
+                <a href="payment-log.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Payment Log</a>
+                <a href="account-arrears.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Account Arrears</a>
+            </div>
+        </div>
+        <!-- Generate Statement (golden egg) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Billing Officer actions."
+                ondblclick="openGenerateStatementModal()"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Generate Statement
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic from data.js with Tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Accounts (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Accounts
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of student billing accounts in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalAccounts">0</h2>
+            <span class="text-sm text-slate-500">All accounts</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </div>
+    </div>
+
+    <!-- 2nd – With Balance (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                With Balance
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Accounts with outstanding balance greater than zero.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="withBalance">0</h2>
+            <span class="text-sm text-amber-600 font-semibold">Pending payment</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Zero Balance (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Zero Balance
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Accounts with fully paid balance (zero outstanding).">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="zeroBalance">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold">Fully paid</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 4th – Overdue (Rose) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Overdue
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Accounts with overdue payments requiring immediate follow-up.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="overdueCount">0</h2>
+            <span class="text-sm text-rose-600 font-semibold">Requires attention</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="accountSearch" placeholder="Search by name or ID..." class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="programFilter" class="select-field text-sm w-40" onchange="applyFilters()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+        </select>
+        <select id="planFilter" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Plans</option>
+            <option value="Full Payment">Full Payment</option>
+            <option value="2-Pay">2-Pay</option>
+            <option value="3-Pay">3-Pay</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+    </div>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="accountTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentId" onclick="sortTable('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentName" onclick="sortTable('studentName')">
+                        Student <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="program" onclick="sortTable('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="totalDue" onclick="sortTable('totalDue')">
+                        Total Due <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="balance" onclick="sortTable('balance')">
+                        Balance <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="paymentPlan" onclick="sortTable('paymentPlan')">
+                        Plan <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="scholarship" onclick="sortTable('scholarship')">
+                        Scholarship <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[160px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="accountBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📊</div>
+        <h3 class="font-bold text-slate-800">No accounts found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+    <!-- Pagination & Rows Per Page (rows dropdown before Previous) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500 ml-2">
+                Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Generate Statement Modal -->
+<div id="generateStatementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Generate Statement</h3>
+            <button type="button" onclick="closeGenerateStatementModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="generateStatementForm" onsubmit="generateStatement(event)" class="space-y-4">
+            <div>
+                <label for="statementStudent" class="block font-bold text-sm text-slate-700 mb-1">Student</label>
+                <select id="statementStudent" class="select-field" required>
+                    <option value="">Select student</option>
+                    <!-- Populated by JavaScript -->
+                </select>
+            </div>
+            <div>
+                <label for="statementSemester" class="block font-bold text-sm text-slate-700 mb-1">Semester</label>
+                <select id="statementSemester" class="select-field">
+                    <option value="2021-2022 1st">2021-2022 1st</option>
+                    <option value="2021-2022 2nd">2021-2022 2nd</option>
+                    <option value="2021-2022 Summer">2021-2022 Summer</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeGenerateStatementModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Generate</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Billing Statement Modal (for Statement button) -->
+<div id="billingStatementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 class="text-lg font-bold text-slate-900" id="statementModalTitle">Billing Statement</h3>
+            <button type="button" onclick="closeBillingStatementModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div id="statementContent" class="space-y-4">
+            <!-- Populated by JavaScript -->
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeBillingStatementModal()" class="btn btn-secondary text-xs">Close</button>
+            <button type="button" onclick="window.print()" class="btn btn-primary text-xs ml-2">Print Statement</button>
+        </div>
+    </div>
+</div>
+
+<!-- Record Payment Modal -->
+<div id="recordPaymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Log Payment</h3>
+            <button type="button" onclick="closeRecordPaymentModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="recordPaymentForm" onsubmit="recordPayment(event)" class="space-y-4">
+            <input type="hidden" id="recordStudentId" value="">
+            <div>
+                <label for="recordOR" class="block font-bold text-sm text-slate-700 mb-1">OR Number</label>
+                <input type="text" id="recordOR" class="input-field" placeholder="e.g. OR-2024-0001" required />
+            </div>
+            <div>
+                <label for="recordAmount" class="block font-bold text-sm text-slate-700 mb-1">Amount</label>
+                <input type="number" id="recordAmount" class="input-field" step="0.01" required />
+            </div>
+            <div>
+                <label for="recordMethod" class="block font-bold text-sm text-slate-700 mb-1">Payment Method</label>
+                <select id="recordMethod" class="select-field" required>
+                    <option value="GCash">GCash</option>
+                    <option value="PayMaya">PayMaya</option>
+                    <option value="Over-the-Counter (OTC)">Over-the-Counter (OTC)</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="Cheque">Cheque</option>
+                </select>
+            </div>
+            <div>
+                <label for="recordType" class="block font-bold text-sm text-slate-700 mb-1">Transaction Type</label>
+                <select id="recordType" class="select-field">
+                    <option value="Tuition Payment">Tuition Payment</option>
+                    <option value="Partial Payment">Partial Payment</option>
+                    <option value="Arrear Payment">Arrear Payment</option>
+                    <option value="Miscellaneous Fee">Miscellaneous Fee</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeRecordPaymentModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Log Payment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { billingAccountsData, students, payments } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    function formatCurrency(amount) {
+        return '₱' + Math.round(amount).toLocaleString('en-PH');
+    }
+
+    let accounts = [...billingAccountsData];
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let filteredData = [];
+    let currentSort = { column: 'studentName', direction: 'asc' };
+
+    // ===== Sorting =====
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    // ===== Filters =====
+    function applyFilters() {
+        const search = document.getElementById('accountSearch').value.toLowerCase().trim();
+        const program = document.getElementById('programFilter').value;
+        const plan = document.getElementById('planFilter').value;
+
+        filteredData = accounts.filter(a => {
+            const matchSearch = a.studentName.toLowerCase().includes(search) || a.studentId.toLowerCase().includes(search);
+            const matchProgram = program === 'all' || a.program === program;
+            const matchPlan = plan === 'all' || a.paymentPlan === plan;
+            return matchSearch && matchProgram && matchPlan;
+        });
+
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        document.getElementById('totalAccounts').textContent = accounts.length;
+        document.getElementById('withBalance').textContent = accounts.filter(a => a.balance > 0).length;
+        document.getElementById('zeroBalance').textContent = accounts.filter(a => a.balance === 0).length;
+        document.getElementById('overdueCount').textContent = accounts.filter(a => a.isOverdue).length;
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+function renderTable() {
+    const tbody = document.getElementById('accountBody');
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = Math.min(start + rowsPerPage, filteredData.length);
+    const pageItems = filteredData.slice(start, end);
+
+    if (pageItems.length === 0) {
+        document.getElementById('emptyState').classList.remove('hidden');
+        tbody.innerHTML = '';
+    } else {
+        document.getElementById('emptyState').classList.add('hidden');
+        tbody.innerHTML = pageItems.map((a, index) => {
+            const statusClass = a.balance === 0 ? 'status-badge--approved' : a.isOverdue ? 'status-badge--hold' : 'status-badge--pending';
+            const statusText = a.balance === 0 ? 'Paid' : a.isOverdue ? 'Overdue' : 'Partial';
+            return `
+                <tr>
+                    <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                    <td class="p-3 font-mono font-bold text-slate-900">${a.studentId}</td>
+                    <td class="p-3 font-bold text-slate-900">${a.studentName}</td>
+                    <td class="p-3">${a.program}</td>
+                    <td class="p-3 font-mono">${formatCurrency(a.totalDue)}</td>
+                    <td class="p-3 font-mono font-bold ${a.balance > 0 ? 'text-rose-700' : 'text-emerald-700'}">${formatCurrency(a.balance)}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${a.paymentPlan}</span></td>
+                    <td class="p-3">${a.scholarship}</td>
+                    <td class="p-3"><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <button type="button"
+                                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Billing Officer actions."
+                                ondblclick="openBillingStatement('${a.studentId}')"
+                                class="btn btn-secondary text-xs py-1 px-2.5">
+                            Statement
+                        </button>
+                        <button type="button"
+                                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Billing Officer actions."
+                                ondblclick="openRecordPayment('${a.studentId}')"
+                                class="btn btn-primary text-xs py-1 px-2.5">
+                            Log Payment
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // 🔧 Re-initialise tooltips for dynamically generated buttons
+    initTooltips();
+
+    document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+    document.getElementById('pageEnd').textContent = end;
+    document.getElementById('totalItems').textContent = filteredData.length;
+    document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+}
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+
+        let html = '';
+
+        // Rows per page dropdown (first)
+        html += `
+            <div class="flex items-center gap-1.5 mr-2">
+                <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+                <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        `;
+
+        // Previous
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+
+        // Next
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+        controls.innerHTML = html;
+
+        // Set the rows per page dropdown to the current value
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = rowsPerPage;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function resetFilters() {
+        document.getElementById('accountSearch').value = '';
+        document.getElementById('programFilter').value = 'all';
+        document.getElementById('planFilter').value = 'all';
+        applyFilters();
+    }
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Generate Statement Modal =====
+    window.openGenerateStatementModal = function() {
+        const select = document.getElementById('statementStudent');
+        select.innerHTML = '<option value="">Select student</option>';
+        students.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.id;
+            opt.textContent = `${s.name} (${s.id})`;
+            select.appendChild(opt);
+        });
+        document.getElementById('generateStatementModal').classList.remove('hidden');
+    };
+    window.closeGenerateStatementModal = function() {
+        document.getElementById('generateStatementModal').classList.add('hidden');
+    };
+    window.generateStatement = function(e) {
+        e.preventDefault();
+        const studentId = document.getElementById('statementStudent').value;
+        const semester = document.getElementById('statementSemester').value;
+        const student = students.find(s => s.id === studentId);
+        if (!student) { showNotification('Please select a student.', 'warning'); return; }
+        showNotification(`Statement generated for ${student.name} (${semester}).`, 'success');
+        closeGenerateStatementModal();
+    };
+
+    // ===== Billing Statement (for Statement button) =====
+    window.openBillingStatement = function(studentId) {
+        const student = students.find(s => s.id === studentId);
+        const account = accounts.find(a => a.studentId === studentId);
+        if (!student || !account) return;
+
+        // Get payment history for this student
+        const studentPayments = payments.filter(p => p.studentId === studentId).slice(0, 5);
+
+        document.getElementById('statementModalTitle').textContent = `Billing Statement – ${student.name}`;
+        document.getElementById('statementContent').innerHTML = `
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div><span class="font-bold">Student:</span> ${student.name}</div>
+                <div><span class="font-bold">ID:</span> ${student.id}</div>
+                <div><span class="font-bold">Program:</span> ${student.program}</div>
+                <div><span class="font-bold">Payment Plan:</span> ${account.paymentPlan}</div>
+                <div><span class="font-bold">Scholarship:</span> ${account.scholarship}</div>
+                <div><span class="font-bold">Total Due:</span> ${formatCurrency(account.totalDue)}</div>
+                <div><span class="font-bold">Total Paid:</span> ${formatCurrency(account.totalPaid)}</div>
+                <div><span class="font-bold text-rose-700">Balance:</span> ${formatCurrency(account.balance)}</div>
+            </div>
+            <div class="mt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-2">Recent Payments</h4>
+                <div class="table-wrap">
+                    <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
+                                <th class="p-2">OR #</th>
+                                <th class="p-2">Date</th>
+                                <th class="p-2">Amount</th>
+                                <th class="p-2">Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${studentPayments.length > 0 ? studentPayments.map(p => `
+                                <tr>
+                                    <td class="p-2 font-mono">${p.orNumber}</td>
+                                    <td class="p-2">${p.date}</td>
+                                    <td class="p-2 font-mono font-bold text-emerald-700">${formatCurrency(p.amount)}</td>
+                                    <td class="p-2">${p.method}</td>
+                                </tr>
+                            `).join('') : `
+                                <tr><td colspan="4" class="p-4 text-center text-slate-500">No payments recorded.</td></tr>
+                            `}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800">
+                <strong>Note:</strong> This is a demo statement. In production, this would include full transaction history, official receipts, and detailed breakdown of fees.
+            </div>
+        `;
+        document.getElementById('billingStatementModal').classList.remove('hidden');
+    };
+
+    window.closeBillingStatementModal = function() {
+        document.getElementById('billingStatementModal').classList.add('hidden');
+    };
+
+    // ===== Record Payment =====
+    window.openRecordPayment = function(studentId) {
+        document.getElementById('recordStudentId').value = studentId;
+        document.getElementById('recordOR').value = 'OR-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+        document.getElementById('recordAmount').value = '';
+        document.getElementById('recordMethod').value = 'GCash';
+        document.getElementById('recordType').value = 'Tuition Payment';
+        document.getElementById('recordPaymentModal').classList.remove('hidden');
+    };
+    window.closeRecordPaymentModal = function() {
+        document.getElementById('recordPaymentModal').classList.add('hidden');
+    };
+    window.recordPayment = function(e) {
+        e.preventDefault();
+        const studentId = document.getElementById('recordStudentId').value;
+        const orNumber = document.getElementById('recordOR').value;
+        const amount = parseFloat(document.getElementById('recordAmount').value);
+        const method = document.getElementById('recordMethod').value;
+        const type = document.getElementById('recordType').value;
+        const student = students.find(s => s.id === studentId);
+        if (!student) { showNotification('Student not found.', 'error'); return; }
+        if (!orNumber || !amount || amount <= 0) {
+            showNotification('Please fill in all fields correctly.', 'warning');
+            return;
+        }
+        // Update the account balance locally
+        const account = accounts.find(a => a.studentId === studentId);
+        if (account) {
+            account.balance = Math.max(0, account.balance - amount);
+            account.totalPaid += amount;
+        }
+        showNotification(`Payment logged for ${student.name}: ${formatCurrency(amount)} via ${method} (${orNumber}).`, 'success');
+        closeRecordPaymentModal();
+        applyFilters(); // Refresh table
+    };
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+        applyFilters();
+        // Ensure rows per page dropdown is set
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+    });
+
+    window.applyFilters = applyFilters;
+    window.goToPage = goToPage;
+    window.resetFilters = resetFilters;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.sortTable = sortTable;
+</script>

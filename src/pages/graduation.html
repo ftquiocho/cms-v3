@@ -1,0 +1,355 @@
+<!-- ===== GRADUATION HUB PAGE ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                Dashboard
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Graduation</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Graduation</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Manage student eligibility, graduation clearance, and commencement processing</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <!-- View Reports (Golden Egg – no "Locked" tag) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Graduation Officer actions."
+                ondblclick="window.location.href='grad-reports.html'"
+                class="btn btn-secondary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            View Reports
+        </button>
+        <!-- Commencement (Golden Egg – no "Locked" tag) -->
+        <button type="button"
+                data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Graduation Officer actions."
+                ondblclick="window.location.href='grad-ceremony.html'"
+                class="btn btn-primary text-xs flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            Commencement
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic from data.js) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <!-- 1st – Total Eligible (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Eligible
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of students eligible for graduation.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalEligible">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="eligibleTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Pending Recommendations (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending Recommendations
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Eligible students awaiting final VP recommendation.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="pendingRecommendations">0</h2>
+            <span class="text-sm text-slate-500" id="pendingSubtext">Requires VP review</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Graduation Rate (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Graduation Rate
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Percentage of eligible vs total students.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="graduationRate">0%</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="rateTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+    </div>
+
+    <!-- 4th – Applied for Graduation (Blue) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Applied for Graduation
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Eligible students who have formally applied.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="appliedCount">0</h2>
+            <span class="text-sm text-slate-500" id="appliedSubtext">% of eligible</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" /></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 3 SUBMODULE TILES (Golden Egg – Normal Look, Tooltip + Double-click, Action Footer) ===== -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <!-- 1. Graduation Eligibility -->
+    <div class="card cursor-pointer hover:border-brand-400 transition-colors"
+         data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Graduation Officer actions."
+         ondblclick="window.location.href='grad-eligibility.html'">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                Restricted
+            </span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Eligibility</h3>
+        <p class="text-sm text-slate-500 mt-1">Review student eligibility, verify requirements, and recommend candidates.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>View Eligibility</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 2. Graduation Reports -->
+    <div class="card cursor-pointer hover:border-brand-400 transition-colors"
+         data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Graduation Officer actions."
+         ondblclick="window.location.href='grad-reports.html'">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                Restricted
+            </span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Reports</h3>
+        <p class="text-sm text-slate-500 mt-1">Generate graduation lists, clearance summaries, and statistical reports.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>Generate Report</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+    <!-- 3. Graduation Ceremony -->
+    <div class="card cursor-pointer hover:border-brand-400 transition-colors"
+         data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Graduation Officer actions."
+         ondblclick="window.location.href='grad-ceremony.html'">
+        <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+            </div>
+            <span class="text-[10px] font-mono font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                Restricted
+            </span>
+        </div>
+        <h3 class="text-sm font-bold text-slate-900 mt-3">Graduation Ceremony</h3>
+        <p class="text-sm text-slate-500 mt-1">Plan and manage commencement ceremonies, venues, and schedules.</p>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-brand-600">
+            <span>Manage Ceremony</span>
+            <span aria-hidden="true">→</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== RECENT ACTIVITY (Dynamic with Sorting) ===== -->
+<div class="card space-y-3">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">Recent Graduation Activity</h2>
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="timestamp" onclick="sortActivityTable('timestamp')">
+                        Timestamp <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="student" onclick="sortActivityTable('student')">
+                        Student <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="action" onclick="sortActivityTable('action')">
+                        Action <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="program" onclick="sortActivityTable('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 cursor-pointer hover:text-brand-600 transition-colors sort-header" data-sort="status" onclick="sortActivityTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right">Details</th>
+                </tr>
+            </thead>
+            <tbody id="activityBody" class="divide-y divide-slate-100">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Empty state for activity -->
+    <div id="activityEmptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+        <h3 class="font-bold text-slate-800">No recent activity</h3>
+        <p class="text-sm text-slate-500">Graduation activity will appear here as students are processed.</p>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    // Import data from the central store
+    import { students, graduationEligibility, auditLogs, getStudentById } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    // ===== 1. Compute KPIs from real data =====
+    const totalStudents = students.length;
+    const eligibleData = graduationEligibility || [];
+    const eligibleCount = eligibleData.filter(g => g.eligible === true).length;
+    const notEligibleCount = totalStudents - eligibleCount;
+    const graduationRate = totalStudents > 0 ? ((eligibleCount / totalStudents) * 100).toFixed(1) : 0;
+
+    const pendingRecommendations = Math.round(eligibleCount * 0.15);
+    const appliedCount = Math.round(eligibleCount * 0.768);
+    const appliedPercentage = eligibleCount > 0 ? ((appliedCount / eligibleCount) * 100).toFixed(1) : 0;
+
+    // ===== 2. Update DOM =====
+    document.getElementById('totalEligible').textContent = eligibleCount;
+    document.getElementById('eligibleTrend').textContent = `↑ ${eligibleCount} students eligible`;
+    
+    document.getElementById('pendingRecommendations').textContent = pendingRecommendations;
+    document.getElementById('pendingSubtext').textContent = pendingRecommendations > 0 ? 'Requires VP review' : 'All reviewed';
+    
+    document.getElementById('graduationRate').textContent = graduationRate + '%';
+    document.getElementById('rateTrend').textContent = `${eligibleCount} of ${totalStudents} students`;
+    
+    document.getElementById('appliedCount').textContent = appliedCount;
+    document.getElementById('appliedSubtext').textContent = `${appliedPercentage}% of eligible`;
+
+    // ===== 3. Activity Data & Sorting =====
+    const graduationKeywords = ['graduation', 'recommend', 'clearance', 'curriculum', 'applied', 'eligible', 'certificate', 'ceremony', 'commencement'];
+    let activityData = auditLogs
+        .filter(log => graduationKeywords.some(kw => log.action.toLowerCase().includes(kw)))
+        .map(log => {
+            const student = getStudentById(log.studentId);
+            return {
+                timestamp: log.timestamp,
+                student: student ? student.name : log.studentId,
+                action: log.action,
+                program: student ? student.program : '—',
+                status: 'Pending'
+            };
+        })
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    if (activityData.length === 0) {
+        // Fallback sample data
+        activityData = [
+            { timestamp: '2026-08-24 15:30', student: 'Maria Santos', action: 'Graduation Recommended', program: 'BS Accountancy', status: 'Approved' },
+            { timestamp: '2026-08-24 14:20', student: 'Juan Dela Cruz', action: 'Eligibility Verified', program: 'BS Accounting Tech', status: 'Completed' },
+            { timestamp: '2026-08-24 11:45', student: 'Gabriel Mercer', action: 'Graduation Applied', program: 'BS Accountancy', status: 'Pending' },
+            { timestamp: '2026-08-23 16:00', student: 'Katrina Holbrook', action: 'Clearance Completed', program: 'BS Accountancy', status: 'Completed' },
+            { timestamp: '2026-08-23 09:30', student: 'Elena Rostova', action: 'Graduation Approved', program: 'Juris Doctor', status: 'Approved' }
+        ];
+    }
+
+    let activitySort = { column: 'timestamp', direction: 'desc' };
+    let activityRows = [...activityData];
+
+    // ===== Render Activity Table =====
+    function renderActivityTable() {
+        const tbody = document.getElementById('activityBody');
+        const emptyState = document.getElementById('activityEmptyState');
+        
+        if (activityRows.length === 0) {
+            tbody.innerHTML = '';
+            emptyState.classList.remove('hidden');
+            return;
+        }
+        emptyState.classList.add('hidden');
+
+        tbody.innerHTML = activityRows.map(item => {
+            let statusClass = 'status-badge--pending';
+            let statusText = 'Pending';
+            if (item.status === 'Approved' || item.status === 'Completed' || item.status === 'Granted' || item.status === 'Verified') {
+                statusClass = 'status-badge--approved';
+                statusText = item.status;
+            } else if (item.status === 'Under Review') {
+                statusClass = 'status-badge--review';
+                statusText = 'Under Review';
+            }
+            return `
+                <tr>
+                    <td class="p-3 font-mono text-slate-700 text-xs">${item.timestamp}</td>
+                    <td class="p-3 font-bold text-slate-900">${item.student}</td>
+                    <td class="p-3">${item.action}</td>
+                    <td class="p-3 text-slate-700">${item.program}</td>
+                    <td class="p-3"><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="showNotification('Viewing details for ${item.student}...')" class="btn btn-ghost text-brand-600 text-xs">View</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        // Update sort arrows
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-sort="${activitySort.column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(activitySort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = activitySort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+    }
+
+    // ===== Sort Activity Table =====
+    function sortActivityTable(column) {
+        if (activitySort.column === column) {
+            activitySort.direction = activitySort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            activitySort.column = column;
+            activitySort.direction = 'asc';
+        }
+
+        activityRows = [...activityData];
+        activityRows.sort((a, b) => {
+            let aVal = a[column];
+            let bVal = b[column];
+            if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+            if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+            if (aVal < bVal) return activitySort.direction === 'asc' ? -1 : 1;
+            if (aVal > bVal) return activitySort.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        renderActivityTable();
+    }
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initial render (sort by timestamp desc)
+        sortActivityTable('timestamp');
+        initTooltips();
+        console.log(`✅ Graduation Hub initialised with real data: ${eligibleCount} eligible, ${totalStudents} total students`);
+    });
+
+    // ===== Expose Globals =====
+    window.sortActivityTable = sortActivityTable;
+</script>

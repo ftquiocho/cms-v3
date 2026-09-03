@@ -1,0 +1,509 @@
+<!-- ===== PAYMENT LOG SUBMODULE ===== -->
+
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='billing.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Billing Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Payment Log</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Payment Log</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Track all transactions, verify payments, and view receipts</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="billing.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Billing Hub</a>
+                <a href="account-billing.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Account Billing</a>
+                <a href="payment-log.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Payment Log</a>
+                <a href="account-arrears.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Account Arrears</a>
+            </div>
+        </div>
+        <!-- Export CSV (read-only – no golden egg) -->
+        <button type="button" onclick="exportPaymentLogCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic from data.js with Tooltips) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Transactions (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Transactions
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of payment transactions recorded in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalTxns">0</h2>
+            <span class="text-sm text-slate-500">All transactions</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Confirmed (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Confirmed
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Payments that have been successfully confirmed and reconciled.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="confirmedTxns">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold">Fully verified</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Pending (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Payments awaiting confirmation or verification.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="pendingTxns">0</h2>
+            <span class="text-sm text-amber-600 font-semibold">Requires review</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+
+    <!-- 4th – Verified (Blue) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Verified
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Payments that have been reconciled and marked as verified.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="reconciledCount">0</h2>
+            <span class="text-sm text-blue-600 font-semibold">Reconciled</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="logSearch" placeholder="Search by student or OR..." class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="methodFilter" class="select-field text-sm w-36" onchange="applyFilters()">
+            <option value="all">All Methods</option>
+            <option value="GCash">GCash</option>
+            <option value="PayMaya">PayMaya</option>
+            <option value="Over-the-Counter (OTC)">Over-the-Counter (OTC)</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cheque">Cheque</option>
+        </select>
+        <select id="statusFilter" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+    </div>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="logTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="orNumber" onclick="sortTable('orNumber')">
+                        OR # <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentId" onclick="sortTable('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="studentName" onclick="sortTable('studentName')">
+                        Student <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="date" onclick="sortTable('date')">
+                        Date <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="amount" onclick="sortTable('amount')">
+                        Amount <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="method" onclick="sortTable('method')">
+                        Method <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="type" onclick="sortTable('type')">
+                        Type <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-brand-600 transition-colors" data-sort="reconciled" onclick="sortTable('reconciled')">
+                        Verified <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[160px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="logBody">
+                <!-- Rows generated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+        <h3 class="font-bold text-slate-800">No transactions found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+    <!-- Pagination & Rows Per Page (rows dropdown before Previous) -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500 ml-2">
+                Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Verify Payment Modal -->
+<div id="verifyModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Verify Payment</h3>
+            <button type="button" onclick="closeVerifyModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600" id="verifyModalBody">Confirm that this payment is valid and matches the official receipt.</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeVerifyModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" onclick="confirmVerify()" class="btn btn-primary text-xs">Verify</button>
+        </div>
+    </div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receiptModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900" id="receiptTitle">Receipt</h3>
+            <button type="button" onclick="closeReceiptModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div id="receiptContent" class="space-y-2 text-sm">
+            <!-- Populated by JavaScript -->
+        </div>
+        <div class="flex justify-end gap-2.5 pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeReceiptModal()" class="btn btn-secondary text-xs">Close</button>
+            <button type="button" onclick="showNotification('Receipt printed.')" class="btn btn-primary text-xs">Print</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { payments } from './assets/js/data.js';
+    import { initTooltips, showNotification } from './assets/js/ui.js';
+
+    function formatCurrency(amount) {
+        return '₱' + Math.round(amount).toLocaleString('en-PH');
+    }
+
+    let logs = [...payments];
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let filteredData = [];
+    let verifyTarget = null;
+    let currentSort = { column: 'date', direction: 'desc' };
+
+    // ===== Sorting =====
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-sort="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    // ===== Filters =====
+    function applyFilters() {
+        const search = document.getElementById('logSearch').value.toLowerCase().trim();
+        const method = document.getElementById('methodFilter').value;
+        const status = document.getElementById('statusFilter').value;
+
+        filteredData = logs.filter(p => {
+            const matchSearch = p.studentName.toLowerCase().includes(search) || p.orNumber.toLowerCase().includes(search) || p.studentId.toLowerCase().includes(search);
+            const matchMethod = method === 'all' || p.method === method;
+            const matchStatus = status === 'all' || p.status === status;
+            return matchSearch && matchMethod && matchStatus;
+        });
+
+        // Sort
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        const total = filteredData.length;
+        const confirmed = filteredData.filter(p => p.status === 'Confirmed').length;
+        const pending = filteredData.filter(p => p.status === 'Pending').length;
+        const reconciled = filteredData.filter(p => p.reconciled).length;
+
+        document.getElementById('totalTxns').textContent = logs.length;
+        document.getElementById('confirmedTxns').textContent = confirmed;
+        document.getElementById('pendingTxns').textContent = pending;
+        document.getElementById('reconciledCount').textContent = reconciled;
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('logBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('emptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('emptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((p, index) => {
+                const statusClass = p.status === 'Confirmed' ? 'status-badge--approved' : 'status-badge--pending';
+                const verifiedClass = p.reconciled ? 'status-badge--approved' : 'status-badge--pending';
+                return `
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-slate-900">${p.orNumber}</td>
+                        <td class="p-3 font-mono text-slate-700">${p.studentId}</td>
+                        <td class="p-3 font-bold text-slate-900">${p.studentName}</td>
+                        <td class="p-3 font-mono text-slate-700">${p.date}</td>
+                        <td class="p-3 font-mono font-bold ${p.amount < 0 ? 'text-rose-700' : 'text-emerald-700'}">${formatCurrency(p.amount)}</td>
+                        <td class="p-3">${p.method}</td>
+                        <td class="p-3">${p.type}</td>
+                        <td class="p-3"><span class="status-badge ${statusClass}">${p.status}</span></td>
+                        <td class="p-3"><span class="status-badge ${verifiedClass}">${p.reconciled ? 'Yes' : 'No'}</span></td>
+                        <td class="p-3 text-right whitespace-nowrap">
+                            <!-- Verify Button (golden egg) -->
+                            <button type="button"
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Billing Officer actions."
+                                    ondblclick="openVerifyModal('${p.orNumber}')"
+                                    class="btn btn-secondary text-xs py-1 px-2.5">
+                                Verify
+                            </button>
+                            <!-- Receipt Button (golden egg) -->
+                            <button type="button"
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the Billing Officer actions."
+                                    ondblclick="openReceiptModal('${p.orNumber}')"
+                                    class="btn btn-primary text-xs py-1 px-2.5">
+                                Receipt
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Re-initialise tooltips for dynamically generated buttons
+        initTooltips();
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+
+        let html = '';
+
+        // Rows per page dropdown (first)
+        html += `
+            <div class="flex items-center gap-1.5 mr-2">
+                <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+                <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                    <option value="10">10</option>
+                    <option value="25" selected>25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        `;
+
+        // Previous
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+
+        // Next
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+
+        controls.innerHTML = html;
+
+        // Set the rows per page dropdown to the current value
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = rowsPerPage;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+    }
+
+    function resetFilters() {
+        document.getElementById('logSearch').value = '';
+        document.getElementById('methodFilter').value = 'all';
+        document.getElementById('statusFilter').value = 'all';
+        applyFilters();
+    }
+
+    // ===== Quick Jump =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Verify Payment =====
+    window.openVerifyModal = function(orNumber) {
+        verifyTarget = orNumber;
+        const txn = logs.find(p => p.orNumber === orNumber);
+        if (!txn) return;
+        document.getElementById('verifyModalBody').textContent = `Confirm that ${txn.orNumber} for ${formatCurrency(txn.amount)} from ${txn.studentName} is valid and matches the official receipt.`;
+        document.getElementById('verifyModal').classList.remove('hidden');
+    };
+    window.closeVerifyModal = function() {
+        document.getElementById('verifyModal').classList.add('hidden');
+        verifyTarget = null;
+    };
+    window.confirmVerify = function() {
+        if (!verifyTarget) return;
+        const txn = logs.find(p => p.orNumber === verifyTarget);
+        if (txn) {
+            txn.reconciled = true;
+            txn.status = 'Confirmed';
+            showNotification(`Payment ${txn.orNumber} verified successfully.`, 'success');
+        }
+        closeVerifyModal();
+        applyFilters();
+    };
+
+    // ===== Receipt Modal =====
+    window.openReceiptModal = function(orNumber) {
+        const txn = logs.find(p => p.orNumber === orNumber);
+        if (!txn) return;
+        document.getElementById('receiptTitle').textContent = `Receipt - ${txn.orNumber}`;
+        document.getElementById('receiptContent').innerHTML = `
+            <div class="grid grid-cols-2 gap-2">
+                <div><span class="font-bold">Student:</span> ${txn.studentName}</div>
+                <div><span class="font-bold">ID:</span> ${txn.studentId}</div>
+                <div><span class="font-bold">Date:</span> ${txn.date}</div>
+                <div><span class="font-bold">Amount:</span> ${formatCurrency(txn.amount)}</div>
+                <div><span class="font-bold">Method:</span> ${txn.method}</div>
+                <div><span class="font-bold">Type:</span> ${txn.type}</div>
+                <div><span class="font-bold">Status:</span> ${txn.status}</div>
+                <div><span class="font-bold">Semester:</span> ${txn.semester}</div>
+                <div><span class="font-bold">Verified:</span> ${txn.reconciled ? 'Yes' : 'No'}</div>
+            </div>
+        `;
+        document.getElementById('receiptModal').classList.remove('hidden');
+    };
+    window.closeReceiptModal = function() {
+        document.getElementById('receiptModal').classList.add('hidden');
+    };
+
+    // ===== Export CSV (read-only – no golden egg) =====
+    window.exportPaymentLogCSV = function() {
+        const data = filteredData.length > 0 ? filteredData : logs;
+        if (!data || data.length === 0) {
+            showNotification('No data to export.', 'warning');
+            return;
+        }
+        const headers = ['OR #', 'Student ID', 'Student', 'Date', 'Amount', 'Method', 'Type', 'Status', 'Verified'];
+        const rows = data.map(p => [p.orNumber, p.studentId, p.studentName, p.date, p.amount, p.method, p.type, p.status, p.reconciled ? 'Yes' : 'No']);
+        let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'payment_log.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        showNotification('CSV exported successfully.', 'success');
+    };
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+        applyFilters();
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+    });
+
+    window.applyFilters = applyFilters;
+    window.goToPage = goToPage;
+    window.resetFilters = resetFilters;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.sortTable = sortTable;
+</script>

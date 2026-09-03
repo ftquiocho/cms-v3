@@ -1,0 +1,408 @@
+<!-- ===== SCHEDULES SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='academic.html?tab=calendar'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Academic Administration
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Calendar</span>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Schedules</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Schedules</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Define master class schedule templates, time slots, and term calendars</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="semester-definitions.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Semester Definitions</a>
+                <a href="schedules.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Schedules</a>
+                <a href="graduation-dates.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Graduation Dates</a>
+            </div>
+        </div>
+        <button type="button" onclick="openAddScheduleModal()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Add Schedule
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Schedules
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of schedule templates.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalSchedules">8</h2>
+            <span class="text-sm text-emerald-700 font-semibold">Active</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Time Slots
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Average time slots per schedule.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="timeSlots">12</h2>
+            <span class="text-sm text-slate-500">Per schedule</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Active Semesters
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of semesters with active schedules.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-brand-600 font-mono" id="activeSemesters">2</h2>
+            <span class="text-sm text-slate-500">With schedules</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Room Capacity
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Default room capacity.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="roomCapacity">40</h2>
+            <span class="text-sm text-slate-500">Default</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="scheduleSearch" placeholder="Search schedules..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="window.applyFilters_Schedules()" />
+            <button onclick="window.resetFilters_Schedules()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="semesterFilter" class="select-field text-sm w-48" onchange="window.applyFilters_Schedules()">
+            <option value="all">All Semesters</option>
+            <option value="AY 2021-2022 1st">AY 2021-2022 1st</option>
+            <option value="AY 2021-2022 2nd">AY 2021-2022 2nd</option>
+            <option value="AY 2022-2023 1st">AY 2022-2023 1st</option>
+        </select>
+        <select id="dayFilter" class="select-field text-sm w-32" onchange="window.applyFilters_Schedules()">
+            <option value="all">All Days</option>
+            <option value="Mon">Monday</option>
+            <option value="Tue">Tuesday</option>
+            <option value="Wed">Wednesday</option>
+            <option value="Thu">Thursday</option>
+            <option value="Fri">Friday</option>
+            <option value="Sat">Saturday</option>
+        </select>
+    </div>
+    <span class="text-xs text-slate-400 font-mono" id="scheduleCount">8 schedules</span>
+</div>
+
+<!-- ===== SCHEDULES TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="schedulesTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">#</th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="name" onclick="window.sortSchedules('name')">
+                        Schedule Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="semester" onclick="window.sortSchedules('semester')">
+                        Semester <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="day" onclick="window.sortSchedules('day')">
+                        Day <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="startTime" onclick="window.sortSchedules('startTime')">
+                        Start Time <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="endTime" onclick="window.sortSchedules('endTime')">
+                        End Time <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="status" onclick="window.sortSchedules('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[120px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="schedulesBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by JavaScript -->
+                <tr id="schedulesEmptyState" class="hidden">
+                    <td colspan="8" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="font-bold text-slate-700">No schedules found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="schedulesPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<!-- ===== ADD/EDIT SCHEDULE MODAL ===== -->
+<div id="scheduleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="scheduleModalTitle">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="scheduleModalTitle" class="text-lg font-bold text-slate-900">Add Schedule</h3>
+            <button type="button" onclick="closeScheduleModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="scheduleForm" onsubmit="saveSchedule(event)" class="space-y-4">
+            <input type="hidden" id="editScheduleId" value="" />
+            <div>
+                <label for="scheduleName" class="block font-bold text-sm text-slate-700 mb-1">Schedule Name *</label>
+                <input type="text" id="scheduleName" required placeholder="e.g. Morning Class Schedule" class="input-field" />
+            </div>
+            <div>
+                <label for="scheduleSemester" class="block font-bold text-sm text-slate-700 mb-1">Semester *</label>
+                <select id="scheduleSemester" required class="select-field">
+                    <option value="">Select semester</option>
+                    <option value="AY 2021-2022 1st">AY 2021-2022 1st</option>
+                    <option value="AY 2021-2022 2nd">AY 2021-2022 2nd</option>
+                    <option value="AY 2022-2023 1st">AY 2022-2023 1st</option>
+                    <option value="AY 2022-2023 2nd">AY 2022-2023 2nd</option>
+                </select>
+            </div>
+            <div>
+                <label for="scheduleDay" class="block font-bold text-sm text-slate-700 mb-1">Day *</label>
+                <select id="scheduleDay" required class="select-field">
+                    <option value="">Select day</option>
+                    <option value="Mon">Monday</option>
+                    <option value="Tue">Tuesday</option>
+                    <option value="Wed">Wednesday</option>
+                    <option value="Thu">Thursday</option>
+                    <option value="Fri">Friday</option>
+                    <option value="Sat">Saturday</option>
+                </select>
+            </div>
+            <div>
+                <label for="scheduleStartTime" class="block font-bold text-sm text-slate-700 mb-1">Start Time *</label>
+                <input type="time" id="scheduleStartTime" required class="input-field" />
+            </div>
+            <div>
+                <label for="scheduleEndTime" class="block font-bold text-sm text-slate-700 mb-1">End Time *</label>
+                <input type="time" id="scheduleEndTime" required class="input-field" />
+            </div>
+            <div>
+                <label for="scheduleStatus" class="block font-bold text-sm text-slate-700 mb-1">Status</label>
+                <select id="scheduleStatus" class="select-field">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Archived">Archived</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeScheduleModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Save Schedule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    // ✅ Import all schedule functions from data.js
+    import { 
+        schedules, 
+        getSchedules, 
+        getScheduleById,
+        addSchedule, 
+        updateSchedule, 
+        deleteSchedule 
+    } from './assets/js/data.js';
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== CRUD Functions =====
+    window.openAddScheduleModal = function() {
+        document.getElementById('scheduleModalTitle').textContent = 'Add Schedule';
+        document.getElementById('editScheduleId').value = '';
+        document.getElementById('scheduleForm').reset();
+        document.getElementById('scheduleModal').classList.remove('hidden');
+    };
+
+    window.editSchedule = function(id) {
+        const schedule = getScheduleById(id);
+        if (!schedule) {
+            showNotification('Schedule not found.', 'error');
+            return;
+        }
+        document.getElementById('scheduleModalTitle').textContent = 'Edit Schedule';
+        document.getElementById('editScheduleId').value = id;
+        document.getElementById('scheduleName').value = schedule.name;
+        document.getElementById('scheduleSemester').value = schedule.semester;
+        document.getElementById('scheduleDay').value = schedule.day;
+        document.getElementById('scheduleStartTime').value = schedule.startTime;
+        document.getElementById('scheduleEndTime').value = schedule.endTime;
+        document.getElementById('scheduleStatus').value = schedule.status;
+        document.getElementById('scheduleModal').classList.remove('hidden');
+    };
+
+    window.closeScheduleModal = function() {
+        document.getElementById('scheduleModal').classList.add('hidden');
+    };
+
+    window.saveSchedule = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editScheduleId').value;
+        const name = document.getElementById('scheduleName').value.trim();
+        const semester = document.getElementById('scheduleSemester').value;
+        const day = document.getElementById('scheduleDay').value;
+        const startTime = document.getElementById('scheduleStartTime').value;
+        const endTime = document.getElementById('scheduleEndTime').value;
+        const status = document.getElementById('scheduleStatus').value;
+
+        if (!name || !semester || !day || !startTime || !endTime) {
+            showNotification('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        if (startTime >= endTime) {
+            showNotification('Start time must be before end time.', 'warning');
+            return;
+        }
+
+        if (id) {
+            const updated = updateSchedule(parseInt(id), { name, semester, day, startTime, endTime, status });
+            if (updated) {
+                showNotification('Schedule updated successfully!', 'success');
+            } else {
+                showNotification('Failed to update schedule.', 'error');
+            }
+        } else {
+            addSchedule({ name, semester, day, startTime, endTime, status });
+            showNotification('Schedule added successfully!', 'success');
+        }
+
+        closeScheduleModal();
+        window.refreshSchedules();
+    };
+
+    window.deleteSchedule = function(id) {
+        if (!confirm('Are you sure you want to delete this schedule?')) return;
+        const deleted = deleteSchedule(id);
+        if (deleted) {
+            showNotification('Schedule deleted.', 'warning');
+            window.refreshSchedules();
+        } else {
+            showNotification('Failed to delete schedule.', 'error');
+        }
+    };
+
+    // ===== Quick Jump Toggle =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'schedulesTable',
+        tbodyId: 'schedulesBody',
+        paginationContainerId: 'schedulesPaginationContainer',
+        emptyStateId: 'schedulesEmptyState',
+        countDisplayId: 'scheduleCount',
+        searchInputId: 'scheduleSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'semesterFilter', field: 'semester' },
+            { id: 'dayFilter', field: 'day' }
+        ],
+        searchFields: ['name', 'semester', 'day'],
+        sortMap: {
+            name: (a, b) => a.name.localeCompare(b.name),
+            semester: (a, b) => a.semester.localeCompare(b.semester),
+            day: (a, b) => a.day.localeCompare(b.day),
+            startTime: (a, b) => a.startTime.localeCompare(b.startTime),
+            endTime: (a, b) => a.endTime.localeCompare(b.endTime),
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: getSchedules,
+        updateStats: (data) => {
+            const total = data.length;
+            const timeSlots = data.length > 0 ? Math.round(data.length / 2) : 0;
+            const activeSemesters = new Set(data.filter(s => s.status === 'Active').map(s => s.semester)).size;
+            document.getElementById('totalSchedules').textContent = total;
+            document.getElementById('timeSlots').textContent = timeSlots;
+            document.getElementById('activeSemesters').textContent = activeSemesters;
+            document.getElementById('roomCapacity').textContent = '40';
+        },
+        renderRow: (schedule, index) => {
+            const statusMap = {
+                'Active': 'status-badge--approved',
+                'Upcoming': 'status-badge--review',
+                'Inactive': 'status-badge--hold',
+                'Archived': 'status-badge--pending'
+            };
+            return `
+                <tr>
+                    <td class="p-3">${index}</td>
+                    <td class="p-3 font-bold text-slate-900">${schedule.name}</td>
+                    <td class="p-3 text-slate-700">${schedule.semester}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${schedule.day}</span></td>
+                    <td class="p-3 font-mono text-slate-700">${schedule.startTime}</td>
+                    <td class="p-3 font-mono text-slate-700">${schedule.endTime}</td>
+                    <td class="p-3"><span class="status-badge ${statusMap[schedule.status] || 'status-badge--pending'}">${schedule.status}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="editSchedule(${schedule.id})" class="btn btn-secondary text-xs py-1 px-2">Edit</button>
+                        <button onclick="deleteSchedule(${schedule.id})" class="btn btn-danger text-xs py-1 px-2">Delete</button>
+                    </td>
+                </tr>
+            `;
+        },
+        defaultSort: 'name',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'schedules'
+    });
+
+    // Expose functions globally
+    window.refreshSchedules = tableModule.refresh;
+    window.applyFilters_Schedules = tableModule.applyFilters;
+    window.goToPage_Schedules = tableModule.goToPage;
+    window.changeRowsPerPage_Schedules = tableModule.changeRowsPerPage;
+    window.resetFilters_Schedules = tableModule.resetFilters;
+    window.sortSchedules = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.column);
+    });
+
+    // Set default rows per page
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+    });
+</script>

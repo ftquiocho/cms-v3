@@ -1,0 +1,407 @@
+<!-- ===== GRADUATION DATES SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='academic.html?tab=calendar'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Academic Administration
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Calendar</span>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Graduation Dates</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Graduation Dates</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Configure graduation ceremony dates, application deadlines, and clearance cutoff</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="semester-definitions.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Semester Definitions</a>
+                <a href="schedules.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Schedules</a>
+                <a href="graduation-dates.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Graduation Dates</a>
+            </div>
+        </div>
+        <button type="button" onclick="openAddGraduationModal()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Add Graduation Date
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Ceremonies
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of graduation ceremonies.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalCeremonies">4</h2>
+            <span class="text-sm text-emerald-700 font-semibold">All Completed</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Academic Year
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Current academic year for ceremonies.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="gradAY">2021-2022</h2>
+            <span class="text-sm text-slate-500">All ceremonies</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Application Deadline
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Latest application deadline for ceremonies.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="gradDeadline">May 15, 2022</h2>
+            <span class="text-sm text-emerald-600 font-semibold">Passed</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+    </div>
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Clearance Cutoff
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Clearance deadline before ceremony.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="gradCutoff">May 30, 2022</h2>
+            <span class="text-sm text-slate-500">Before ceremony</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="gradSearch" placeholder="Search graduation events..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="window.applyFilters_GraduationDates()" />
+            <button onclick="window.resetFilters_GraduationDates()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="ayFilter" class="select-field text-sm w-48" onchange="window.applyFilters_GraduationDates()">
+            <option value="all">All Academic Years</option>
+            <option value="2021-2022">AY 2021-2022</option>
+        </select>
+        <select id="typeFilter" class="select-field text-sm w-40" onchange="window.applyFilters_GraduationDates()">
+            <option value="all">All Types</option>
+            <option value="Commencement">Commencement</option>
+            <option value="Recognition">Recognition</option>
+            <option value="Convocation">Convocation</option>
+        </select>
+    </div>
+    <span class="text-xs text-slate-400 font-mono" id="gradCount">4 ceremonies</span>
+</div>
+
+<!-- ===== GRADUATION DATES TABLE ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="graduationTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-10">#</th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="ay" onclick="window.sortGraduationDates('ay')">
+                        Academic Year <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="date" onclick="window.sortGraduationDates('date')">
+                        Ceremony Date <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="venue" onclick="window.sortGraduationDates('venue')">
+                        Venue <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="type" onclick="window.sortGraduationDates('type')">
+                        Ceremony Type <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="deadline" onclick="window.sortGraduationDates('deadline')">
+                        Application Deadline <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="status" onclick="window.sortGraduationDates('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[120px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="graduationBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by JavaScript -->
+                <tr id="graduationEmptyState" class="hidden">
+                    <td colspan="8" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+                            <p class="font-bold text-slate-700">No graduation events found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="graduationPaginationContainer" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<!-- ===== ADD/EDIT GRADUATION MODAL ===== -->
+<div id="graduationModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="graduationModalTitle">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="graduationModalTitle" class="text-lg font-bold text-slate-900">Add Graduation Date</h3>
+            <button type="button" onclick="closeGraduationModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="graduationForm" onsubmit="saveGraduation(event)" class="space-y-4">
+            <input type="hidden" id="editGraduationId" value="" />
+            <div>
+                <label for="gradAY" class="block font-bold text-sm text-slate-700 mb-1">Academic Year *</label>
+                <select id="gradAY" required class="select-field">
+                    <option value="">Select academic year</option>
+                    <option value="2021-2022">AY 2021-2022</option>
+                </select>
+            </div>
+            <div>
+                <label for="gradDate" class="block font-bold text-sm text-slate-700 mb-1">Ceremony Date *</label>
+                <input type="date" id="gradDate" required class="input-field" />
+            </div>
+            <div>
+                <label for="gradVenue" class="block font-bold text-sm text-slate-700 mb-1">Venue *</label>
+                <input type="text" id="gradVenue" required placeholder="e.g. Main Auditorium" class="input-field" />
+            </div>
+            <div>
+                <label for="gradType" class="block font-bold text-sm text-slate-700 mb-1">Ceremony Type *</label>
+                <select id="gradType" required class="select-field">
+                    <option value="">Select type</option>
+                    <option value="Commencement">Commencement</option>
+                    <option value="Recognition">Recognition</option>
+                    <option value="Convocation">Convocation</option>
+                </select>
+            </div>
+            <div>
+                <label for="gradDeadline" class="block font-bold text-sm text-slate-700 mb-1">Application Deadline *</label>
+                <input type="date" id="gradDeadline" required class="input-field" />
+            </div>
+            <div>
+                <label for="gradStatus" class="block font-bold text-sm text-slate-700 mb-1">Status</label>
+                <select id="gradStatus" class="select-field">
+                    <option value="Active">Active</option>
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeGraduationModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Save Graduation Date</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    // ✅ Import graduation functions from data.js
+    import { 
+        graduationDates, 
+        getGraduationDates, 
+        getGraduationById,
+        addGraduation, 
+        updateGraduation, 
+        deleteGraduation 
+    } from './assets/js/data.js';
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== Helper: Format Date =====
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        const date = new Date(dateString + 'T00:00:00');
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // ===== CRUD Functions =====
+    window.openAddGraduationModal = function() {
+        document.getElementById('graduationModalTitle').textContent = 'Add Graduation Date';
+        document.getElementById('editGraduationId').value = '';
+        document.getElementById('graduationForm').reset();
+        document.getElementById('graduationModal').classList.remove('hidden');
+    };
+
+    window.editGraduation = function(id) {
+        const grad = getGraduationById(id);
+        if (!grad) {
+            showNotification('Graduation event not found.', 'error');
+            return;
+        }
+        document.getElementById('graduationModalTitle').textContent = 'Edit Graduation Date';
+        document.getElementById('editGraduationId').value = id;
+        document.getElementById('gradAY').value = grad.ay;
+        document.getElementById('gradDate').value = grad.date;
+        document.getElementById('gradVenue').value = grad.venue;
+        document.getElementById('gradType').value = grad.type;
+        document.getElementById('gradDeadline').value = grad.deadline;
+        document.getElementById('gradStatus').value = grad.status;
+        document.getElementById('graduationModal').classList.remove('hidden');
+    };
+
+    window.closeGraduationModal = function() {
+        document.getElementById('graduationModal').classList.add('hidden');
+    };
+
+    window.saveGraduation = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editGraduationId').value;
+        const ay = document.getElementById('gradAY').value;
+        const date = document.getElementById('gradDate').value;
+        const venue = document.getElementById('gradVenue').value.trim();
+        const type = document.getElementById('gradType').value;
+        const deadline = document.getElementById('gradDeadline').value;
+        const status = document.getElementById('gradStatus').value;
+
+        if (!ay || !date || !venue || !type || !deadline) {
+            showNotification('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        if (new Date(deadline) > new Date(date)) {
+            showNotification('Application deadline should be before the ceremony date.', 'warning');
+            return;
+        }
+
+        if (id) {
+            const updated = updateGraduation(parseInt(id), { ay, date, venue, type, deadline, status });
+            if (updated) {
+                showNotification('Graduation date updated successfully!', 'success');
+            } else {
+                showNotification('Failed to update graduation date.', 'error');
+            }
+        } else {
+            addGraduation({ ay, date, venue, type, deadline, status });
+            showNotification('Graduation date added successfully!', 'success');
+        }
+
+        closeGraduationModal();
+        window.refreshGraduationDates();
+    };
+
+    window.deleteGraduation = function(id) {
+        if (!confirm('Are you sure you want to delete this graduation date?')) return;
+        const deleted = deleteGraduation(id);
+        if (deleted) {
+            showNotification('Graduation date deleted.', 'warning');
+            window.refreshGraduationDates();
+        } else {
+            showNotification('Failed to delete graduation date.', 'error');
+        }
+    };
+
+    // ===== Quick Jump Toggle =====
+    window.toggleQuickJump = function() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'graduationTable',
+        tbodyId: 'graduationBody',
+        paginationContainerId: 'graduationPaginationContainer',
+        emptyStateId: 'graduationEmptyState',
+        countDisplayId: 'gradCount',
+        searchInputId: 'gradSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'ayFilter', field: 'ay' },
+            { id: 'typeFilter', field: 'type' }
+        ],
+        searchFields: ['ay', 'venue', 'type'],
+        sortMap: {
+            ay: (a, b) => a.ay.localeCompare(b.ay),
+            date: (a, b) => a.date.localeCompare(b.date),
+            venue: (a, b) => a.venue.localeCompare(b.venue),
+            type: (a, b) => a.type.localeCompare(b.type),
+            deadline: (a, b) => a.deadline.localeCompare(b.deadline),
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: getGraduationDates,
+        updateStats: (data) => {
+            const total = data.length;
+            const ay = data.length > 0 ? data[0].ay : '—';
+            const deadlines = data.map(g => g.deadline);
+            const latestDeadline = deadlines.length > 0 ? deadlines.reduce((a, b) => a > b ? a : b) : '';
+            const cutoff = data.length > 0 ? data[0].date : '';
+            document.getElementById('totalCeremonies').textContent = total;
+            document.getElementById('gradAY').textContent = ay;
+            document.getElementById('gradDeadline').textContent = latestDeadline ? formatDate(latestDeadline) : '—';
+            document.getElementById('gradCutoff').textContent = cutoff ? formatDate(cutoff) : '—';
+        },
+        renderRow: (grad, index) => {
+            const statusMap = {
+                'Active': 'status-badge--approved',
+                'Upcoming': 'status-badge--review',
+                'Completed': 'status-badge--approved',
+                'Cancelled': 'status-badge--hold'
+            };
+            return `
+                <tr>
+                    <td class="p-3">${index}</td>
+                    <td class="p-3 font-bold text-slate-900">${grad.ay}</td>
+                    <td class="p-3 font-mono text-emerald-700 font-bold">${formatDate(grad.date)}</td>
+                    <td class="p-3 text-slate-700">${grad.venue}</td>
+                    <td class="p-3"><span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${grad.type}</span></td>
+                    <td class="p-3 font-mono text-rose-700">${formatDate(grad.deadline)}</td>
+                    <td class="p-3"><span class="status-badge ${statusMap[grad.status] || 'status-badge--pending'}">${grad.status}</span></td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="editGraduation(${grad.id})" class="btn btn-secondary text-xs py-1 px-2">Edit</button>
+                        <button onclick="deleteGraduation(${grad.id})" class="btn btn-danger text-xs py-1 px-2">Delete</button>
+                    </td>
+                </tr>
+            `;
+        },
+        defaultSort: 'date',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'ceremonies'
+    });
+
+    // Expose functions globally
+    window.refreshGraduationDates = tableModule.refresh;
+    window.applyFilters_GraduationDates = tableModule.applyFilters;
+    window.goToPage_GraduationDates = tableModule.goToPage;
+    window.changeRowsPerPage_GraduationDates = tableModule.changeRowsPerPage;
+    window.resetFilters_GraduationDates = tableModule.resetFilters;
+    window.sortGraduationDates = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.column);
+    });
+
+    // Set default rows per page
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+    });
+</script>

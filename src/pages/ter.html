@@ -1,0 +1,635 @@
+<!-- ===== TEACHER EVALUATION RECORDS (TER) PAGE ===== -->
+
+<!-- ===== HEADER ===== -->
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="showDashboard()" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Console
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Teacher Evaluation Records</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Teacher Evaluation Records</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Aggregated faculty performance evaluations – with drill‑down and adjustment capabilities</p>
+    </div>
+    <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" onclick="exportFacultyReport()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export Report
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Dynamic from data.js) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <!-- 1st – Total Evaluations (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Evaluations
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of faculty evaluation responses collected across all departments.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalEvals">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="evalTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Response Rate (Blue) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Response Rate
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Average student response rate across all faculty evaluations.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-blue-600 font-mono" id="responseRate">0%</h2>
+            <span class="text-sm text-slate-500" id="responseTrend">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Overall Rating (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Overall Rating
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Average overall rating across all faculty (scale of 0.0–5.0).">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="overallRating">0.00</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="ratingSubtext">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 4th – Top Department (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Top Department
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Department with the highest average faculty evaluation rating.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="topDept">—</h2>
+            <span class="text-sm text-amber-600 font-semibold" id="topDeptRating">Loading...</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CHARTS ===== -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Radar Chart -->
+    <div class="card space-y-3">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+                Faculty Performance by College
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Radar chart showing faculty performance across 5 key metrics: Teaching Quality, Student Mentorship, Research Output, Administrative Service, and Community Engagement.">ⓘ</span>
+            </h2>
+            <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                5 Key Metrics
+                <span class="text-brand-500 ml-0.5 cursor-help" data-tooltip="The five evaluation dimensions used to assess faculty performance: Teaching, Mentorship, Research, Admin, and Community.">ⓘ</span>
+            </span>
+        </div>
+        <div class="h-64 relative w-full" id="radarChartContainer">
+            <canvas id="facultyRadarChartTER" aria-label="Faculty performance radar chart" role="img"></canvas>
+            <div id="radarChartLoading" class="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+                <div class="spinner w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="card space-y-3">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+                Average Rating by Department
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Bar chart comparing the average overall rating of faculty across all departments.">ⓘ</span>
+            </h2>
+            <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                This Term
+                <span class="text-brand-500 ml-0.5 cursor-help" data-tooltip="Average ratings calculated from the current academic term's faculty evaluations.">ⓘ</span>
+            </span>
+        </div>
+        <div class="h-64 relative w-full" id="barChartContainer">
+            <canvas id="deptBarChart" aria-label="Department bar chart" role="img"></canvas>
+            <div id="barChartLoading" class="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+                <div class="spinner w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Line Chart -->
+    <div class="card space-y-3 lg:col-span-2">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1">
+                Faculty Evaluation Trend
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Line chart showing the historical trend of faculty evaluation ratings over the last 6 academic terms.">ⓘ</span>
+            </h2>
+            <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                Last 6 Terms
+                <span class="text-brand-500 ml-0.5 cursor-help" data-tooltip="Track progress and identify patterns in faculty performance over the past six semesters.">ⓘ</span>
+            </span>
+        </div>
+        <div class="h-52 relative w-full" id="lineChartContainer">
+            <canvas id="trendLineChart" aria-label="Evaluation trend line chart" role="img"></canvas>
+            <div id="lineChartLoading" class="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+                <div class="spinner w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FACULTY EVALUATION TABLE ===== -->
+<div class="card space-y-4">
+    <!-- Table header: title on left, filters on left -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900">Faculty Evaluation Summary</h2>
+        <div class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+                <input id="facultySearch" type="search" placeholder="Search faculty..." class="input-field text-sm w-48 pr-8" oninput="filterFacultyTable()" />
+                <button onclick="document.getElementById('facultySearch').value=''; filterFacultyTable();" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <select id="deptFilter" class="select-field text-sm w-40" aria-label="Filter by department" onchange="filterFacultyTable()">
+                <option value="all">All Departments</option>
+                <!-- Populated by JavaScript -->
+            </select>
+        </div>
+    </div>
+
+    <!-- Table with loading skeleton -->
+    <div class="relative">
+        <div id="tableLoading" class="absolute inset-0 flex items-center justify-center bg-white/80 z-10 hidden">
+            <div class="spinner w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+        </div>
+        <div class="table-wrap" id="facultyTableWrap">
+            <table class="w-full text-left text-sm text-slate-600 border-collapse" id="facultyTable">
+                <thead>
+                    <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th scope="col" class="p-3">Faculty Name</th>
+                        <th scope="col" class="p-3">Department</th>
+                        <th scope="col" class="p-3">Overall Rating</th>
+                        <th scope="col" class="p-3">Teaching Quality</th>
+                        <th scope="col" class="p-3">Student Mentorship</th>
+                        <th scope="col" class="p-3">Response Count</th>
+                        <th scope="col" class="p-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="facultyTableBody" class="divide-y divide-slate-100">
+                    <!-- Rows generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Empty state -->
+        <div id="emptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300 mt-4">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+            <h3 class="font-bold text-slate-800">No Evaluations Found</h3>
+            <p class="text-sm text-slate-500">Try adjusting your filters or search term.</p>
+        </div>
+    </div>
+
+    <!-- Pagination with Rows per Page -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div class="flex items-center gap-2 flex-wrap">
+            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+            <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="text-sm text-slate-500 ml-2">Showing <span id="visibleCount" class="font-bold text-slate-700">0</span> of <span id="totalCount" class="font-bold text-slate-700">0</span> faculty</span>
+        </div>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <button type="button" id="prevPageBtn" class="btn btn-secondary text-xs" disabled>Previous</button>
+            <!-- Page numbers rendered by JavaScript -->
+            <button type="button" id="nextPageBtn" class="btn btn-secondary text-xs" disabled>Next</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- 1. DETAILS MODAL -->
+<div id="detailsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="detailsModalTitle">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 id="detailsModalTitle" class="text-lg font-bold text-slate-900">Evaluation Details</h3>
+            <button type="button" onclick="closeDetailsModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div id="detailsContent" class="space-y-4">
+            <!-- Populated by JavaScript -->
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeDetailsModal()" class="btn btn-secondary text-xs">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- 2. OVERRIDE MODAL -->
+<div id="overrideModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="overrideModalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="overrideModalTitle" class="text-lg font-bold text-slate-900">Override Overall Rating</h3>
+            <button type="button" onclick="closeOverrideModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="overrideForm" onsubmit="submitOverride(event)" class="space-y-4">
+            <input type="hidden" id="overrideFacultyId" value="" />
+            <div>
+                <label for="overrideRating" class="block font-bold text-sm text-slate-700 mb-1">New Overall Rating (0.0 – 5.0)</label>
+                <input type="number" id="overrideRating" min="0" max="5" step="0.01" required class="input-field" />
+            </div>
+            <div>
+                <label for="overrideJustification" class="block font-bold text-sm text-slate-700 mb-1">Justification</label>
+                <textarea id="overrideJustification" rows="3" class="input-field" placeholder="Reason for override..."></textarea>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeOverrideModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Apply Override</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 3. FLAG MODAL (simple confirmation) -->
+<div id="flagModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="flagModalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="flagModalTitle" class="text-lg font-bold text-slate-900">Flag for Review</h3>
+            <button type="button" onclick="closeFlagModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600" id="flagModalBody">Are you sure you want to flag this faculty member for additional review?</p>
+        <p class="text-xs text-slate-500">This will notify the Dean and HR for follow‑up.</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeFlagModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" onclick="confirmFlag()" class="btn btn-primary text-xs">Flag for Review</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    // ===== Import data =====
+    import { faculty, getFacultyById, getDepartmentAverages } from './assets/js/data.js';
+
+    // ===== State =====
+    let allFaculty = [...faculty];
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let filteredData = [];
+    let totalPages = 1;
+    let currentFilter = { dept: 'all', search: '' };
+
+// ===== Compute KPIs =====
+function computeKPIs() {
+    const totalEvals = allFaculty.reduce((sum, f) => sum + f.responses, 0);
+    const avgResponse = allFaculty.length > 0 ? (totalEvals / allFaculty.length) : 0;
+    const avgOverall = allFaculty.length > 0 ? (allFaculty.reduce((sum, f) => sum + f.overall, 0) / allFaculty.length) : 0;
+    const deptAverages = getDepartmentAverages();
+    
+    let topDept = '';
+    let topDeptRating = 0;
+    Object.keys(deptAverages).forEach(dept => {
+        if (deptAverages[dept] > topDeptRating) {
+            topDeptRating = deptAverages[dept];
+            topDept = dept;
+        }
+    });
+
+    // Update DOM
+    document.getElementById('totalEvals').textContent = totalEvals;
+    document.getElementById('evalTrend').textContent = `↑ ${totalEvals} total responses`;
+    
+    document.getElementById('responseRate').textContent = avgResponse.toFixed(1) + '%';
+    document.getElementById('responseTrend').textContent = `Avg ${avgResponse.toFixed(1)}% per faculty`;
+    
+    document.getElementById('overallRating').textContent = avgOverall.toFixed(2) + ' / 5.0';
+    
+    // Rating subtext based on average
+    let ratingText = '';
+    if (avgOverall >= 4.5) ratingText = 'Excellent';
+    else if (avgOverall >= 4.0) ratingText = 'Good';
+    else if (avgOverall >= 3.0) ratingText = 'Satisfactory';
+    else ratingText = 'Needs Improvement';
+    document.getElementById('ratingSubtext').textContent = ratingText;
+    
+    document.getElementById('topDept').textContent = topDept || '—';
+    document.getElementById('topDeptRating').textContent = topDeptRating > 0 ? `${topDeptRating.toFixed(2)} avg` : '—';
+}
+    // ===== Populate department filter =====
+    function populateDepartmentFilter() {
+        const select = document.getElementById('deptFilter');
+        const depts = [...new Set(allFaculty.map(f => f.department))].sort();
+        depts.forEach(dept => {
+            const opt = document.createElement('option');
+            opt.value = dept;
+            opt.textContent = dept;
+            select.appendChild(opt);
+        });
+    }
+
+    // ===== Render Faculty Table =====
+    function renderFacultyTable() {
+        const tbody = document.getElementById('facultyTableBody');
+        const emptyState = document.getElementById('emptyState');
+        const visibleCountSpan = document.getElementById('visibleCount');
+        const totalCountSpan = document.getElementById('totalCount');
+
+        // Compute filtered data
+        const search = currentFilter.search.toLowerCase().trim();
+        const dept = currentFilter.dept;
+        filteredData = allFaculty.filter(f => {
+            const matchDept = dept === 'all' || f.department === dept;
+            const matchSearch = search === '' || f.name.toLowerCase().includes(search) || f.department.toLowerCase().includes(search);
+            return matchDept && matchSearch;
+        });
+
+        const total = filteredData.length;
+        totalPages = Math.ceil(total / rowsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, total);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            emptyState.classList.remove('hidden');
+            tbody.innerHTML = '';
+            visibleCountSpan.textContent = '0';
+            totalCountSpan.textContent = total;
+            document.querySelectorAll('#paginationControls button, #prevPageBtn, #nextPageBtn').forEach(b => b.disabled = true);
+            return;
+        } else {
+            emptyState.classList.add('hidden');
+        }
+
+        tbody.innerHTML = pageItems.map(f => {
+            const ratingColor = f.overall >= 4.7 ? 'text-emerald-700' : f.overall >= 4.5 ? 'text-amber-700' : 'text-rose-700';
+            return `
+                <tr data-id="${f.id}">
+                    <td class="p-3 font-bold text-slate-900">${f.name}</td>
+                    <td class="p-3">${f.department}</td>
+                    <td class="p-3"><span class="font-mono font-bold ${ratingColor}">${f.overall.toFixed(2)}</span></td>
+                    <td class="p-3"><span class="font-mono">${f.teaching.toFixed(1)}</span></td>
+                    <td class="p-3"><span class="font-mono">${f.mentorship.toFixed(1)}</span></td>
+                    <td class="p-3 font-mono">${f.responses}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <button onclick="openDetails('${f.id}')" class="btn btn-secondary text-xs py-1 px-2.5">Details</button>
+                        <button onclick="openOverride('${f.id}')" class="btn btn-ghost text-brand-600 text-xs py-1 px-2.5">Override</button>
+                        <button onclick="openFlag('${f.id}')" class="btn btn-danger text-xs py-1 px-2.5">Flag</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        visibleCountSpan.textContent = pageItems.length;
+        totalCountSpan.textContent = total;
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const controls = document.getElementById('paginationControls');
+        const prevBtn = document.getElementById('prevPageBtn');
+        const nextBtn = document.getElementById('nextPageBtn');
+
+        if (prevBtn) {
+            prevBtn.disabled = currentPage <= 1;
+            prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; renderFacultyTable(); } };
+        }
+        if (nextBtn) {
+            nextBtn.disabled = currentPage >= totalPages;
+            nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; renderFacultyTable(); } };
+        }
+
+        // Remove all page number buttons (keep prev and next)
+        while (controls.children.length > 2) {
+            controls.removeChild(controls.children[1]);
+        }
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = i === currentPage ? 'btn btn-primary text-xs' : 'btn btn-secondary text-xs';
+            btn.onclick = () => { goToPage(i); };
+            controls.insertBefore(btn, nextBtn);
+        }
+    }
+
+    function goToPage(page) {
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderFacultyTable();
+    }
+
+    // ===== Filter Functions =====
+    window.filterFacultyTable = function() {
+        currentFilter.dept = document.getElementById('deptFilter').value;
+        currentFilter.search = document.getElementById('facultySearch').value;
+        currentPage = 1;
+        renderFacultyTable();
+    };
+
+    window.changeRowsPerPage = function() {
+        rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+        currentPage = 1;
+        renderFacultyTable();
+    };
+
+    // ===== MODAL FUNCTIONS =====
+
+    // 1. Details Modal
+    let currentDetailsId = null;
+    window.openDetails = function(id) {
+        currentDetailsId = id;
+        const faculty = getFacultyById(id);
+        if (!faculty) return;
+        document.getElementById('detailsModalTitle').textContent = `Evaluation Details – ${faculty.name}`;
+        const content = document.getElementById('detailsContent');
+        let html = `
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div><span class="font-bold">Department:</span> ${faculty.department}</div>
+                <div><span class="font-bold">Overall Rating:</span> ${faculty.overall.toFixed(2)}</div>
+                <div><span class="font-bold">Teaching:</span> ${faculty.teaching.toFixed(1)}</div>
+                <div><span class="font-bold">Mentorship:</span> ${faculty.mentorship.toFixed(1)}</div>
+                <div><span class="font-bold">Research:</span> ${faculty.research.toFixed(1)}</div>
+                <div><span class="font-bold">Admin:</span> ${faculty.admin.toFixed(1)}</div>
+                <div><span class="font-bold">Community:</span> ${faculty.community.toFixed(1)}</div>
+                <div><span class="font-bold">Total Responses:</span> ${faculty.responses}</div>
+            </div>
+            <div class="mt-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 mb-2">Course‑Level Evaluation Breakdown</h4>
+                <div class="table-wrap">
+                    <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                                <th class="p-2">Course</th>
+                                <th class="p-2">Semester</th>
+                                <th class="p-2">Rating</th>
+                                <th class="p-2">Students</th>
+                                <th class="p-2">Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+        if (faculty.evaluations && faculty.evaluations.length > 0) {
+            faculty.evaluations.forEach(ev => {
+                html += `
+                    <tr>
+                        <td class="p-2 font-mono">${ev.course}</td>
+                        <td class="p-2">${ev.semester}</td>
+                        <td class="p-2 font-mono font-bold">${ev.rating.toFixed(2)}</td>
+                        <td class="p-2">${ev.studentCount}</td>
+                        <td class="p-2">${ev.comments}</td>
+                    </tr>
+                `;
+            });
+        } else {
+            html += `<tr><td colspan="5" class="p-4 text-center text-slate-500">No course data available.</td></tr>`;
+        }
+        html += `</tbody></table></div>`;
+        content.innerHTML = html;
+        document.getElementById('detailsModal').classList.remove('hidden');
+    };
+
+    window.closeDetailsModal = function() {
+        document.getElementById('detailsModal').classList.add('hidden');
+        currentDetailsId = null;
+    };
+
+    // 2. Override Modal
+    let overrideTargetId = null;
+    window.openOverride = function(id) {
+        overrideTargetId = id;
+        const faculty = getFacultyById(id);
+        if (!faculty) return;
+        document.getElementById('overrideModalTitle').textContent = `Override Rating – ${faculty.name}`;
+        document.getElementById('overrideFacultyId').value = id;
+        document.getElementById('overrideRating').value = faculty.overall.toFixed(2);
+        document.getElementById('overrideJustification').value = '';
+        document.getElementById('overrideModal').classList.remove('hidden');
+    };
+
+    window.closeOverrideModal = function() {
+        document.getElementById('overrideModal').classList.add('hidden');
+        overrideTargetId = null;
+    };
+
+    window.submitOverride = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('overrideFacultyId').value;
+        const newRating = parseFloat(document.getElementById('overrideRating').value);
+        const justification = document.getElementById('overrideJustification').value.trim() || 'No justification provided.';
+        if (isNaN(newRating) || newRating < 0 || newRating > 5) {
+            showNotification('Please enter a valid rating between 0.0 and 5.0.', 'error');
+            return;
+        }
+        const faculty = getFacultyById(id);
+        if (!faculty) return;
+        // Update the in-memory data
+        faculty.overall = newRating;
+        // Also update the allFaculty array (reference)
+        const idx = allFaculty.findIndex(f => f.id === id);
+        if (idx !== -1) allFaculty[idx].overall = newRating;
+        showNotification(`Override applied for ${faculty.name}. New rating: ${newRating.toFixed(2)}. Justification: ${justification}`, 'success');
+        closeOverrideModal();
+        renderFacultyTable(); // Refresh table
+        computeKPIs(); // Update KPIs
+        // Optionally update charts – we'll call a global chart update if available
+        if (window.updateTERCharts) window.updateTERCharts();
+    };
+
+    // 3. Flag Modal
+    let flagTargetId = null;
+    window.openFlag = function(id) {
+        flagTargetId = id;
+        const faculty = getFacultyById(id);
+        if (!faculty) return;
+        document.getElementById('flagModalBody').textContent = `Are you sure you want to flag ${faculty.name} for additional review?`;
+        document.getElementById('flagModal').classList.remove('hidden');
+    };
+
+    window.closeFlagModal = function() {
+        document.getElementById('flagModal').classList.add('hidden');
+        flagTargetId = null;
+    };
+
+    window.confirmFlag = function() {
+        const faculty = getFacultyById(flagTargetId);
+        if (!faculty) return;
+        showNotification(`⚠️ ${faculty.name} has been flagged for review. Dean and HR notified.`, 'warning');
+        closeFlagModal();
+        // Could add a flag property in data, but for now just a toast.
+    };
+
+    // ===== Export Report =====
+    window.exportFacultyReport = function() {
+        // Export filtered data as CSV
+        const headers = ['Name', 'Department', 'Overall Rating', 'Teaching', 'Mentorship', 'Responses'];
+        const rows = filteredData.map(f => [f.name, f.department, f.overall.toFixed(2), f.teaching.toFixed(1), f.mentorship.toFixed(1), f.responses]);
+        let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'faculty_evaluation_report.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Report exported successfully.', 'success');
+    };
+
+    // ===== Update Charts (if function exists) =====
+    // We'll expose a function to refresh charts after data changes.
+    // We'll add this to charts.js later.
+    window.updateTERCharts = function() {
+        // Placeholder – will be implemented if we update charts.js
+        console.log('Charts updated');
+    };
+
+    // ===== Initialization =====
+    document.addEventListener('DOMContentLoaded', function() {
+        computeKPIs();
+        populateDepartmentFilter();
+        // Set default rows per page
+        document.getElementById('rowsPerPage').value = '25';
+        renderFacultyTable();
+
+        // Hide loading skeletons after charts init (charts.js will handle)
+        setTimeout(() => {
+            document.querySelectorAll('#radarChartLoading, #barChartLoading, #lineChartLoading').forEach(el => {
+                el.classList.add('hidden');
+            });
+        }, 800);
+    });
+
+    // ===== Expose global functions for inline onclick =====
+    window.goToPage = goToPage;
+    window.filterFacultyTable = filterFacultyTable;
+    window.changeRowsPerPage = changeRowsPerPage;
+    window.exportFacultyReport = exportFacultyReport;
+    window.openDetails = openDetails;
+    window.closeDetailsModal = closeDetailsModal;
+    window.openOverride = openOverride;
+    window.closeOverrideModal = closeOverrideModal;
+    window.submitOverride = submitOverride;
+    window.openFlag = openFlag;
+    window.closeFlagModal = closeFlagModal;
+    window.confirmFlag = confirmFlag;
+</script>

@@ -1,0 +1,439 @@
+<!-- ===== APPLICANT DRAWER ===== -->
+<div id="applicantDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden"
+    aria-modal="true" role="dialog" aria-labelledby="appDrawerName">
+    <div class="bg-white w-full max-w-xl h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto space-y-6">
+        <div class="space-y-5">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span id="appDrawerID"
+                            class="text-xs font-mono font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded">ADM-2021-0001</span>
+                        <span id="appDrawerStatus" class="status-badge status-badge--pending">Pre-Admission Queue</span>
+                    </div>
+                    <h2 id="appDrawerName" class="text-xl font-black text-slate-900 mt-1">Gabriel Mercer</h2>
+                </div>
+                <button type="button" onclick="closeApplicantDrawer()"
+                    class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                    aria-label="Close">&times;</button>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                    <p class="text-xs text-slate-400 font-bold uppercase">Program</p>
+                    <p id="appDrawerProgram" class="font-bold text-slate-900">BS Accountancy</p>
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                    <p class="text-xs text-slate-400 font-bold uppercase">Exam Score</p>
+                    <p id="appDrawerExam" class="font-mono font-black text-brand-600 text-base">92.5%</p>
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                    <p class="text-xs text-slate-400 font-bold uppercase">School</p>
+                    <p id="appDrawerSchool" class="font-bold text-slate-900">State High School</p>
+                    <p id="appDrawerTrack" class="text-xs text-slate-500">STEM Track</p>
+                </div>
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                    <p class="text-xs text-slate-400 font-bold uppercase">Docs</p>
+                    <p class="font-bold text-emerald-700">3 / 4 Submitted</p>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Audit Trail</h3>
+                <div
+                    class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs space-y-1 text-slate-600 font-mono">
+                    <div>[2021-10-12 10:14] Exam Results Imported</div>
+                    <div>[2021-10-14 14:02] Pre-Admission Clearance Issued</div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2">
+            <button type="button" onclick="closeApplicantDrawer()" class="btn btn-secondary text-xs">Close</button>
+            <button type="button"
+                onclick="showNotification('Applicant cleared for enrollment!'); closeApplicantDrawer();"
+                class="btn btn-primary text-xs">Issue Admission</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== WAFFLE DRAWER ===== -->
+<div id="waffleDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden"
+    aria-modal="true" role="dialog" aria-labelledby="waffleTitle">
+    <div class="bg-white w-full max-w-lg h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div>
+                    <h2 id="waffleTitle" class="text-lg font-bold text-slate-900">Module Grid Launcher</h2>
+                    <p class="text-sm text-slate-500">1‑click access to all subsystems</p>
+                </div>
+                <button type="button" onclick="toggleWaffleDrawer()"
+                    class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                    aria-label="Close">&times;</button>
+            </div>
+            <div class="grid grid-cols-3 gap-3 mt-5">
+                <button onclick="launchModule('Dashboard')"
+                    class="p-3 bg-brand-50 hover:bg-brand-100 rounded-xl border border-brand-200 text-center text-brand-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">D</span>Dashboard</button>
+                <button onclick="openSystemSettingsModal()"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold">S</span>Settings</button>
+                <button onclick="showAdmissions(); toggleWaffleDrawer();"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">A</span>Admissions</button>
+                <button onclick="showManage(); toggleWaffleDrawer();"
+                    class="p-3 bg-brand-50 hover:bg-brand-100 rounded-xl border border-brand-200 text-center text-brand-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">M</span>MANAGE</button>
+                <button onclick="launchModule('ENROL')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">E</span>ENROL</button>
+                <button onclick="launchModule('Clearance')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">C</span>Clearance</button>
+                <button onclick="launchModule('Graduation')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">G</span>Graduation</button>
+                <button onclick="launchModule('Grades')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">G</span>Grades</button>
+                <button onclick="launchModule('Billing')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">B</span>Billing</button>
+                <button onclick="launchModule('Scholarships')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">S</span>Scholarships</button>
+                <button onclick="launchModule('Registrar')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">R</span>Registrar</button>
+                <button onclick="launchModule('Alumni')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">A</span>Alumni</button>
+                <button onclick="launchModule('Library')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">L</span>Library</button>
+                <button onclick="launchModule('Security')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">S</span>Security</button>
+                <button onclick="launchModule('TER')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">T</span>TER
+                    Engine</button>
+                <button onclick="launchModule('Notices')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">N</span>Notices</button>
+                <button onclick="launchModule('Attendance')"
+                    class="p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-center text-slate-800 font-semibold text-xs flex flex-col items-center gap-1.5 min-h-[76px]"><span
+                        class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">A</span>Attendance</button>
+            </div>
+        </div>
+        <div class="pt-4 border-t border-slate-100">
+            <button type="button" onclick="toggleWaffleDrawer()"
+                class="w-full py-3 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl min-h-[44px] transition-colors">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== NOTIFICATION DRAWER ===== -->
+<div id="notificationDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden"
+    aria-modal="true" role="dialog" aria-labelledby="notifTitle">
+    <div class="bg-white w-full max-w-sm h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <h2 id="notifTitle" class="text-base font-bold text-slate-900">Notifications</h2>
+                <button type="button" onclick="toggleNotificationDrawer()"
+                    class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-lg font-bold"
+                    aria-label="Close">&times;</button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200/80">
+                    <p class="font-bold">12 Grade Sheets Pending</p>
+                    <p class="text-xs text-amber-800 mt-0.5">Deadline today 17:00</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200/80">
+                    <p class="font-bold">New Transferee Application</p>
+                    <p class="text-xs text-blue-800 mt-0.5">Gabriel Mercer submitted credentials</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                    <p class="font-bold">Server Patch Completed</p>
+                    <p class="text-xs text-slate-600 mt-0.5">Uptime 99.9%</p>
+                </div>
+            </div>
+        </div>
+        <button type="button" onclick="toggleNotificationDrawer()"
+            class="w-full py-3 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl mt-4 min-h-[44px]">Dismiss</button>
+    </div>
+</div>
+
+<!-- ===== REVIEW MODAL ===== -->
+<div id="reviewModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="reviewModalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="reviewModalTitle" class="text-base font-bold text-slate-900">Workflow Review</h3>
+            <button type="button" onclick="closeReviewModal()"
+                class="text-slate-400 hover:text-slate-600 text-lg font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p id="reviewModalBody" class="text-sm text-slate-600 leading-relaxed"></p>
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-sm text-slate-600 space-y-1">
+            <div class="flex justify-between"><span>Security Level:</span><span class="font-bold text-slate-800">VP
+                    Academic Clearance</span></div>
+            <div class="flex justify-between"><span>Audit Status:</span><span
+                    class="text-emerald-700 font-bold">Encrypted Session</span></div>
+        </div>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeReviewModal()" class="btn btn-secondary text-xs">Dismiss</button>
+           <button type="button" onclick="confirmModalApproval()" class="btn btn-success text-xs">Sign Off</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SYSTEM SETTINGS MODAL ===== -->
+<div id="systemSettingsModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="settingsModalTitle">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+                <h3 id="settingsModalTitle" class="text-lg font-bold text-slate-900">System Configuration</h3>
+                <p class="text-sm text-slate-500">Grading, semesters, and schedules</p>
+            </div>
+            <button type="button" onclick="closeSystemSettingsModal()"
+                class="text-slate-400 hover:text-slate-600 text-lg font-bold" aria-label="Close">&times;</button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm font-semibold">
+            <button onclick="showNotification('Opening Semester Rules...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    S</div>Semester Definition
+            </button>
+            <button onclick="showNotification('Opening Grade Rules...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    G</div>Grade System
+            </button>
+            <button onclick="showNotification('Opening Legend...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    R</div>Remarks Legend
+            </button>
+            <button onclick="showNotification('Opening School Info...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    I</div>School Info
+            </button>
+            <button onclick="showNotification('Opening Schedules...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    S</div>Master Schedules
+            </button>
+            <button onclick="showNotification('Opening Lapse Control...')"
+                class="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-left min-h-[80px]">
+                <div class="w-7 h-7 rounded-lg bg-brand-600 text-white font-bold flex items-center justify-center mb-2">
+                    A</div>Auto Lapse
+            </button>
+        </div>
+        <div class="flex justify-end pt-2 border-t border-slate-100">
+            <button type="button" onclick="closeSystemSettingsModal()" class="btn btn-secondary text-xs">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD HELP MODAL ===== -->
+<div id="helpModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="helpModalTitle">
+    <div
+        class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+                <h3 id="helpModalTitle" class="text-lg font-bold text-slate-900">Dashboard Overview</h3>
+                <p class="text-sm text-slate-500">Understand what each section means</p>
+            </div>
+            <button type="button" onclick="closeHelpModal()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+
+        <div class="space-y-4 text-sm text-slate-600">
+            <div>
+                <h4 class="font-bold text-slate-900">KPIs (Key Performance Indicators)</h4>
+                <p>These are critical metrics summarising the current state of the institution. Hover over any KPI for a
+                    detailed explanation.</p>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900">Action Queue</h4>
+                <p>Urgent items requiring your review and approval as VP for Academic & Student Affairs. Use the
+                    category filters to focus on specific areas.</p>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900">Charts</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>Enrollment Trend:</strong> Monthly headcount showing enrolment peaks and drops across
+                        the academic year.</li>
+                    <li><strong>Transferee Applicants:</strong> Comparison of new applicants vs. accepted transfers.
+                    </li>
+                    <li><strong>Program Distribution:</strong> Student distribution across degree programs.</li>
+                    <li><strong>Faculty Performance:</strong> Ratings across teaching, research, mentorship, admin, and
+                        community engagement – broken down by college. Click the chart to view detailed TER records.
+                    </li>
+                    <li><strong>Enrolment by College:</strong> Stacked bar showing student distribution by year level
+                        across colleges.</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900">College Ranking</h4>
+                <p>List of colleges ranked by total student enrolment. Click "View Full Rankings" for more detailed
+                    statistics.</p>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-900">Navigation</h4>
+                <p>Use the sidebar to access different modules. Click KPIs or certain charts to drill down for more
+                    detail.</p>
+            </div>
+        </div>
+
+        <div class="flex justify-end pt-3 border-t border-slate-100">
+            <button type="button" onclick="closeHelpModal()" class="btn btn-primary text-xs">Got it</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== GRADE DETAILS MODAL (Queue Details Preview) ===== -->
+<div id="gradeDetailsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="gradeDetailsTitle">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <div>
+                <h3 id="gradeDetailsTitle" class="text-lg font-bold text-slate-900">Grade Sheet Preview – LAW 401</h3>
+                <p class="text-sm text-slate-500">Submitted by Prof. Alan Vance • 42 students • Due: Today 17:00</p>
+            </div>
+            <button type="button" onclick="closeGradeDetailsModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- Live Prototype Notice -->
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 flex items-start gap-2">
+            <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div>
+                <p class="font-bold">Live Prototype Preview</p>
+                <p class="text-xs">This is a sample preview of what the VP would see when reviewing a final grade sheet. In the production system, this would show the actual grade records for all 42 students.</p>
+            </div>
+        </div>
+
+        <!-- Grade Table Preview -->
+        <div class="table-wrap">
+            <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                        <th scope="col" class="p-3">Student ID</th>
+                        <th scope="col" class="p-3">Student Name</th>
+                        <th scope="col" class="p-3">Prelim</th>
+                        <th scope="col" class="p-3">Midterm</th>
+                        <th scope="col" class="p-3">Finals</th>
+                        <th scope="col" class="p-3">Final Grade</th>
+                        <th scope="col" class="p-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00001</td>
+                        <td class="p-3 font-bold">James Smith</td>
+                        <td class="p-3">85%</td>
+                        <td class="p-3">88%</td>
+                        <td class="p-3">92%</td>
+                        <td class="p-3 font-bold text-emerald-700">A-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00002</td>
+                        <td class="p-3 font-bold">Emma Johnson</td>
+                        <td class="p-3">78%</td>
+                        <td class="p-3">82%</td>
+                        <td class="p-3">85%</td>
+                        <td class="p-3 font-bold text-emerald-700">B</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00003</td>
+                        <td class="p-3 font-bold">Liam Williams</td>
+                        <td class="p-3">65%</td>
+                        <td class="p-3">70%</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3 font-bold text-amber-700">C</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00004</td>
+                        <td class="p-3 font-bold">Olivia Brown</td>
+                        <td class="p-3">58%</td>
+                        <td class="p-3">62%</td>
+                        <td class="p-3">65%</td>
+                        <td class="p-3 font-bold text-rose-700">D</td>
+                        <td class="p-3"><span class="status-badge status-badge--hold">Failed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00005</td>
+                        <td class="p-3 font-bold">Noah Jones</td>
+                        <td class="p-3">92%</td>
+                        <td class="p-3">94%</td>
+                        <td class="p-3">96%</td>
+                        <td class="p-3 font-bold text-emerald-700">A</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00006</td>
+                        <td class="p-3 font-bold">Ava Garcia</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3">75%</td>
+                        <td class="p-3">78%</td>
+                        <td class="p-3 font-bold text-emerald-700">B-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00007</td>
+                        <td class="p-3 font-bold">William Miller</td>
+                        <td class="p-3">45%</td>
+                        <td class="p-3">50%</td>
+                        <td class="p-3">52%</td>
+                        <td class="p-3 font-bold text-rose-700">F</td>
+                        <td class="p-3"><span class="status-badge status-badge--hold">Failed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00008</td>
+                        <td class="p-3 font-bold">Sophia Davis</td>
+                        <td class="p-3">88%</td>
+                        <td class="p-3">90%</td>
+                        <td class="p-3">91%</td>
+                        <td class="p-3 font-bold text-emerald-700">A-</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00009</td>
+                        <td class="p-3 font-bold">Lucas Rodriguez</td>
+                        <td class="p-3">80%</td>
+                        <td class="p-3">83%</td>
+                        <td class="p-3">86%</td>
+                        <td class="p-3 font-bold text-emerald-700">B</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono">STU-2021-00010</td>
+                        <td class="p-3 font-bold">Mia Martinez</td>
+                        <td class="p-3">68%</td>
+                        <td class="p-3">72%</td>
+                        <td class="p-3">74%</td>
+                        <td class="p-3 font-bold text-amber-700">C+</td>
+                        <td class="p-3"><span class="status-badge status-badge--approved">Passed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <span class="text-sm text-slate-500">Showing 10 of 42 students</span>
+            <div class="flex items-center gap-2.5">
+                <button type="button" onclick="closeGradeDetailsModal()" class="btn btn-secondary text-xs">Close</button>
+                <button type="button" onclick="closeGradeDetailsModal(); showNotification('Grade sheet approved!', 'success');" class="btn btn-primary text-xs">Approve All</button>
+            </div>
+        </div>
+    </div>
+</div>

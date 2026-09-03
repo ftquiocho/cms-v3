@@ -1,0 +1,460 @@
+<!-- ===== CURRICULUM REQUIREMENTS SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='graduation.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                Graduation Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Curriculum Requirements</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Curriculum Requirements</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Define graduation requirements per program – required subjects and total units</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="curriculum-requirements.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Curriculum Requirements</a>
+                <a href="recommend-students.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Recommend Students</a>
+                <a href="graduation-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+            </div>
+        </div>
+        <button type="button" onclick="exportRequirementsCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export CSV
+        </button>
+        <button type="button" onclick="openAddRequirementModal()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            + Add Requirement
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Contextual – updates when you filter/search) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Programs</p>
+        <p class="text-2xl font-black text-slate-900 font-mono" id="totalPrograms">0</p>
+        <span class="text-sm text-slate-500">With requirements</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Requirements</p>
+        <p class="text-2xl font-black text-slate-900 font-mono" id="totalRequirements">0</p>
+        <span class="text-sm text-slate-500">Required subjects</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Average Units/Program</p>
+        <p class="text-2xl font-black text-brand-600 font-mono" id="avgUnits">0</p>
+        <span class="text-sm text-slate-500">Required units</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Programs with Full Requirements</p>
+        <p class="text-2xl font-black text-emerald-600 font-mono" id="fullPrograms">0</p>
+        <span class="text-sm text-emerald-600 font-semibold">100% complete</span>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="reqSearch" placeholder="Search by program or subject..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="programFilter" class="select-field text-sm w-48" onchange="applyFilters()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Engineering">BS Engineering</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+        <span class="text-xs text-slate-400 font-mono" id="filteredCount">0 results</span>
+    </div>
+</div>
+
+<!-- ===== REQUIREMENTS TABLE ===== -->
+<div class="card space-y-4">
+    <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center gap-2">
+            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+            <select id="rowsPerPage" class="select-field text-sm w-20" onchange="applyFilters()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="requirementsTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="program" onclick="sortTable('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="subject" onclick="sortTable('subject')">
+                        Subject <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="units" onclick="sortTable('units')">
+                        Units <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[120px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="requirementsBody">
+                <!-- Rows rendered by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Empty state -->
+    <div id="requirementsEmptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">📋</div>
+        <h3 class="font-bold text-slate-800">No requirements found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <p class="text-sm text-slate-500">
+            Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span> entries
+        </p>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== ADD/EDIT REQUIREMENT MODAL ===== -->
+<div id="requirementModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="requirementModalTitle">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 id="requirementModalTitle" class="text-lg font-bold text-slate-900">Add Curriculum Requirement</h3>
+            <button type="button" onclick="closeRequirementModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <form id="requirementForm" onsubmit="saveRequirement(event)" class="space-y-4">
+            <input type="hidden" id="editRequirementId" value="" />
+            <div>
+                <label for="reqProgram" class="block font-bold text-sm text-slate-700 mb-1">Program *</label>
+                <select id="reqProgram" required class="select-field">
+                    <option value="">Select program</option>
+                    <option value="BS Accountancy">BS Accountancy</option>
+                    <option value="BS Accounting Tech">BS Accounting Tech</option>
+                    <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+                    <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+                    <option value="Juris Doctor">Juris Doctor</option>
+                    <option value="BS Computer Science">BS Computer Science</option>
+                    <option value="BS Engineering">BS Engineering</option>
+                </select>
+            </div>
+            <div>
+                <label for="reqSubject" class="block font-bold text-sm text-slate-700 mb-1">Subject *</label>
+                <select id="reqSubject" required class="select-field">
+                    <option value="">Select subject</option>
+                    <!-- Populated by JavaScript -->
+                </select>
+            </div>
+            <div>
+                <label for="reqUnits" class="block font-bold text-sm text-slate-700 mb-1">Units *</label>
+                <input type="number" id="reqUnits" required min="0" step="0.5" placeholder="e.g. 3" class="input-field" />
+            </div>
+            <div>
+                <label for="reqStatus" class="block font-bold text-sm text-slate-700 mb-1">Status</label>
+                <select id="reqStatus" class="select-field">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" onclick="closeRequirementModal()" class="btn btn-secondary text-xs">Cancel</button>
+                <button type="submit" class="btn btn-primary text-xs">Save Requirement</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { programs, subjects, curriculumRequirements as reqData } from './assets/js/data.js';
+
+    let requirements = reqData.map((item, index) => ({
+        id: 'req-' + String(index + 1),
+        program: item.program,
+        subject: item.subject,
+        units: item.units || 3,
+        status: 'Active'
+    }));
+
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let currentSort = { column: 'program', direction: 'asc' };
+    let filteredData = [];
+    let nextId = requirements.length + 1;
+
+    function applyFilters() {
+        const search = document.getElementById('reqSearch').value.toLowerCase().trim();
+        const program = document.getElementById('programFilter').value;
+
+        filteredData = requirements.filter(item => {
+            const matchSearch = item.program.toLowerCase().includes(search) || item.subject.toLowerCase().includes(search);
+            const matchProgram = program === 'all' || item.program === program;
+            return matchSearch && matchProgram;
+        });
+
+        const uniquePrograms = new Set(requirements.map(r => r.program));
+        document.getElementById('totalPrograms').textContent = uniquePrograms.size;
+        document.getElementById('totalRequirements').textContent = requirements.length;
+        const totalUnits = requirements.reduce((sum, r) => sum + r.units, 0);
+        document.getElementById('avgUnits').textContent = requirements.length > 0 ? (totalUnits / requirements.length).toFixed(1) : 0;
+        const fullPrograms = Array.from(uniquePrograms).filter(p => {
+            const reqs = requirements.filter(r => r.program === p);
+            const programObj = programs.find(pr => pr.name === p);
+            const totalRequiredUnits = reqs.reduce((sum, r) => sum + r.units, 0);
+            return programObj && totalRequiredUnits >= programObj.totalUnitsRequired;
+        });
+        document.getElementById('fullPrograms').textContent = fullPrograms.length;
+
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+        document.getElementById('filteredCount').textContent = filteredData.length + ' results';
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('requirementsBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('requirementsEmptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('requirementsEmptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((item, index) => {
+                const statusClass = item.status === 'Active' ? 'status-badge--approved' : 'status-badge--hold';
+                return `
+                    <tr>
+                        <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                        <td class="p-3 font-bold text-slate-900">${item.program}</td>
+                        <td class="p-3 font-mono text-brand-700">${item.subject}</td>
+                        <td class="p-3 text-center">${item.units}</td>
+                        <td class="p-3"><span class="status-badge ${statusClass}">${item.status}</span></td>
+                        <td class="p-3 text-right space-x-1">
+                            <button onclick="editRequirement('${item.id}')" class="btn btn-secondary text-xs py-1 px-2">Edit</button>
+                            <button onclick="deleteRequirement('${item.id}')" class="btn btn-danger text-xs py-1 px-2">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+        let html = '';
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+        controls.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-column="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    function exportRequirementsCSV() {
+        const headers = ['Program', 'Subject', 'Units', 'Status'];
+        const rows = filteredData.map(item => [item.program, item.subject, item.units, item.status]);
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'curriculum_requirements.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Export completed.', 'success');
+    }
+
+    function openAddRequirementModal() {
+        document.getElementById('requirementModalTitle').textContent = 'Add Curriculum Requirement';
+        document.getElementById('editRequirementId').value = '';
+        document.getElementById('requirementForm').reset();
+        populateSubjectDropdown();
+        document.getElementById('requirementModal').classList.remove('hidden');
+    }
+
+    function populateSubjectDropdown() {
+        const select = document.getElementById('reqSubject');
+        select.innerHTML = '<option value="">Select subject</option>';
+        subjects.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.code;
+            opt.textContent = `${s.code} - ${s.name} (${s.units} units)`;
+            opt.dataset.units = s.units;
+            select.appendChild(opt);
+        });
+        select.onchange = function () {
+            const selected = subjects.find(s => s.code === this.value);
+            if (selected) {
+                document.getElementById('reqUnits').value = selected.units;
+            }
+        };
+    }
+
+    function editRequirement(id) {
+        const item = requirements.find(r => r.id === id);
+        if (!item) return;
+        document.getElementById('requirementModalTitle').textContent = 'Edit Curriculum Requirement';
+        document.getElementById('editRequirementId').value = id;
+        document.getElementById('reqProgram').value = item.program;
+        populateSubjectDropdown();
+        document.getElementById('reqSubject').value = item.subject;
+        document.getElementById('reqUnits').value = item.units;
+        document.getElementById('reqStatus').value = item.status || 'Active';
+        document.getElementById('requirementModal').classList.remove('hidden');
+    }
+
+    function closeRequirementModal() {
+        document.getElementById('requirementModal').classList.add('hidden');
+    }
+
+    function saveRequirement(e) {
+        e.preventDefault();
+        const id = document.getElementById('editRequirementId').value;
+        const program = document.getElementById('reqProgram').value;
+        const subject = document.getElementById('reqSubject').value;
+        const units = parseFloat(document.getElementById('reqUnits').value) || 0;
+        const status = document.getElementById('reqStatus').value;
+
+        if (!program || !subject || !units) {
+            showNotification('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        if (id) {
+            const idx = requirements.findIndex(r => r.id === id);
+            if (idx !== -1) {
+                requirements[idx] = { ...requirements[idx], program, subject, units, status };
+                showNotification('Requirement updated successfully!', 'success');
+            }
+        } else {
+            const newId = 'req-' + String(nextId++);
+            requirements.push({ id: newId, program, subject, units, status });
+            showNotification('Requirement added successfully!', 'success');
+        }
+
+        closeRequirementModal();
+        applyFilters();
+    }
+
+    function deleteRequirement(id) {
+        if (!confirm('Are you sure you want to delete this requirement?')) return;
+        requirements = requirements.filter(r => r.id !== id);
+        applyFilters();
+        showNotification('Requirement deleted.', 'warning');
+    }
+
+    function toggleQuickJump() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function (e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (!container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    function resetFilters() {
+        document.getElementById('reqSearch').value = '';
+        document.getElementById('programFilter').value = 'all';
+        applyFilters();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        applyFilters();
+        document.getElementById('rowsPerPage').value = '25';
+    });
+
+    window.applyFilters = applyFilters;
+    window.resetFilters = resetFilters;
+    window.sortTable = sortTable;
+    window.goToPage = goToPage;
+    window.exportRequirementsCSV = exportRequirementsCSV;
+    window.openAddRequirementModal = openAddRequirementModal;
+    window.editRequirement = editRequirement;
+    window.closeRequirementModal = closeRequirementModal;
+    window.saveRequirement = saveRequirement;
+    window.deleteRequirement = deleteRequirement;
+    window.toggleQuickJump = toggleQuickJump;
+</script>

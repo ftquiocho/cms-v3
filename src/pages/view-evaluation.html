@@ -1,0 +1,445 @@
+<!-- ===== VIEW EVALUATION SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='enrol.html'"
+                class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Enrollment Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">View Evaluation</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">View Evaluation</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Review student assessment results, eligibility checks, and programme
+            recommendations</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Quick Jump Dropdown -->
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()"
+                class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="quickJumpMenu"
+                class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="view-evaluation.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">View
+                    Evaluation</a>
+                <a href="view-grades.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View
+                    Grades</a>
+                <a href="pre-enrol-subjects.html"
+                    class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Pre-Enrol Subjects</a>
+                <a href="enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Enrol
+                    Subjects</a>
+                <a href="change-matriculation.html"
+                    class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Change Matriculation</a>
+                <a href="subject-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Subject
+                    Override</a>
+                <a href="unit-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Unit
+                    Override</a>
+                <a href="enrol-reports.html"
+                    class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+                <a href="student-360.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Student
+                    360</a>
+            </div>
+        </div>
+
+        <button type="button" onclick="exportEvaluationCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (dynamic) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <!-- 1st – Total Evaluations (Brand) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Total Evaluations
+                <span class="text-brand-500 ml-1 cursor-help"
+                    data-tooltip="Total number of evaluations in the system.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalCount">280</h2>
+            <span class="text-sm text-slate-500">AY 2021-2022</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2nd – Passed (Emerald) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Passed
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of students who passed.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-emerald-600 font-mono" id="passedCount">0</h2>
+            <span class="text-sm text-emerald-600 font-semibold" id="passedPercent">0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 3rd – Failed (Rose) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Failed
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Number of students who failed.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-rose-600 font-mono" id="failedCount">0</h2>
+            <span class="text-sm text-rose-600 font-semibold" id="failedPercent">0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- 4th – Pending Review (Amber) -->
+    <div class="card flex items-center justify-between">
+        <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                Pending Review
+                <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Evaluations awaiting review.">ⓘ</span>
+            </p>
+            <h2 class="text-2xl font-black text-amber-600 font-mono" id="pendingCount">0</h2>
+            <span class="text-sm text-amber-600 font-semibold" id="pendingPercent">0%</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+            aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="evalSearch" placeholder="Search by student name or ID..."
+                class="input-field text-sm w-full sm:w-48 pr-8" oninput="window.applyFilters_Evaluation()" />
+            <button onclick="window.resetFilters_Evaluation()"
+                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <select id="programFilter" class="select-field text-sm w-40" onchange="window.applyFilters_Evaluation()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Engineering">BS Engineering</option>
+        </select>
+        <select id="periodFilter" class="select-field text-sm w-36" onchange="window.applyFilters_Evaluation()">
+            <option value="all">All Periods</option>
+            <option value="2021-2022 1st">AY 2021-2022 1st</option>
+            <option value="2021-2022 2nd">AY 2021-2022 2nd</option>
+            <option value="2021-2022 Summer">AY 2021-2022 Summer</option>
+        </select>
+        <select id="statusFilter" class="select-field text-sm w-32" onchange="window.applyFilters_Evaluation()">
+            <option value="all">All Statuses</option>
+            <option value="Passed">Passed</option>
+            <option value="Failed">Failed</option>
+            <option value="Pending">Pending Review</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 280</span>
+        <span class="text-xs text-slate-400 font-mono" id="filteredCount">280 results</span>
+    </div>
+</div>
+
+<!-- ===== EVALUATION TABLE WITH PAGINATION ===== -->
+<div class="card space-y-4">
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="evaluationTable">
+            <thead>
+                <tr
+                    class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col"
+                        class="p-3 min-w-[130px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="studentId" onclick="window.sortEvaluation('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="student" onclick="window.sortEvaluation('student')">
+                        Student Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="program" onclick="window.sortEvaluation('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="period" onclick="window.sortEvaluation('period')">
+                        Evaluation Period <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col"
+                        class="p-3 min-w-[120px] sort-header cursor-pointer hover:text-slate-800 transition-colors"
+                        data-column="status" onclick="window.sortEvaluation('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[120px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="evaluationBody" class="divide-y divide-slate-100">
+                <!-- Data rows rendered by JavaScript -->
+                <!-- Empty state row -->
+                <tr id="evaluationEmptyState" class="hidden">
+                    <td colspan="7" class="p-8 text-center text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="font-bold text-slate-700">No evaluations found</p>
+                            <p class="text-sm">Try adjusting your search or filter criteria.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div id="evaluationPaginationContainer"
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <!-- Pagination controls injected by initTableModule -->
+    </div>
+</div>
+
+<!-- ===== VIEW EVALUATION DETAIL MODAL ===== -->
+<div id="evalDetailModal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    aria-modal="true" role="dialog" aria-labelledby="evalDetailTitle">
+    <div
+        class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+            <h3 id="evalDetailTitle" class="text-lg font-bold text-slate-900">Evaluation Details</h3>
+            <button type="button" onclick="closeEvalDetail()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                aria-label="Close">&times;</button>
+        </div>
+        <div id="evalDetailContent" class="space-y-3 text-sm">
+            <!-- Filled by JavaScript -->
+        </div>
+        <div class="flex justify-end pt-2">
+            <button type="button" onclick="closeEvalDetail()" class="btn btn-secondary text-xs">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script type="module">
+    import { evaluationsData, getEvaluationById, getEvaluations } from './assets/js/data.js';
+    import { initTableModule, showNotification } from './assets/js/ui.js';
+
+    // ===== Helper: Format Date =====
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        const date = new Date(dateString + 'T00:00:00');
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    // ===== View Detail Modal =====
+    window.viewEvalDetail = function (id) {
+        const item = getEvaluationById(id);
+        if (!item) return;
+        // Simulate detailed evaluation
+        const subjects = ['ACCT 101', 'ACCT 102', 'BUS 101', 'MATH 101', 'ECON 101'];
+        const scores = subjects.map(s => {
+            const score = Math.round(60 + Math.random() * 40);
+            return { subject: s, score: score };
+        });
+        const overall = Math.round(scores.reduce((acc, s) => acc + s.score, 0) / scores.length);
+        const status = overall >= 75 ? 'Passed' : overall >= 60 ? 'Failed' : 'Pending';
+        document.getElementById('evalDetailTitle').textContent = `Evaluation – ${item.student}`;
+        document.getElementById('evalDetailContent').innerHTML = `
+                <div class="grid grid-cols-2 gap-3">
+                    <div><span class="font-bold text-slate-700">Student ID:</span> ${item.studentId}</div>
+                    <div><span class="font-bold text-slate-700">Name:</span> ${item.student}</div>
+                    <div><span class="font-bold text-slate-700">Program:</span> ${item.program}</div>
+                    <div><span class="font-bold text-slate-700">Period:</span> ${item.period}</div>
+                    <div><span class="font-bold text-slate-700">Overall Score:</span> ${overall}%</div>
+                    <div><span class="font-bold text-slate-700">Status:</span> <span class="status-badge ${status === 'Passed' ? 'status-badge--approved' : status === 'Failed' ? 'status-badge--hold' : 'status-badge--pending'}">${status}</span></div>
+                </div>
+                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <p class="font-bold text-slate-700">Subject Scores:</p>
+                    <ul class="list-disc list-inside text-slate-600 mt-1">
+                        ${scores.map(s => `<li>${s.subject}: ${s.score}%</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-200 text-blue-800">
+                    <p class="font-bold">Recommendation:</p>
+                    <p>${status === 'Passed' ? 'Student meets all requirements. Eligible for next year level.' : status === 'Failed' ? 'Student needs to retake failed subjects.' : 'Evaluation is pending further review.'}</p>
+                </div>
+            `;
+        document.getElementById('evalDetailModal').classList.remove('hidden');
+    };
+
+    window.closeEvalDetail = function () {
+        document.getElementById('evalDetailModal').classList.add('hidden');
+    };
+
+    // ===== Export CSV =====
+    window.exportEvaluationCSV = function () {
+        // Get current filtered data from the table module
+        const data = getEvaluations();
+        // We need to apply current filters – we can get it from the table module's internal state.
+        // Since we don't have direct access, we'll export all data for simplicity.
+        const headers = ['Student ID', 'Student', 'Program', 'Evaluation Period', 'Status'];
+        const rows = data.map(item => [
+            item.studentId, item.student, item.program, item.period, item.status
+        ]);
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'evaluations.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Export completed.', 'success');
+    };
+    // ===== Quick Jump Toggle =====
+    window.toggleQuickJump = function () {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    };
+    document.addEventListener('click', function (e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (container && !container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    // ===== Initialise Table Module =====
+    const tableModule = initTableModule({
+        tableId: 'evaluationTable',
+        tbodyId: 'evaluationBody',
+        paginationContainerId: 'evaluationPaginationContainer',
+        emptyStateId: 'evaluationEmptyState',
+        countDisplayId: 'filteredCount',
+        searchInputId: 'evalSearch',
+        rowsPerPageId: 'rowsPerPage',
+        filterSelectors: [
+            { id: 'programFilter', field: 'program' },
+            { id: 'periodFilter', field: 'period' },
+            { id: 'statusFilter', field: 'status' }
+        ],
+        searchFields: ['studentId', 'student'],
+        sortMap: {
+            studentId: (a, b) => a.studentId.localeCompare(b.studentId),
+            student: (a, b) => a.student.localeCompare(b.student),
+            program: (a, b) => a.program.localeCompare(b.program),
+            period: (a, b) => a.period.localeCompare(b.period),
+            status: (a, b) => a.status.localeCompare(b.status)
+        },
+        getData: getEvaluations,
+        updateStats: (data) => {
+            const total = data.length;
+            const passed = data.filter(d => d.status === 'Passed').length;
+            const failed = data.filter(d => d.status === 'Failed').length;
+            const pending = data.filter(d => d.status === 'Pending').length;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('passedCount').textContent = passed;
+            document.getElementById('failedCount').textContent = failed;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('passedPercent').textContent = total > 0 ? (passed / total * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('failedPercent').textContent = total > 0 ? (failed / total * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('pendingPercent').textContent = total > 0 ? (pending / total * 100).toFixed(1) + '%' : '0%';
+        },
+        renderRow: (item, index) => {
+            const statusMap = {
+                'Passed': 'status-badge--approved',
+                'Failed': 'status-badge--hold',
+                'Pending': 'status-badge--pending'
+            };
+            return `
+                <tr>
+                    <td class="p-3 text-center font-mono text-slate-500">${index}</td>
+                    <td class="p-3 font-mono font-bold text-slate-900">${item.studentId}</td>
+                    <td class="p-3 font-bold text-slate-900">${item.student}</td>
+                    <td class="p-3">${item.program}</td>
+                    <td class="p-3">${item.period}</td>
+                    <td class="p-3"><span class="status-badge ${statusMap[item.status] || 'status-badge--pending'}">${item.status}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="viewEvalDetail(${item.id})" class="btn btn-secondary text-xs py-1 px-2">View</button>
+                    </td>
+                </tr>
+            `;
+        },
+        defaultSort: 'studentId',
+        defaultSortDir: 'asc',
+        rowsPerPageOptions: [10, 25, 50, 100],
+        defaultRowsPerPage: 25,
+        itemLabelPlural: 'evaluations'
+    });
+
+    // Expose functions globally
+    window.refreshEvaluation = tableModule.refresh;
+    window.applyFilters_Evaluation = tableModule.applyFilters;
+    window.goToPage_Evaluation = tableModule.goToPage;
+    window.changeRowsPerPage_Evaluation = tableModule.changeRowsPerPage;
+    window.resetFilters_Evaluation = tableModule.resetFilters;
+    window.sortEvaluation = tableModule.sortBy;
+
+    // Override sort headers
+    document.querySelectorAll('.sort-header').forEach(th => {
+        th.onclick = () => tableModule.sortBy(th.dataset.column);
+    });
+
+    // Set default rows per page
+    document.addEventListener('DOMContentLoaded', function () {
+        const select = document.getElementById('rowsPerPage');
+        if (select) select.value = '25';
+        // Auto-load from URL parameter (if any)
+        const params = new URLSearchParams(window.location.search);
+        const studentId = params.get('student');
+        if (studentId) {
+            const searchInput = document.getElementById('evalSearch');
+            if (searchInput) {
+                const student = getEvaluations().find(e => e.studentId === studentId);
+                if (student) {
+                    searchInput.value = student.student;
+                    tableModule.applyFilters();
+                }
+            }
+        }
+    });
+</script>

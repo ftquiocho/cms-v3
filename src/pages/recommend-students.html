@@ -1,0 +1,462 @@
+<!-- ===== RECOMMEND STUDENTS SUBMODULE ===== -->
+
+<!-- ===== SUBMODULE HEADER ===== -->
+<div class="flex items-center justify-between mb-4">
+    <div>
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+            <button type="button" onclick="window.location.href='graduation.html'" class="hover:text-brand-600 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Graduation Hub
+            </button>
+            <span aria-hidden="true">/</span>
+            <span class="text-slate-900 font-bold">Recommend Students</span>
+        </nav>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Recommend Students</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Identify eligible students, verify requirements, and prepare graduation recommendations</p>
+    </div>
+    <div class="flex items-center gap-3">
+        <div class="relative" id="quickJumpContainer">
+            <button type="button" onclick="toggleQuickJump()" class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
+                Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="quickJumpMenu" class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
+                <a href="curriculum-requirements.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Curriculum Requirements</a>
+                <a href="recommend-students.html" class="block px-4 py-2 text-sm bg-brand-50 text-brand-600 font-semibold">Recommend Students</a>
+                <a href="graduation-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+            </div>
+        </div>
+        <button type="button" onclick="exportRecommendationsCSV()" class="btn btn-secondary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export CSV
+        </button>
+        <button type="button" onclick="recommendAllEligible()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Recommend All Eligible
+        </button>
+    </div>
+</div>
+
+<!-- ===== STATS STRIP (Contextual – updates when you filter/search) ===== -->
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Students</p>
+        <p class="text-2xl font-black text-slate-900 font-mono" id="totalStudents">0</p>
+        <span class="text-sm text-slate-500">Evaluated</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Eligible</p>
+        <p class="text-2xl font-black text-emerald-600 font-mono" id="eligibleCount">0</p>
+        <span class="text-sm text-emerald-600 font-semibold" id="eligiblePercent">0%</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Not Eligible</p>
+        <p class="text-2xl font-black text-rose-600 font-mono" id="notEligibleCount">0</p>
+        <span class="text-sm text-rose-600 font-semibold" id="notEligiblePercent">0%</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Recommended</p>
+        <p class="text-2xl font-black text-purple-600 font-mono" id="recommendedCount">0</p>
+        <span class="text-sm text-slate-500">VP approved</span>
+    </div>
+    <div class="card">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Review</p>
+        <p class="text-2xl font-black text-amber-600 font-mono" id="pendingCount">0</p>
+        <span class="text-sm text-slate-500">Needs action</span>
+    </div>
+</div>
+
+<!-- ===== SEARCH & FILTERS ===== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="relative">
+            <input type="search" id="recSearch" placeholder="Search by name or ID..." class="input-field text-sm w-full sm:w-64 pr-8" oninput="applyFilters()" />
+            <button onclick="resetFilters()" class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <select id="programFilter" class="select-field text-sm w-48" onchange="applyFilters()">
+            <option value="all">All Programs</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Accounting Tech">BS Accounting Tech</option>
+            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+            <option value="Juris Doctor">Juris Doctor</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Engineering">BS Engineering</option>
+        </select>
+        <select id="eligibilityFilter" class="select-field text-sm w-32" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="Eligible">Eligible</option>
+            <option value="Not Eligible">Not Eligible</option>
+            <option value="Recommended">Recommended</option>
+            <option value="Pending">Pending</option>
+        </select>
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-500" id="showingInfo">Showing 1-10 of 0</span>
+        <span class="text-xs text-slate-400 font-mono" id="filteredCount">0 results</span>
+    </div>
+</div>
+
+<!-- ===== RECOMMENDATIONS TABLE ===== -->
+<div class="card space-y-4">
+    <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center gap-2">
+            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+            <select id="rowsPerPage" class="select-field text-sm w-20" onchange="applyFilters()">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="recommendTable">
+            <thead>
+                <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
+                    <th scope="col" class="p-3 w-12 text-center">#</th>
+                    <th scope="col" class="p-3 min-w-[130px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="studentId" onclick="sortTable('studentId')">
+                        Student ID <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[160px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="studentName" onclick="sortTable('studentName')">
+                        Student Name <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[140px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="program" onclick="sortTable('program')">
+                        Program <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[90px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="earnedUnits" onclick="sortTable('earnedUnits')">
+                        Earned Units <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[90px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="totalRequiredUnits" onclick="sortTable('totalRequiredUnits')">
+                        Required Units <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 min-w-[100px] sort-header cursor-pointer hover:text-slate-800 transition-colors" data-column="status" onclick="sortTable('status')">
+                        Status <span class="sort-arrow text-slate-300">↕</span>
+                    </th>
+                    <th scope="col" class="p-3 text-right min-w-[140px]">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="recommendBody">
+                <!-- Rows rendered by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="recommendEmptyState" class="hidden p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300">
+        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 font-bold text-lg" aria-hidden="true">🎓</div>
+        <h3 class="font-bold text-slate-800">No students found</h3>
+        <p class="text-sm text-slate-500">Try adjusting your search or filter criteria.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <p class="text-sm text-slate-500">
+            Showing <span id="pageStart">1</span>–<span id="pageEnd">10</span> of <span id="totalItems">0</span> entries
+        </p>
+        <div class="flex items-center gap-1.5" id="paginationControls">
+            <!-- Generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== RECOMMEND CONFIRMATION MODAL ===== -->
+<div id="recommendModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="recommendModalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 id="recommendModalTitle" class="text-lg font-bold text-slate-900">Confirm Recommendation</h3>
+            <button type="button" onclick="closeRecommendModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-slate-600 leading-relaxed" id="recommendModalBody">Are you sure you want to recommend this student for graduation?</p>
+        <p class="text-xs text-slate-500">This action will officially recommend the student to the graduation committee.</p>
+        <div class="flex justify-end gap-2.5 pt-2">
+            <button type="button" onclick="closeRecommendModal()" class="btn btn-secondary text-xs">Cancel</button>
+            <button type="button" id="confirmRecommendBtn" onclick="confirmRecommend()" class="btn btn-primary text-xs">Yes, Recommend</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script type="module">
+    import { students, programs, subjects, grades, curriculumRequirements } from './assets/js/data.js';
+
+    let recommendedStudents = [];
+    let pendingStudents = [];
+
+    function computeEligibility() {
+        const result = [];
+        students.forEach(student => {
+            const program = student.program;
+            const requirements = curriculumRequirements.filter(r => r.program === program);
+            const requiredSubjects = requirements.map(r => r.subject);
+            const totalRequiredUnits = requirements.reduce((sum, r) => sum + r.units, 0);
+
+            const studentGrades = grades.filter(g => g.studentId === student.id);
+            const completedSubjects = studentGrades.filter(g => g.isPassing && g.grade !== 'INC').map(g => g.subject);
+            const earnedUnits = studentGrades.filter(g => g.isPassing && g.grade !== 'INC').reduce((sum, g) => sum + g.units, 0);
+
+            const allRequiredCompleted = requiredSubjects.every(subj => completedSubjects.includes(subj));
+            const eligible = allRequiredCompleted && earnedUnits >= totalRequiredUnits;
+
+            let status = 'Not Eligible';
+            if (eligible) status = 'Eligible';
+            if (recommendedStudents.includes(student.id)) status = 'Recommended';
+            else if (pendingStudents.includes(student.id)) status = 'Pending';
+
+            result.push({ studentId: student.id, studentName: student.name, program, earnedUnits, totalRequiredUnits, requiredCompleted: allRequiredCompleted, eligible, status });
+        });
+        return result;
+    }
+
+    let eligibilityData = computeEligibility();
+    let currentPage = 1;
+    let rowsPerPage = 25;
+    let currentSort = { column: 'studentName', direction: 'asc' };
+    let filteredData = [];
+    let pendingRecommendId = null;
+
+    function applyFilters() {
+        eligibilityData = computeEligibility();
+        const search = document.getElementById('recSearch').value.toLowerCase().trim();
+        const program = document.getElementById('programFilter').value;
+        const statusFilter = document.getElementById('eligibilityFilter').value;
+
+        filteredData = eligibilityData.filter(item => {
+            const matchSearch = item.studentName.toLowerCase().includes(search) || item.studentId.toLowerCase().includes(search);
+            const matchProgram = program === 'all' || item.program === program;
+            const matchStatus = statusFilter === 'all' || item.status === statusFilter;
+            return matchSearch && matchProgram && matchStatus;
+        });
+
+        const total = eligibilityData.length;
+        const eligible = eligibilityData.filter(d => d.eligible).length;
+        const notEligible = eligibilityData.filter(d => !d.eligible && d.status !== 'Recommended' && d.status !== 'Pending').length;
+        const recommended = eligibilityData.filter(d => d.status === 'Recommended').length;
+        const pending = eligibilityData.filter(d => d.status === 'Pending').length;
+
+        document.getElementById('totalStudents').textContent = total;
+        document.getElementById('eligibleCount').textContent = eligible;
+        document.getElementById('eligiblePercent').textContent = total > 0 ? (eligible / total * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('notEligibleCount').textContent = notEligible;
+        document.getElementById('notEligiblePercent').textContent = total > 0 ? (notEligible / total * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('recommendedCount').textContent = recommended;
+        document.getElementById('pendingCount').textContent = pending;
+
+        if (currentSort.column) {
+            filteredData.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+                if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+                if (currentSort.column === 'earnedUnits' || currentSort.column === 'totalRequiredUnits') {
+                    aVal = parseFloat(aVal);
+                    bVal = parseFloat(bVal);
+                }
+                if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+        document.getElementById('filteredCount').textContent = filteredData.length + ' results';
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('recommendBody');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredData.length);
+        const pageItems = filteredData.slice(start, end);
+
+        if (pageItems.length === 0) {
+            document.getElementById('recommendEmptyState').classList.remove('hidden');
+            tbody.innerHTML = '';
+        } else {
+            document.getElementById('recommendEmptyState').classList.add('hidden');
+            tbody.innerHTML = pageItems.map((item, index) => {
+                let statusClass = 'status-badge--pending';
+                if (item.status === 'Eligible') statusClass = 'status-badge--approved';
+                else if (item.status === 'Not Eligible') statusClass = 'status-badge--hold';
+                else if (item.status === 'Recommended') statusClass = 'status-badge--review';
+                else if (item.status === 'Pending') statusClass = 'status-badge--pending';
+
+                const actions = `
+                    <button onclick="viewStudentDetails('${item.studentId}')" class="btn btn-secondary text-xs py-1 px-2.5">View</button>
+                    ${item.eligible && item.status !== 'Recommended' && item.status !== 'Pending' ? 
+                        `<button onclick="openRecommendModal('${item.studentId}')" class="btn btn-primary text-xs py-1 px-2.5">Recommend</button>` : 
+                        item.status === 'Recommended' ? 
+                        `<button onclick="undoRecommend('${item.studentId}')" class="btn btn-danger text-xs py-1 px-2.5">Undo</button>` :
+                        ''
+                    }
+                `;
+
+                return `
+                    <tr>
+                        <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
+                        <td class="p-3 font-mono font-bold text-slate-900">${item.studentId}</td>
+                        <td class="p-3 font-bold text-slate-900">${item.studentName}</td>
+                        <td class="p-3">${item.program}</td>
+                        <td class="p-3 text-center font-mono">${item.earnedUnits}</td>
+                        <td class="p-3 text-center font-mono">${item.totalRequiredUnits}</td>
+                        <td class="p-3"><span class="status-badge ${statusClass}">${item.status}</span></td>
+                        <td class="p-3 text-right">
+                            <div class="flex items-center justify-end gap-1.5">
+                                ${actions.split('</button>').filter(Boolean).map(a => a + '</button>').join('')}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('pageStart').textContent = filteredData.length === 0 ? 0 : start + 1;
+        document.getElementById('pageEnd').textContent = end;
+        document.getElementById('totalItems').textContent = filteredData.length;
+        document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+        const controls = document.getElementById('paginationControls');
+        if (totalPages <= 1) { controls.innerHTML = ''; return; }
+        let html = '';
+        html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="btn btn-primary text-xs">${i}</button>`;
+            } else {
+                html += `<button class="btn btn-secondary text-xs" onclick="goToPage(${i})">${i}</button>`;
+            }
+        }
+        html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+        controls.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+        renderPagination();
+    }
+
+    function sortTable(column) {
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+        }
+        document.querySelectorAll('.sort-header').forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            const arrow = th.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = '↕';
+        });
+        const activeHeader = document.querySelector(`.sort-header[data-column="${column}"]`);
+        if (activeHeader) {
+            activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            const arrow = activeHeader.querySelector('.sort-arrow');
+            if (arrow) arrow.textContent = currentSort.direction === 'asc' ? ' ▲' : ' ▼';
+        }
+        applyFilters();
+    }
+
+    function exportRecommendationsCSV() {
+        const headers = ['Student ID', 'Student Name', 'Program', 'Earned Units', 'Required Units', 'Status'];
+        const rows = filteredData.map(item => [item.studentId, item.studentName, item.program, item.earnedUnits, item.totalRequiredUnits, item.status]);
+        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'graduation_recommendations.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Export completed.', 'success');
+    }
+
+    function recommendAllEligible() {
+        const eligible = eligibilityData.filter(d => d.eligible && d.status !== 'Recommended' && d.status !== 'Pending');
+        if (eligible.length === 0) {
+            showNotification('No eligible students to recommend.', 'warning');
+            return;
+        }
+        if (!confirm(`Recommend ${eligible.length} eligible student(s) for graduation?`)) return;
+        eligible.forEach(d => { if (!recommendedStudents.includes(d.studentId)) recommendedStudents.push(d.studentId); });
+        pendingStudents = pendingStudents.filter(id => !eligible.some(d => d.studentId === id));
+        applyFilters();
+        showNotification(`${eligible.length} student(s) recommended for graduation.`, 'success');
+    }
+
+    function openRecommendModal(studentId) {
+        pendingRecommendId = studentId;
+        const student = eligibilityData.find(d => d.studentId === studentId);
+        if (!student) return;
+        document.getElementById('recommendModalBody').textContent = `Are you sure you want to recommend ${student.studentName} (${student.studentId}) for graduation?`;
+        document.getElementById('recommendModal').classList.remove('hidden');
+    }
+
+    function closeRecommendModal() {
+        document.getElementById('recommendModal').classList.add('hidden');
+        pendingRecommendId = null;
+    }
+
+    function confirmRecommend() {
+        if (!pendingRecommendId) return;
+        if (!recommendedStudents.includes(pendingRecommendId)) recommendedStudents.push(pendingRecommendId);
+        pendingStudents = pendingStudents.filter(id => id !== pendingRecommendId);
+        closeRecommendModal();
+        applyFilters();
+        showNotification(`Student recommended for graduation.`, 'success');
+    }
+
+    function undoRecommend(studentId) {
+        if (!confirm(`Remove recommendation for ${eligibilityData.find(d => d.studentId === studentId)?.studentName}?`)) return;
+        recommendedStudents = recommendedStudents.filter(id => id !== studentId);
+        if (!pendingStudents.includes(studentId)) pendingStudents.push(studentId);
+        applyFilters();
+        showNotification('Recommendation undone.', 'warning');
+    }
+
+    function viewStudentDetails(studentId) {
+        const student = eligibilityData.find(d => d.studentId === studentId);
+        if (!student) return;
+        showNotification(`Student: ${student.studentName} | Program: ${student.program} | Earned Units: ${student.earnedUnits} | Required: ${student.totalRequiredUnits} | Status: ${student.status}`, 'info');
+    }
+
+    function toggleQuickJump() {
+        document.getElementById('quickJumpMenu').classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function(e) {
+        const container = document.getElementById('quickJumpContainer');
+        if (!container.contains(e.target)) {
+            document.getElementById('quickJumpMenu').classList.add('hidden');
+        }
+    });
+
+    function resetFilters() {
+        document.getElementById('recSearch').value = '';
+        document.getElementById('programFilter').value = 'all';
+        document.getElementById('eligibilityFilter').value = 'all';
+        applyFilters();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        applyFilters();
+        document.getElementById('rowsPerPage').value = '25';
+    });
+
+    window.applyFilters = applyFilters;
+    window.resetFilters = resetFilters;
+    window.sortTable = sortTable;
+    window.goToPage = goToPage;
+    window.exportRecommendationsCSV = exportRecommendationsCSV;
+    window.recommendAllEligible = recommendAllEligible;
+    window.openRecommendModal = openRecommendModal;
+    window.closeRecommendModal = closeRecommendModal;
+    window.confirmRecommend = confirmRecommend;
+    window.undoRecommend = undoRecommend;
+    window.viewStudentDetails = viewStudentDetails;
+    window.toggleQuickJump = toggleQuickJump;
+</script>
