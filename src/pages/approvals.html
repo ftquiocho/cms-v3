@@ -19,7 +19,7 @@
             financial requests</p>
     </div>
     <div class="flex items-center gap-2 flex-wrap">
-        <button type="button" onclick="exportApprovalsCSV()" class="btn btn-secondary text-xs">
+        <button type="button" onclick="exportApprovalsCSV()" class="btn btn-secondary text-xs w-full sm:w-auto justify-center">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -30,10 +30,10 @@
 </div>
 
 <!-- ===== STATS STRIP (with icons & tooltips) ===== -->
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Total Pending
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Total number of requests awaiting your review and approval.">ⓘ</span>
@@ -41,7 +41,7 @@
             <h2 class="text-2xl font-black text-slate-900 font-mono" id="statTotalPending">17</h2>
             <span class="text-sm text-amber-600 font-semibold">Requires VP Action</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"
             aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,8 +50,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Grade Submissions
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Grade sheets pending VP review and approval.">ⓘ</span>
@@ -59,7 +59,7 @@
             <h2 class="text-2xl font-black text-amber-600 font-mono" id="statGradeSubmissions">8</h2>
             <span class="text-sm text-slate-500">Due this week</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"
             aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -68,8 +68,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Clearance Holds
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Student clearance holds requiring VP intervention.">ⓘ</span>
@@ -77,7 +77,7 @@
             <h2 class="text-2xl font-black text-rose-600 font-mono" id="statClearanceHolds">4</h2>
             <span class="text-sm text-slate-500">Urgent review needed</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -85,8 +85,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Admissions &amp; Scholarships
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Admission and scholarship applications awaiting review.">ⓘ</span>
@@ -94,7 +94,7 @@
             <h2 class="text-2xl font-black text-blue-600 font-mono" id="statAdmissions">5</h2>
             <span class="text-sm text-slate-500">Pending evaluation</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -102,14 +102,13 @@
         </div>
     </div>
 </div>
-
 <!-- ===== APPROVALS TABLE (with integrated filters) ===== -->
 <!-- Filters -->
 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
-    <div class="flex flex-wrap items-center gap-2">
-        <div class="relative">
-            <input type="search" id="searchApprovals" placeholder="Search by ID, name, or department..."
-                class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full lg:w-auto">
+        <div class="relative w-full sm:w-48">
+            <input type="search" id="searchApprovals" placeholder="Search by ID, name..."
+                class="input-field text-sm w-full pr-8" oninput="applyFilters()" />
             <button onclick="resetApprovalFilters()"
                 class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,42 +116,44 @@
                 </svg>
             </button>
         </div>
-        <select id="filterCategory" class="select-field text-sm w-36" onchange="applyFilters()">
-            <option value="all">All Categories</option>
-            <option value="grades">Grade Submissions</option>
-            <option value="clearance">Clearance Holds</option>
-            <option value="admissions">Admissions</option>
-            <option value="scholarship">Scholarships</option>
-        </select>
-        <select id="filterStatus" class="select-field text-sm w-32" onchange="applyFilters()">
-            <option value="all">All Statuses</option>
-            <option value="pending_review">Pending Review</option>
-            <option value="in_review">In Review</option>
-            <option value="hold">On Hold</option>
-            <option value="consultation">Under Consultation</option>
-        </select>
+        <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+            <select id="filterCategory" class="select-field text-sm w-full sm:w-36" onchange="applyFilters()">
+                <option value="all">All Categories</option>
+                <option value="grades">Grade Submissions</option>
+                <option value="clearance">Clearance Holds</option>
+                <option value="admissions">Admissions</option>
+                <option value="scholarship">Scholarships</option>
+            </select>
+            <select id="filterStatus" class="select-field text-sm w-full sm:w-32" onchange="applyFilters()">
+                <option value="all">All Statuses</option>
+                <option value="pending_review">Pending Review</option>
+                <option value="in_review">In Review</option>
+                <option value="hold">On Hold</option>
+                <option value="consultation">Under Consultation</option>
+            </select>
+        </div>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center justify-between sm:justify-end gap-2">
         <span class="text-xs text-slate-500" id="showingInfo">Showing 1-14 of 17</span>
     </div>
 </div>
 
 <!-- Table with filters -->
-<div class="card space-y-4">
+<div class="card space-y-4 max-w-full overflow-hidden">
     <!-- Bulk Actions + Table -->
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <select id="bulkAction" class="select-field text-sm w-40" disabled>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+            <select id="bulkAction" class="select-field text-sm w-36 sm:w-40 flex-1 sm:flex-none" disabled>
                 <option value="">Bulk Actions</option>
                 <option value="approve">Approve Selected</option>
                 <option value="reject">Reject Selected</option>
             </select>
-            <button id="applyBulkBtn" onclick="openBulkConfirmModal()" class="btn btn-secondary text-xs"
+            <button id="applyBulkBtn" onclick="openBulkConfirmModal()" class="btn btn-secondary text-xs shrink-0"
                 disabled>Apply</button>
-            <span id="selectedCount" class="text-xs text-slate-500">0 selected</span>
+            <span id="selectedCount" class="text-xs text-slate-500 whitespace-nowrap">0 selected</span>
         </div>
-        <div class="flex items-center gap-2">
-            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+        <div class="flex items-center justify-end gap-2 shrink-0">
+            <label for="rowsPerPage" class="text-xs text-slate-500 whitespace-nowrap">Rows:</label>
             <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
                 <option value="10">10</option>
                 <option value="25" selected>25</option>
@@ -162,7 +163,7 @@
         </div>
     </div>
 
-    <div class="table-wrap">
+    <div class="table-wrap overflow-x-auto w-full">
         <table class="w-full text-left text-sm text-slate-600 border-collapse" id="approvalsTable">
             <thead>
                 <tr
@@ -226,11 +227,11 @@
 
     <!-- Pagination -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-        <p class="text-sm text-slate-500">
+        <p class="text-sm text-slate-500 text-center sm:text-left">
             Showing <span id="pageStart">1</span>–<span id="pageEnd">14</span> of <span id="totalItems">17</span>
             entries
         </p>
-        <div class="flex items-center gap-1.5" id="paginationControls">
+        <div class="flex items-center justify-center sm:justify-end gap-1.5 flex-wrap overflow-x-auto" id="paginationControls">
             <!-- Generated by JavaScript -->
         </div>
     </div>
@@ -240,46 +241,46 @@
 
 <!-- Grade Details Modal -->
 <div id="gradeDetailsModal"
-    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden"
     aria-modal="true" role="dialog">
     <div
-        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-4 sm:p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
-            <div>
-                <h3 id="gradeDetailTitle" class="text-lg font-bold text-slate-900">Grade Sheet Review</h3>
-                <p id="gradeDetailSubtitle" class="text-sm text-slate-500">Reviewing final grade submissions</p>
+            <div class="min-w-0 pr-2">
+                <h3 id="gradeDetailTitle" class="text-base sm:text-lg font-bold text-slate-900 truncate">Grade Sheet Review</h3>
+                <p id="gradeDetailSubtitle" class="text-xs sm:text-sm text-slate-500 truncate">Reviewing final grade submissions</p>
             </div>
             <button type="button" onclick="closeDetailModal()"
-                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold shrink-0"
                 aria-label="Close">&times;</button>
         </div>
         <div id="gradeDetailContent" class="space-y-4">
             <!-- Rendered by JavaScript -->
         </div>
-        <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
-            <button type="button" onclick="closeDetailModal()" class="btn btn-secondary text-xs">Cancel</button>
-            <button type="button" id="detailApproveBtn" class="btn btn-success text-xs">Approve</button>
-            <button type="button" id="detailRejectBtn" class="btn btn-danger text-xs">Reject</button>
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 pt-3 border-t border-slate-100 flex-wrap sm:flex-nowrap">
+            <button type="button" onclick="closeDetailModal()" class="btn btn-secondary text-xs flex-1 sm:flex-none">Cancel</button>
+            <button type="button" id="detailApproveBtn" class="btn btn-success text-xs flex-1 sm:flex-none">Approve</button>
+            <button type="button" id="detailRejectBtn" class="btn btn-danger text-xs flex-1 sm:flex-none">Reject</button>
         </div>
     </div>
 </div>
 
 <!-- ===== BULK CONFIRMATION MODAL ===== -->
 <div id="bulkConfirmModal"
-    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden"
     aria-modal="true" role="dialog">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-slate-200 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 class="text-lg font-bold text-slate-900" id="bulkConfirmTitle">Confirm Bulk Action</h3>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900" id="bulkConfirmTitle">Confirm Bulk Action</h3>
             <button type="button" onclick="closeBulkConfirmModal()"
-                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold shrink-0"
                 aria-label="Close">&times;</button>
         </div>
         <p class="text-sm text-slate-600" id="bulkConfirmBody">Are you sure you want to approve <span id="bulkCount"
                 class="font-bold">0</span> selected request(s)?</p>
-        <div class="flex justify-end gap-2.5 pt-2">
-            <button type="button" onclick="closeBulkConfirmModal()" class="btn btn-secondary text-xs">Cancel</button>
-            <button type="button" id="bulkConfirmBtn" class="btn btn-primary text-xs">Confirm</button>
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 pt-2">
+            <button type="button" onclick="closeBulkConfirmModal()" class="btn btn-secondary text-xs flex-1 sm:flex-none">Cancel</button>
+            <button type="button" id="bulkConfirmBtn" class="btn btn-primary text-xs flex-1 sm:flex-none">Confirm</button>
         </div>
     </div>
 </div>
@@ -590,7 +591,7 @@
         if (item.category === 'grades') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Course:</span> ${d.course}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Students:</span> ${d.students}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Submitted By:</span> ${d.submittedBy}</div>
@@ -600,16 +601,16 @@
                 <p class="font-bold">📋 Grade Summary</p>
                 <p class="text-xs mt-1">Passing: 38/42 students • Failing: 4 students • Pending: 0</p>
             </div>
-            <div class="table-wrap">
+            <div class="table-wrap overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                     <thead><tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
                         <th class="p-2">Student ID</th><th class="p-2">Name</th><th class="p-2">Final Grade</th><th class="p-2">Status</th>
                     </tr></thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr><td class="p-2">STU-2021-0001</td><td>James Smith</td><td class="font-bold text-emerald-700">A-</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0002</td><td>Emma Johnson</td><td class="font-bold text-emerald-700">B</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0003</td><td>Liam Williams</td><td class="font-bold text-amber-700">C</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0004</td><td>Olivia Brown</td><td class="font-bold text-rose-700">D</td><td><span class="status-badge status-badge--hold">Failed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0001</td><td>James Smith</td><td class="font-bold text-emerald-700">A-</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0002</td><td>Emma Johnson</td><td class="font-bold text-emerald-700">B</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0003</td><td>Liam Williams</td><td class="font-bold text-amber-700">C</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0004</td><td>Olivia Brown</td><td class="font-bold text-rose-700">D</td><td><span class="status-badge status-badge--hold">Failed</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -618,7 +619,7 @@
         } else if (item.category === 'clearance') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Student:</span> ${d.student}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Reason:</span> ${d.reason}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Receipt:</span> ${d.receipt}</div>
@@ -632,7 +633,7 @@
         } else if (item.category === 'admissions') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Program:</span> ${d.program}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Transfer Credits:</span> ${d.transferCredits || '0'}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa || '—'}</div>
@@ -646,7 +647,7 @@
         } else if (item.category === 'scholarship') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Type:</span> ${d.type}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Amount:</span> ${d.amount}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa}</div>

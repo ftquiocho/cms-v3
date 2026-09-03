@@ -27,7 +27,8 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif']
+                        // sans: ['Inter', 'system-ui', 'sans-serif']
+                        sans: ['Roboto', 'system-ui', 'sans-serif']
                     }
                 }
             }
@@ -35,9 +36,10 @@
     </script>
 
     <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -415,52 +417,70 @@
     <header class="bg-slate-900 text-white border-b border-slate-800/80 sticky top-0 z-30">
     <div class="max-w-[1750px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
 
-       <!-- Left: Brand + Mobile toggle -->
-<div class="flex items-center gap-3 min-w-0">
-    <!-- Mobile toggle -->
-    <button id="mobileSidebarToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileSidebar()" class="lg:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
+        <!-- Left: Brand + Mobile toggle -->
+        <div class="flex items-center gap-3 min-w-0">
+            <!-- Mobile toggle -->
+            <button id="mobileSidebarToggle" type="button" aria-label="Toggle navigation" aria-expanded="false"
+                onclick="toggleMobileSidebar()"
+                class="lg:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
 
-    <!-- Desktop Sidebar Toggle -->
-    <button id="sidebarToggleBtn" type="button" onclick="toggleSidebar()" aria-expanded="true" aria-label="Toggle sidebar" class="hidden lg:flex p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl min-h-[44px] min-w-[44px] items-center justify-center transition-colors" title="Toggle sidebar">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-    </button>
+            <!-- Desktop Sidebar Toggle -->
+            <button id="sidebarToggleBtn" type="button" onclick="toggleSidebar()" aria-expanded="true"
+                aria-label="Toggle sidebar"
+                class="hidden lg:flex p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl min-h-[44px] min-w-[44px] items-center justify-center transition-colors"
+                title="Toggle sidebar">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
 
-    <!-- Brand -->
-    <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
-        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0" aria-hidden="true">VC</div>
-        <div class="hidden sm:block">
-            <div class="flex items-center gap-2">
-                <span class="font-extrabold text-sm tracking-tight text-white">Veritas Campus</span>
+            <!-- Brand -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
+                <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0"
+                    aria-hidden="true">VC</div>
+                <div class="hidden sm:block">
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-sm tracking-tight text-white">Veritas Campus</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 truncate">Academic Management</p>
+                </div>
             </div>
-            <p class="text-[11px] text-slate-400 truncate">Academic Management</p>
         </div>
-    </div>
-</div>
 
         <!-- Search (global command palette) -->
         <div class="flex-1 max-w-xl hidden md:block">
             <div class="relative">
                 <label for="globalCommandSearch" class="sr-only">Search students, faculty, or modules</label>
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400" aria-hidden="true">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400"
+                    aria-hidden="true">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                 </div>
-                <input type="search" id="globalCommandSearch" placeholder="Jump to module or search… (Press '/' or ⌘K)" class="w-full pl-10 pr-12 py-2 bg-slate-800/90 text-slate-100 placeholder-slate-400 border border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all min-h-[42px]" data-command />
+                <input type="search" id="globalCommandSearch" placeholder="Jump to module or search… (Press '/' or ⌘K)"
+                    class="w-full pl-10 pr-12 py-2 bg-slate-800/90 text-slate-100 placeholder-slate-400 border border-slate-700/80 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all min-h-[42px]"
+                    data-command />
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none" aria-hidden="true">
-                    <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 bg-slate-900 border border-slate-700 rounded">⌘K</kbd>
+                    <kbd
+                        class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 bg-slate-900 border border-slate-700 rounded">⌘K</kbd>
                 </div>
                 <!-- Command palette results -->
-                <div id="commandResults" class="hidden absolute left-0 right-0 top-full mt-1 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl max-h-60 overflow-y-auto z-50"></div>
+                <div id="commandResults"
+                    class="hidden absolute left-0 right-0 top-full mt-1 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl max-h-60 overflow-y-auto z-50">
+                </div>
             </div>
         </div>
 
         <!-- Right controls -->
         <div class="flex items-center gap-2 sm:gap-3">
             <!-- Term indicator (clean pill) -->
-            <div class="hidden xl:flex items-center px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/50 text-slate-300 text-xs font-medium">
+            <div
+                class="hidden xl:flex items-center px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/50 text-slate-300 text-xs font-medium">
                 <span>AY 2021-2022 2nd Sem</span>
             </div>
 
@@ -470,14 +490,22 @@
             </button> -->
 
             <!-- Notifications (dynamic) -->
-            <button type="button" id="notifBtn" onclick="toggleNotificationDrawer()" aria-expanded="false" aria-controls="notificationDrawer" class="relative p-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" title="Notifications" aria-label="Notifications">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                <span id="notifBadge" class="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-brand-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-slate-900">5</span>
+            <button type="button" id="notifBtn" onclick="toggleNotificationDrawer()" aria-expanded="false"
+                aria-controls="notificationDrawer"
+                class="relative p-2.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                title="Notifications" aria-label="Notifications">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span id="notifBadge"
+                    class="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-brand-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-slate-900">5</span>
             </button>
 
             <!-- User profile -->
             <div class="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-800">
-                <div class="w-9 h-9 rounded-xl bg-slate-700 flex items-center justify-center text-white font-bold text-sm ring-2 ring-brand-500/80" aria-hidden="true">MA</div>
+                <div class="w-9 h-9 rounded-xl bg-slate-700 flex items-center justify-center text-white font-bold text-sm ring-2 ring-brand-500/80"
+                    aria-hidden="true">MA</div>
                 <div class="hidden lg:block text-left">
                     <p class="text-xs font-bold leading-tight text-slate-100">Dr. Mateo R. Alcantara</p>
                     <p class="text-[11px] text-slate-400 font-medium">VP &bull; Academic &amp; Student Affairs</p>
@@ -488,23 +516,27 @@
 </header>
 
 <!-- ===== DEVELOPER HANDBOFF BANNER ===== -->
-<div id="devBanner" class="bg-amber-50 border-b border-amber-200 text-amber-800 text-xs px-4 py-2 flex flex-wrap items-center justify-between gap-2 shadow-sm" role="status" aria-live="polite">
-    <div class="flex items-center gap-2 flex-wrap">
-        <span class="inline-flex items-center rounded-full bg-amber-200 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider border border-amber-300 shrink-0">Handoff</span>
-        <span>
-            <strong class="font-semibold">Developer prototype</strong> – All features are fully interactive to demonstrate intended behavior, data flows, and edge cases.
-            Role-based access (e.g., VP view‑only for operational modules) will be enforced in the production build.
+<div id="devBanner"
+    class="bg-amber-50 border-b border-amber-200 text-amber-800 text-[11px] px-3 py-1.5 flex flex-wrap items-center justify-between gap-1 shadow-sm"
+    role="status" aria-live="polite">
+    
+    <div class="flex items-center gap-1.5 flex-1 min-w-0">
+        <span class="inline-flex items-center rounded-full bg-amber-200 px-1.5 py-0.5 text-[9px] font-bold text-amber-800 uppercase tracking-wider border border-amber-300 shrink-0">Handoff</span>
+        <span class="leading-tight break-words min-w-0">
+           This is a <strong> Live Prototype</strong>. All features are fully interactive to demonstrate intended behavior, data flows, and edge cases. Role-based access will be enforced in production.
         </span>
     </div>
-    <button onclick="document.getElementById('devBanner').style.display='none'" 
-            class="text-amber-600 hover:text-amber-800 text-xs font-medium whitespace-nowrap transition-colors" 
-            aria-label="Dismiss banner">
-        Dismiss <span aria-hidden="true">✕</span>
+    
+    <button onclick="document.getElementById('devBanner').style.display='none'"
+            class="text-amber-600 hover:text-amber-800 text-[13px] font-bold whitespace-nowrap transition-colors shrink-0 leading-none px-1"
+            aria-label="Dismiss banner"
+            title="Dismiss">
+        ✕
     </button>
 </div>
-
 <!-- ===== NOTIFICATION DRAWER (Dynamic) ===== -->
-<div id="notificationDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden" aria-modal="true" role="dialog" aria-labelledby="notifTitle">
+<div id="notificationDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden"
+    aria-modal="true" role="dialog" aria-labelledby="notifTitle">
     <div class="bg-white w-full max-w-sm h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
         <div>
             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -512,15 +544,20 @@
                     <h2 id="notifTitle" class="text-base font-bold text-slate-900">Notifications</h2>
                     <p class="text-xs text-slate-500" id="notifSubtext">5 unread</p>
                 </div>
-                <button type="button" onclick="toggleNotificationDrawer()" class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-lg font-bold" aria-label="Close">&times;</button>
+                <button type="button" onclick="toggleNotificationDrawer()"
+                    class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-lg font-bold"
+                    aria-label="Close">&times;</button>
             </div>
             <div id="notificationList" class="space-y-3 text-sm mt-4">
                 <!-- Rendered by JavaScript -->
             </div>
         </div>
         <div class="pt-4 border-t border-slate-100 flex flex-col gap-2">
-            <button type="button" onclick="markAllRead()" class="w-full py-2.5 text-sm font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-xl transition-colors">Mark all as read</button>
-            <button type="button" onclick="toggleNotificationDrawer()" class="w-full py-2.5 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Close</button>
+            <button type="button" onclick="markAllRead()"
+                class="w-full py-2.5 text-sm font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-xl transition-colors">Mark
+                all as read</button>
+            <button type="button" onclick="toggleNotificationDrawer()"
+                class="w-full py-2.5 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">Close</button>
         </div>
     </div>
 </div>
@@ -598,12 +635,12 @@
         searchInput.addEventListener('blur', () => {
             setTimeout(() => resultsContainer.classList.add('hidden'), 200);
         });
-        searchInput.addEventListener('focus', function() {
+        searchInput.addEventListener('focus', function () {
             if (this.value.trim()) performSearch(this.value);
         });
 
         // ===== Keyboard shortcuts =====
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 searchInput.focus();
@@ -621,7 +658,7 @@
         });
 
         // ===== Close dropdown on outside click =====
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const container = searchInput.closest('.relative');
             if (container && !container.contains(e.target)) {
                 resultsContainer.classList.add('hidden');
@@ -1932,5 +1969,90 @@
     </script>
 
 </body>
+
+<!-- ===== MOBILE BLOCK OVERLAY (for screens < 768px) ===== -->
+<div id="mobileBlockOverlay" class="fixed inset-0 z-[9999] bg-slate-900 flex flex-col items-center justify-center p-6 text-center hidden" style="display: none;">
+    <div class="max-w-sm mx-auto">
+        <!-- Icon -->
+        <div class="w-20 h-20 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9.75 17.25v-.75a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v.75m-4.5 0h4.5m-4.5 0a3 3 0 01-3-3V6a3 3 0 013-3h4.5a3 3 0 013 3v8.25a3 3 0 01-3 3m-4.5 0h4.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 5.25v1.5m0 1.5h.01M12 12h.01" />
+            </svg>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-2xl font-bold text-white mb-3">Screen Too Small</h2>
+
+        <!-- Message -->
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+            <span class="font-semibold text-white">Veritas Campus</span> is designed for
+            <span class="font-semibold text-brand-400">tablets and larger screens</span>.
+            Please open this application on a device with a screen width of at least
+            <span class="font-semibold text-white">768px</span>.
+        </p>
+
+        <!-- Device suggestion -->
+        <div class="flex items-center justify-center gap-4 text-xs text-slate-500">
+            <div class="flex flex-col items-center gap-1">
+                <svg class="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.75 17.25v-.75a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v.75m-4.5 0h4.5m-4.5 0a3 3 0 01-3-3V6a3 3 0 013-3h4.5a3 3 0 013 3v8.25a3 3 0 01-3 3m-4.5 0h4.5" />
+                </svg>
+                <span>Tablet</span>
+            </div>
+            <span class="text-slate-600">or</span>
+            <div class="flex flex-col items-center gap-1">
+                <svg class="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.75 17.25v-.75a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v.75m-4.5 0h4.5m-4.5 0a3 3 0 01-3-3V6a3 3 0 013-3h4.5a3 3 0 013 3v8.25a3 3 0 01-3 3m-4.5 0h4.5" />
+                    <rect x="4" y="2" width="16" height="20" rx="2" stroke-width="2" fill="none"/>
+                    <line x1="8" y1="18" x2="16" y2="18" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Desktop</span>
+            </div>
+        </div>
+
+        <!-- Refresh hint -->
+        <p class="text-xs text-slate-600 mt-6">
+            Resize your browser window or rotate your device to continue.
+        </p>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT TO SHOW/HIDE ON RESIZE ===== -->
+<script>
+    (function() {
+        const overlay = document.getElementById('mobileBlockOverlay');
+        const BREAKPOINT = 768; // 768px minimum width
+
+        function checkScreenSize() {
+            if (window.innerWidth < BREAKPOINT) {
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Check on load
+        checkScreenSize();
+
+        // Check on resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(checkScreenSize, 100);
+        });
+
+        // Also check on orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(checkScreenSize, 300);
+        });
+    })();
+</script>
 
 </html>

@@ -3,6 +3,8 @@
 //  Organised into logical sections for maintainability.
 // ============================================================
 
+
+
 // ============================================================
 //  1. TOAST SYSTEM
 // ============================================================
@@ -677,8 +679,28 @@ export function initTooltips() {
     "fixed z-50 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg border border-slate-700/80 pointer-events-none transition-opacity duration-150 opacity-0 max-w-xs";
   document.body.appendChild(tooltipEl);
 
+  // Helper: check if sidebar is collapsed
+  function isSidebarCollapsed() {
+    const sidebar = document.getElementById("mainSidebar");
+    return sidebar && sidebar.classList.contains("collapsed");
+  }
+
+  // Helper: check if element is inside the sidebar
+  function isInsideSidebar(el) {
+    return el.closest && el.closest('#mainSidebar');
+  }
+
   tooltipTriggers.forEach((el) => {
     const showTooltip = (e) => {
+      // ----- CRITICAL CHANGE -----
+      // If the element is INSIDE the sidebar, ONLY show when sidebar is collapsed.
+      // If the element is OUTSIDE the sidebar, ALWAYS show (no restriction).
+      if (isInsideSidebar(el) && !isSidebarCollapsed()) {
+        tooltipEl.classList.add("opacity-0");
+        return;
+      }
+      // ----- END CHANGE -----
+
       clearTimeout(tooltipTimeout);
       const text = el.getAttribute("data-tooltip");
       if (!text) return;
@@ -690,11 +712,13 @@ export function initTooltips() {
       tooltipEl.style.top = Math.max(8, top) + "px";
       tooltipEl.style.left = Math.max(8, left) + "px";
     };
+
     const hideTooltip = () => {
       tooltipTimeout = setTimeout(() => {
         tooltipEl.classList.add("opacity-0");
       }, 150);
     };
+
     el.addEventListener("mouseenter", showTooltip);
     el.addEventListener("mouseleave", hideTooltip);
     el.addEventListener("focus", showTooltip);
@@ -706,9 +730,19 @@ export function initTooltips() {
       el.removeEventListener("blur", hideTooltip);
     };
   });
+
+  // Click behavior – also check sidebar scope
   tooltipTriggers.forEach((el) => {
     el.addEventListener("click", function (e) {
       e.stopPropagation();
+
+      // ----- CRITICAL CHANGE -----
+      if (isInsideSidebar(el) && !isSidebarCollapsed()) {
+        tooltipEl.classList.add("opacity-0");
+        return;
+      }
+      // ----- END CHANGE -----
+
       const text = this.getAttribute("data-tooltip");
       if (!text) return;
       const tooltip = document.getElementById("globalTooltip");

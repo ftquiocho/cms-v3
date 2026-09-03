@@ -1,135 +1,141 @@
 <!-- ===== STUDENT 360 ===== -->
 
 <!-- ===== HEADER ===== -->
-<div class="flex items-center justify-between mb-4">
-    <div>
-        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
-            <button type="button" onclick="window.location.href='enrol.html'"
-                class="hover:text-brand-600 flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Enrollment Hub
-            </button>
-            <span aria-hidden="true">/</span>
-            <span class="text-slate-900 font-bold">Student 360</span>
-        </nav>
-        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Student 360</h1>
-        <p class="text-sm text-slate-500 mt-0.5">Complete view of student profile, enrolment, grades, and history</p>
-    </div>
-    <div class="flex flex-col items-end gap-1">
-        <!-- Selected Student Indicator -->
-        <div id="selectedStudentIndicator" class="hidden text-xs text-slate-500">
-            Selected: <span id="selectedStudentName" class="font-bold text-slate-700">James Smith</span>
-            <span class="text-slate-400 font-mono">(<span id="selectedStudentId">STU-2021-00001</span>)</span>
-        </div>
-        <div class="flex items-center gap-3">
-
-            <!-- Quick Jump Dropdown -->
-<div class="relative" id="quickJumpContainer">
-    <button type="button" onclick="toggleQuickJump()"
-        class="btn btn-secondary text-xs flex items-center gap-1.5" id="quickJumpBtn">
-        Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-    </button>
-    <div id="quickJumpMenu"
-        class="hidden absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
-        <a href="view-evaluation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Evaluation</a>
-        <a href="view-grades.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Grades</a>
-        <a href="pre-enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Pre-Enrol Subjects</a>
-        <a href="enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Enrol Subjects</a>
-        <a href="change-matriculation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Change Matriculation</a>
-        <a href="subject-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Subject Override</a>
-        <a href="unit-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Unit Override</a>
-        <a href="enrol-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
-        <a href="student-360.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Student 360</a>
-    </div>
-</div>
-
-            <!-- Quick Actions Dropdown -->
-            <div class="relative" id="quickActionsContainer">
-                <button type="button" id="quickActionsBtn"
-                    class="btn btn-secondary text-xs flex items-center gap-1.5 opacity-60 cursor-not-allowed"
-                    disabled
-                    title="Select a student by clicking 'View Profile' first."
-                    onclick="toggleQuickActions()">
-                    Quick Actions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+<div class="card mb-4 relative z-20">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+            <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+                <button type="button" onclick="window.location.href='enrol.html'"
+                    class="hover:text-brand-600 flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
+                    Enrollment Hub
                 </button>
-                <div id="quickActionsMenu"
-                    class="hidden absolute right-0 mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-1">
-                    <div class="px-3 py-1.5 text-xs font-bold text-slate-400 uppercase">Actions for Selected Student</div>
-                    <a href="#" onclick="navigateTo('enrol-subjects.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Manage Enrolment</a>
-                    <a href="#" onclick="navigateTo('view-grades.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Full Grades</a>
-                    <a href="#" onclick="navigateTo('view-evaluation.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Evaluation</a>
-                    <a href="#" onclick="navigateTo('change-matriculation.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Change Matriculation</a>
-                    <a href="#" onclick="navigateTo('subject-override.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Subject Override</a>
-                    <a href="#" onclick="navigateTo('unit-override.html')"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Unit Override</a>
-                    <hr class="my-1 border-slate-100">
-                    <a href="#" onclick="window.print()"
-                        class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">🖨️ Print Profile</a>
-                </div>
+                <span aria-hidden="true">/</span>
+                <span class="text-slate-900 font-bold">Student 360</span>
+            </nav>
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Student 360</h1>
+            <p class="text-sm text-slate-500 mt-0.5">Complete view of student profile, enrolment, grades, and history</p>
+        </div>
+
+        <div class="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
+            <!-- Selected Student Indicator -->
+            <div id="selectedStudentIndicator" class="hidden text-xs text-slate-500">
+                Selected: <span id="selectedStudentName" class="font-bold text-slate-700">James Smith</span>
+                <span class="text-slate-400 font-mono">(<span id="selectedStudentId">STU-2021-00001</span>)</span>
             </div>
 
-            <button type="button" onclick="exportStudentData()" class="btn btn-secondary text-xs">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Export CSV
-            </button>
-            <button type="button" onclick="window.location.href='enrol.html'" class="btn btn-secondary text-xs">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Back to Hub
-            </button>
+            <!-- Header Action Controls -->
+            <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                <!-- Quick Jump Dropdown -->
+                <div class="relative" id="quickJumpContainer">
+                    <button type="button" onclick="toggleQuickJump(event)"
+                        class="btn btn-secondary text-xs flex items-center gap-1.5 whitespace-nowrap" id="quickJumpBtn">
+                        Jump to <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="quickJumpMenu"
+                        class="hidden absolute left-0 lg:left-auto lg:right-0 top-full mt-1 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1">
+                        <a href="view-evaluation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Evaluation</a>
+                        <a href="view-grades.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">View Grades</a>
+                        <a href="pre-enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Pre-Enrol Subjects</a>
+                        <a href="enrol-subjects.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Enrol Subjects</a>
+                        <a href="change-matriculation.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Change Matriculation</a>
+                        <a href="subject-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Subject Override</a>
+                        <a href="unit-override.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Unit Override</a>
+                        <a href="enrol-reports.html" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reports</a>
+                        <a href="student-360.html" class="block px-4 py-2 text-sm text-brand-600 bg-brand-50 font-semibold hover:bg-brand-100">Student 360</a>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Dropdown -->
+                <div class="relative" id="quickActionsContainer">
+                    <button type="button" id="quickActionsBtn"
+                        class="btn btn-secondary text-xs flex items-center gap-1.5 opacity-60 cursor-not-allowed whitespace-nowrap"
+                        disabled
+                        title="Select a student by clicking 'View Profile' first."
+                        onclick="toggleQuickActions(event)">
+                        Quick Actions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="quickActionsMenu"
+                        class="hidden absolute left-0 lg:left-auto lg:right-0 top-full mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1">
+                        <div class="px-3 py-1.5 text-xs font-bold text-slate-400 uppercase">Actions for Selected Student</div>
+                        <a href="#" onclick="navigateTo('enrol-subjects.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Manage Enrolment</a>
+                        <a href="#" onclick="navigateTo('view-grades.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Full Grades</a>
+                        <a href="#" onclick="navigateTo('view-evaluation.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">View Evaluation</a>
+                        <a href="#" onclick="navigateTo('change-matriculation.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Change Matriculation</a>
+                        <a href="#" onclick="navigateTo('subject-override.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Subject Override</a>
+                        <a href="#" onclick="navigateTo('unit-override.html')"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">Unit Override</a>
+                        <hr class="my-1 border-slate-100">
+                        <a href="#" onclick="window.print()"
+                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-600">🖨️ Print Profile</a>
+                    </div>
+                </div>
+
+                <button type="button" onclick="exportStudentData()" class="btn btn-secondary text-xs whitespace-nowrap">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export CSV
+                </button>
+                <button type="button" onclick="window.location.href='enrol.html'" class="btn btn-secondary text-xs whitespace-nowrap">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Back to Hub
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- ===== STUDENT SEARCH ===== -->
 <div class="card mb-4">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-        <label for="studentSearch" class="font-bold text-sm text-slate-700 shrink-0">Search Student:</label>
-        <div class="relative flex-1">
-            <input type="search" id="studentSearch" placeholder="Search by name or ID..."
-                class="input-field text-sm w-full pr-8" oninput="window.applyFilters_Students()" />
-            <button onclick="window.applyFilters_Students()"
-                class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
+            <label for="studentSearch" class="font-bold text-sm text-slate-700 shrink-0">Search Student:</label>
+            <div class="relative flex-1 w-full">
+                <input type="search" id="studentSearch" placeholder="Search by name or ID..."
+                    class="input-field text-sm w-full pr-8" oninput="window.applyFilters_Students()" />
+                <button onclick="window.applyFilters_Students()"
+                    class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+            </div>
+            <select id="studentFilter" class="select-field text-sm w-full sm:w-48" onchange="window.applyFilters_Students()">
+                <option value="all">All Programs</option>
+                <option value="BS Accountancy">BS Accountancy</option>
+                <option value="BS Accounting Tech">BS Accounting Tech</option>
+                <option value="Diploma Ag Tech">Diploma Ag Tech</option>
+                <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
+                <option value="Juris Doctor">Juris Doctor</option>
+                <option value="BS Computer Science">BS Computer Science</option>
+                <option value="BS Engineering">BS Engineering</option>
+            </select>
         </div>
-        <select id="studentFilter" class="select-field text-sm w-48" onchange="window.applyFilters_Students()">
-            <option value="all">All Programs</option>
-            <option value="BS Accountancy">BS Accountancy</option>
-            <option value="BS Accounting Tech">BS Accounting Tech</option>
-            <option value="Diploma Ag Tech">Diploma Ag Tech</option>
-            <option value="ABMT Entrepreneurship">ABMT Entrepreneurship</option>
-            <option value="Juris Doctor">Juris Doctor</option>
-            <option value="BS Computer Science">BS Computer Science</option>
-            <option value="BS Engineering">BS Engineering</option>
-        </select>
-        <span class="text-xs text-slate-400 font-mono" id="studentCount">0 students</span>
+        <span class="text-xs text-slate-400 font-mono shrink-0 text-right sm:text-left" id="studentCount">0 students</span>
     </div>
 </div>
 
 <!-- ===== STUDENT LIST ===== -->
-<div id="studentListContainer" class="card space-y-3">
-    <div class="table-wrap">
+<div id="studentListContainer" class="card space-y-3 max-w-full overflow-hidden">
+    <div class="table-wrap overflow-x-auto w-full">
         <table class="w-full text-left text-sm text-slate-600 border-collapse" id="studentListTable">
             <thead>
                 <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
@@ -144,7 +150,7 @@
                     <th scope="col" class="p-3 text-right min-w-[100px]">Action</th>
                 </tr>
             </thead>
-            <tbody id="studentListBody">
+            <tbody id="studentListBody" class="divide-y divide-slate-100">
                 <!-- Rows generated by JavaScript -->
             </tbody>
         </table>
@@ -168,46 +174,48 @@
     <!-- Personal Info Card -->
     <div class="card">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
+            <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-3">
-                    <div class="w-16 h-16 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-2xl"
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xl sm:text-2xl shrink-0"
                         id="profileAvatar">JS</div>
-                    <div>
-                        <h2 id="profileName" class="text-xl font-black text-slate-900">James Smith</h2>
-                        <p id="profileId" class="text-sm text-slate-500 font-mono">STU-2021-00001</p>
-                        <p id="profileProgram" class="text-sm text-slate-600">BS Accountancy</p>
+                    <div class="min-w-0 flex-1">
+                        <h2 id="profileName" class="text-lg sm:text-xl font-black text-slate-900 truncate">James Smith</h2>
+                        <p id="profileId" class="text-xs sm:text-sm text-slate-500 font-mono truncate">STU-2021-00001</p>
+                        <p id="profileProgram" class="text-xs sm:text-sm text-slate-600 truncate">BS Accountancy</p>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="exportStudentData()" class="btn btn-secondary text-xs">
+            <div class="flex items-center gap-2 shrink-0">
+                <button onclick="exportStudentData()" class="btn btn-secondary text-xs flex-1 sm:flex-none justify-center whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                     Export Data
                 </button>
-                <button onclick="backToStudentList()" class="btn btn-secondary text-xs">Back to List</button>
+                <button onclick="backToStudentList()" class="btn btn-secondary text-xs flex-1 sm:flex-none justify-center whitespace-nowrap">Back to List</button>
             </div>
         </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="card p-2 flex items-center gap-1.5 overflow-x-auto">
-        <button type="button" onclick="switchProfileTab('summary')" id="profTabSummary"
-            class="prof-tab btn btn-primary text-xs shrink-0">Summary</button>
-        <button type="button" onclick="switchProfileTab('enrolment')" id="profTabEnrolment"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Enrolment</button>
-        <button type="button" onclick="switchProfileTab('grades')" id="profTabGrades"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Grades</button>
-        <button type="button" onclick="switchProfileTab('evaluations')" id="profTabEvaluations"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Evaluations</button>
-        <button type="button" onclick="switchProfileTab('clearance')" id="profTabClearance"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Clearance</button>
-        <button type="button" onclick="switchProfileTab('billing')" id="profTabBilling"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Billing</button>
-        <button type="button" onclick="switchProfileTab('audit')" id="profTabAudit"
-            class="prof-tab btn btn-secondary text-xs shrink-0">Audit Trail</button>
+    <!-- Profile Tabs -->
+    <div class="card p-2 w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div class="flex items-center gap-1.5 flex-nowrap min-w-max">
+            <button type="button" onclick="switchProfileTab('summary')" id="profTabSummary"
+                class="prof-tab btn btn-primary text-xs shrink-0 whitespace-nowrap">Summary</button>
+            <button type="button" onclick="switchProfileTab('enrolment')" id="profTabEnrolment"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Enrolment</button>
+            <button type="button" onclick="switchProfileTab('grades')" id="profTabGrades"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Grades</button>
+            <button type="button" onclick="switchProfileTab('evaluations')" id="profTabEvaluations"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Evaluations</button>
+            <button type="button" onclick="switchProfileTab('clearance')" id="profTabClearance"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Clearance</button>
+            <button type="button" onclick="switchProfileTab('billing')" id="profTabBilling"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Billing</button>
+            <button type="button" onclick="switchProfileTab('audit')" id="profTabAudit"
+                class="prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap">Audit Trail</button>
+        </div>
     </div>
 
     <!-- Tab Content -->
@@ -253,16 +261,14 @@
             name: (a, b) => a.name.localeCompare(b.name)
         },
         getData: () => students,
-        updateStats: (data) => {
-            // No KPIs to update on Student 360
-        },
+        updateStats: (data) => {},
         renderRow: (student, index) => `
             <tr>
                 <td class="p-3 text-center font-mono text-slate-500">${index + 1}</td>
                 <td class="p-3 font-mono font-bold text-slate-900">${student.id}</td>
                 <td class="p-3 font-bold text-slate-900">${student.name}</td>
                 <td class="p-3">${student.program}</td>
-                <td class="p-3 text-right">
+                <td class="p-3 text-right whitespace-nowrap">
                     <button onclick="window.viewStudent('${student.id}')" class="btn btn-primary text-xs py-1 px-3">View Profile</button>
                 </td>
             </tr>
@@ -296,24 +302,17 @@
             return;
         }
 
-        // Hide list, show profile
         document.getElementById('studentListContainer').classList.add('hidden');
         document.getElementById('studentProfile').classList.remove('hidden');
 
-        // Populate personal info
         const initials = student.name.split(' ').map(n => n[0]).join('');
         document.getElementById('profileAvatar').textContent = initials;
         document.getElementById('profileName').textContent = student.name;
         document.getElementById('profileId').textContent = student.id;
         document.getElementById('profileProgram').textContent = student.program;
 
-        // Update selected indicator
         updateSelectedIndicator(student.name, student.id);
-
-        // Enable Quick Actions
         enableQuickActions();
-
-        // Switch to Summary tab by default
         switchProfileTab('summary');
     };
 
@@ -326,14 +325,12 @@
         window.refreshStudents();
     };
 
-    // ===== Selected Indicator =====
     function updateSelectedIndicator(name, id) {
         document.getElementById('selectedStudentName').textContent = name;
         document.getElementById('selectedStudentId').textContent = id;
         document.getElementById('selectedStudentIndicator').classList.remove('hidden');
     }
 
-    // ===== Quick Actions Button State =====
     function enableQuickActions() {
         const btn = document.getElementById('quickActionsBtn');
         btn.disabled = false;
@@ -341,7 +338,6 @@
         btn.classList.add('btn-primary');
         btn.classList.remove('btn-secondary');
         btn.title = 'Quick actions for selected student';
-        btn.onclick = toggleQuickActions;
     }
 
     function disableQuickActions() {
@@ -351,15 +347,39 @@
         btn.classList.remove('btn-primary');
         btn.classList.add('btn-secondary');
         btn.title = 'Select a student by clicking "View Profile" first.';
-        btn.onclick = null;
         document.getElementById('quickActionsMenu').classList.add('hidden');
     }
 
+    // ===== Toggle Dropdowns (with Event Propagation Fix) =====
+    window.toggleQuickJump = function(e) {
+        if (e) e.stopPropagation();
+        const menu = document.getElementById('quickJumpMenu');
+        document.getElementById('quickActionsMenu')?.classList.add('hidden');
+        menu.classList.toggle('hidden');
+    };
+
+    window.toggleQuickActions = function(e) {
+        if (e) e.stopPropagation();
+        const btn = document.getElementById('quickActionsBtn');
+        if (btn.disabled) return;
+        
+        const menu = document.getElementById('quickActionsMenu');
+        document.getElementById('quickJumpMenu')?.classList.add('hidden');
+        menu.classList.toggle('hidden');
+    };
+
+    window.navigateTo = function(page) {
+        if (!selectedStudentId) {
+            showNotification('Please select a student first.', 'warning');
+            return;
+        }
+        window.location.href = page + '?student=' + encodeURIComponent(selectedStudentId);
+    };
+
     // ===== Profile Tabs =====
     window.switchProfileTab = function(tab) {
-        // Update tab styles
         document.querySelectorAll('.prof-tab').forEach(btn => {
-            btn.className = 'prof-tab btn btn-secondary text-xs shrink-0';
+            btn.className = 'prof-tab btn btn-secondary text-xs shrink-0 whitespace-nowrap';
         });
         const tabMap = {
             'summary': 'profTabSummary',
@@ -371,9 +391,8 @@
             'audit': 'profTabAudit'
         };
         const tabBtn = document.getElementById(tabMap[tab]);
-        if (tabBtn) tabBtn.className = 'prof-tab btn btn-primary text-xs shrink-0';
+        if (tabBtn) tabBtn.className = 'prof-tab btn btn-primary text-xs shrink-0 whitespace-nowrap';
 
-        // Render content
         const content = document.getElementById('profileContent');
         const studentId = selectedStudentId;
         if (!studentId) return;
@@ -401,7 +420,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div class="card">
                                 <p class="text-xs font-bold text-slate-400 uppercase">Contact</p>
-                                <p class="text-sm font-bold text-slate-900 mt-1">${student.name.toLowerCase().replace(/\s/g, '.')}@university.edu</p>
+                                <p class="text-sm font-bold text-slate-900 mt-1 break-all">${student.name.toLowerCase().replace(/\s/g, '.')}@university.edu</p>
                                 <p class="text-sm text-slate-600">+63 9${Math.floor(100000000 + Math.random() * 900000000)}</p>
                                 <p class="text-sm text-slate-600">${Math.floor(100 + Math.random() * 900)} Academic Ave, University City</p>
                             </div>
@@ -422,9 +441,9 @@
                             <p class="text-xs font-bold text-slate-400 uppercase">Recent Activity</p>
                             <div class="mt-2 space-y-2 text-sm">
                                 ${audit.slice(0, 3).map(a => `
-                                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                        <span>${a.action}</span>
-                                        <span class="text-xs text-slate-400">${a.timestamp}</span>
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-2 gap-1 sm:gap-4">
+                                        <span class="break-words">${a.action}</span>
+                                        <span class="text-xs text-slate-400 shrink-0">${a.timestamp}</span>
                                     </div>
                                 `).join('')}
                                 ${audit.length === 0 ? '<p class="text-slate-500">No recent activity.</p>' : ''}
@@ -437,18 +456,18 @@
             case 'enrolment': {
                 const enrolData = getEnrolmentsByStudent(studentId);
                 content.innerHTML = `
-                        <div class="card">
-                            <div class="table-wrap">
+                        <div class="card overflow-hidden">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Subject</th>
-                                            <th class="p-2">Semester</th>
-                                            <th class="p-2">Status</th>
-                                            <th class="p-2">Grade</th>
+                                            <th class="p-2 min-w-[140px]">Subject</th>
+                                            <th class="p-2 min-w-[100px]">Semester</th>
+                                            <th class="p-2 min-w-[100px]">Status</th>
+                                            <th class="p-2 min-w-[80px]">Grade</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${enrolData.map(e => {
                                             const gradeObj = getGradesByStudent(studentId).find(g => g.subject === e.subject);
                                             const grade = gradeObj ? gradeObj.grade : '—';
@@ -478,22 +497,22 @@
                         return sum + (points[g.grade] || 0);
                     }, 0) / gradeData.length : 0;
                 content.innerHTML = `
-                        <div class="card">
+                        <div class="card overflow-hidden">
                             <div class="flex items-center justify-between mb-3">
                                 <h3 class="text-xs font-bold uppercase text-slate-500">Subject Grades</h3>
                                 <span class="text-sm font-bold text-brand-600">GPA: ${gpaCalc.toFixed(2)}</span>
                             </div>
-                            <div class="table-wrap">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Subject</th>
-                                            <th class="p-2">Grade</th>
-                                            <th class="p-2">Units</th>
-                                            <th class="p-2">Semester</th>
+                                            <th class="p-2 min-w-[140px]">Subject</th>
+                                            <th class="p-2 min-w-[80px]">Grade</th>
+                                            <th class="p-2 min-w-[80px]">Units</th>
+                                            <th class="p-2 min-w-[100px]">Semester</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${gradeData.map(g => `
                                             <tr>
                                                 <td class="p-2 font-bold">${g.subject}</td>
@@ -514,18 +533,18 @@
             case 'evaluations': {
                 const evalData = getEvaluationsByStudent(studentId);
                 content.innerHTML = `
-                        <div class="card">
-                            <div class="table-wrap">
+                        <div class="card overflow-hidden">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Period</th>
-                                            <th class="p-2">Status</th>
-                                            <th class="p-2">Score</th>
-                                            <th class="p-2">Recommendation</th>
+                                            <th class="p-2 min-w-[100px]">Period</th>
+                                            <th class="p-2 min-w-[100px]">Status</th>
+                                            <th class="p-2 min-w-[80px]">Score</th>
+                                            <th class="p-2 min-w-[140px]">Recommendation</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${evalData.map(e => `
                                             <tr>
                                                 <td class="p-2">${e.period}</td>
@@ -546,17 +565,17 @@
             case 'clearance': {
                 const clearData = getClearanceByStudent(studentId);
                 content.innerHTML = `
-                        <div class="card">
-                            <div class="table-wrap">
+                        <div class="card overflow-hidden">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Item</th>
-                                            <th class="p-2">Status</th>
-                                            <th class="p-2">Date</th>
+                                            <th class="p-2 min-w-[140px]">Item</th>
+                                            <th class="p-2 min-w-[100px]">Status</th>
+                                            <th class="p-2 min-w-[100px]">Date</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${clearData.map(c => `
                                             <tr>
                                                 <td class="p-2 font-bold">${c.item}</td>
@@ -576,18 +595,18 @@
             case 'billing': {
                 const billData = getBillingByStudent(studentId);
                 content.innerHTML = `
-                        <div class="card">
-                            <div class="table-wrap">
+                        <div class="card overflow-hidden">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Term</th>
-                                            <th class="p-2">Amount</th>
-                                            <th class="p-2">Status</th>
-                                            <th class="p-2">Payment Date</th>
+                                            <th class="p-2 min-w-[120px]">Term</th>
+                                            <th class="p-2 min-w-[100px]">Amount</th>
+                                            <th class="p-2 min-w-[100px]">Status</th>
+                                            <th class="p-2 min-w-[120px]">Payment Date</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${billData.map(b => `
                                             <tr>
                                                 <td class="p-2 font-bold">${b.term}</td>
@@ -608,17 +627,17 @@
             case 'audit': {
                 const auditData = getAuditLogsByStudent(studentId);
                 content.innerHTML = `
-                        <div class="card">
-                            <div class="table-wrap">
+                        <div class="card overflow-hidden">
+                            <div class="table-wrap overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                                     <thead>
                                         <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500">
-                                            <th class="p-2">Timestamp</th>
-                                            <th class="p-2">User</th>
-                                            <th class="p-2">Action</th>
+                                            <th class="p-2 min-w-[140px]">Timestamp</th>
+                                            <th class="p-2 min-w-[120px]">User</th>
+                                            <th class="p-2 min-w-[160px]">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="divide-y divide-slate-100">
                                         ${auditData.map(a => `
                                             <tr>
                                                 <td class="p-2 font-mono text-xs">${a.timestamp}</td>
@@ -683,24 +702,6 @@
         showNotification('Student data exported successfully!', 'success');
     };
 
-    // ===== Quick Jump =====
-    window.toggleQuickJump = function() {
-        document.getElementById('quickJumpMenu').classList.toggle('hidden');
-    };
-
-    // ===== Quick Actions =====
-    window.toggleQuickActions = function() {
-        document.getElementById('quickActionsMenu').classList.toggle('hidden');
-    };
-
-    window.navigateTo = function(page) {
-        if (!selectedStudentId) {
-            showNotification('Please select a student first.', 'warning');
-            return;
-        }
-        window.location.href = page + '?student=' + encodeURIComponent(selectedStudentId);
-    };
-
     // ===== Load from URL Parameter =====
     function loadStudentFromURL() {
         const params = new URLSearchParams(window.location.search);
@@ -716,7 +717,7 @@
         }
     }
 
-    // ===== Close menus on outside click =====
+    // ===== Close Dropdowns on Outside Click =====
     document.addEventListener('click', function(e) {
         const jumpContainer = document.getElementById('quickJumpContainer');
         const actionsContainer = document.getElementById('quickActionsContainer');
@@ -734,7 +735,6 @@
             showNotification('Warning: No student data found. Check your data.js import.', 'error');
         }
         
-        // Set default rows per page
         const select = document.getElementById('rowsPerPage');
         if (select) select.value = '25';
         

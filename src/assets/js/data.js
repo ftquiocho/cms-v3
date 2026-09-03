@@ -1,5 +1,5 @@
 // ============================================================
-//  CENTRAL DATA STORE – EduCore
+//  CENTRAL DATA STORE – Veritas Campus Academic Management System
 //  All modules should import from this file for consistency.
 // ============================================================
 
@@ -2739,4 +2739,143 @@ function logSecurityEvent(action, targetUser, role) {
         targetUserRole: role || '',
         roleName: ''
     });
+}
+
+// ============================================================
+//  37.5 ROLES DATA (for Roles & Permissions submodule)
+// ============================================================
+export const rolesData = [
+    {
+        id: 1,
+        name: 'System Administrator',
+        type: 'System',
+        modules: ['Dashboard', 'Approvals', 'Admissions', 'Academic Setup', 'Enrollment', 'Graduation', 'TER', 'Billing', 'Registrar', 'Security'],
+        permissions: ['view', 'create', 'edit', 'delete', 'approve', 'export', 'admin'],
+        users: 2
+    },
+    {
+        id: 2,
+        name: 'Academic VP',
+        type: 'System',
+        modules: ['Dashboard', 'Approvals', 'Admissions', 'Enrollment', 'Graduation', 'TER'],
+        permissions: ['view', 'approve', 'export'],
+        users: 1
+    },
+    {
+        id: 3,
+        name: 'Registrar',
+        type: 'System',
+        modules: ['Dashboard', 'Approvals', 'Admissions', 'Academic Setup', 'Enrollment', 'Graduation', 'Billing', 'Registrar'],
+        permissions: ['view', 'create', 'edit', 'export'],
+        users: 3
+    },
+    {
+        id: 4,
+        name: 'Billing Officer',
+        type: 'System',
+        modules: ['Dashboard', 'Billing', 'Enrollment'],
+        permissions: ['view', 'create', 'edit', 'export'],
+        users: 2
+    },
+    {
+        id: 5,
+        name: 'Department Chair',
+        type: 'Custom',
+        modules: ['Dashboard', 'Approvals', 'Academic Setup', 'TER'],
+        permissions: ['view', 'approve', 'export'],
+        users: 5
+    },
+    {
+        id: 6,
+        name: 'Faculty Member',
+        type: 'Custom',
+        modules: ['Dashboard', 'Enrollment', 'TER'],
+        permissions: ['view', 'create', 'edit'],
+        users: 12
+    },
+    {
+        id: 7,
+        name: 'Admissions Officer',
+        type: 'Custom',
+        modules: ['Dashboard', 'Admissions', 'Enrollment'],
+        permissions: ['view', 'create', 'edit', 'export'],
+        users: 4
+    },
+    {
+        id: 8,
+        name: 'Audit Admin',
+        type: 'Custom',
+        modules: ['Dashboard', 'Security'],
+        permissions: ['view', 'export', 'admin'],
+        users: 1
+    }
+];
+
+let nextRoleId = rolesData.length + 1;
+
+export function getRoles() {
+    return rolesData;
+}
+
+export function getRoleById(id) {
+    return rolesData.find(r => r.id === id);
+}
+
+export function getRolesByType(type) {
+    return rolesData.filter(r => r.type === type);
+}
+
+export function addRole(role) {
+    const newRole = { ...role, id: nextRoleId++ };
+    rolesData.push(newRole);
+    // Log the action
+    logRoleEvent('Role Created', newRole.name, newRole.type);
+    return newRole;
+}
+
+export function updateRole(id, updatedData) {
+    const index = rolesData.findIndex(r => r.id === id);
+    if (index !== -1) {
+        const oldRole = rolesData[index];
+        rolesData[index] = { ...oldRole, ...updatedData };
+        logRoleEvent('Role Updated', rolesData[index].name, rolesData[index].type);
+        return rolesData[index];
+    }
+    return null;
+}
+
+export function deleteRole(id) {
+    const index = rolesData.findIndex(r => r.id === id);
+    if (index !== -1) {
+        const role = rolesData[index];
+        if (role.type === 'System') {
+            console.warn('Cannot delete System role:', role.name);
+            return false;
+        }
+        rolesData.splice(index, 1);
+        logRoleEvent('Role Deleted', role.name, role.type);
+        return true;
+    }
+    return false;
+}
+
+// Helper to log role events to security logs
+function logRoleEvent(action, roleName, roleType) {
+    const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 16);
+    // Use the existing securityLogs array (defined in Section 37)
+    if (typeof securityLogs !== 'undefined') {
+        securityLogs.unshift({
+            id: securityLogs.length + 1,
+            timestamp: timestamp,
+            user: 'System',
+            userRole: 'System',
+            action: action,
+            ip: '127.0.0.1',
+            status: 'Completed',
+            details: `${action}: ${roleName} (${roleType})`,
+            targetUser: '',
+            targetUserRole: '',
+            roleName: roleName
+        });
+    }
 }

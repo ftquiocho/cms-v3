@@ -35,63 +35,63 @@
 </div>
 
 <!-- ===== STATS STRIP (Dynamic from data.js) ===== -->
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
     <!-- 1st – Total Eligible (Brand) -->
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Total Eligible
                 <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Total number of students eligible for graduation.">ⓘ</span>
             </p>
             <h2 class="text-2xl font-black text-slate-900 font-mono" id="totalEligible">0</h2>
             <span class="text-sm text-emerald-600 font-semibold" id="eligibleTrend">Loading...</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
         </div>
     </div>
 
     <!-- 2nd – Pending Recommendations (Amber) -->
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Pending Recommendations
                 <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Eligible students awaiting final VP recommendation.">ⓘ</span>
             </p>
             <h2 class="text-2xl font-black text-amber-600 font-mono" id="pendingRecommendations">0</h2>
             <span class="text-sm text-slate-500" id="pendingSubtext">Requires VP review</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
     </div>
 
     <!-- 3rd – Graduation Rate (Emerald) -->
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Graduation Rate
                 <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Percentage of eligible vs total students.">ⓘ</span>
             </p>
             <h2 class="text-2xl font-black text-emerald-600 font-mono" id="graduationRate">0%</h2>
             <span class="text-sm text-emerald-600 font-semibold" id="rateTrend">Loading...</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
     </div>
 
     <!-- 4th – Applied for Graduation (Blue) -->
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Applied for Graduation
                 <span class="text-brand-500 ml-1 cursor-help" data-tooltip="Eligible students who have formally applied.">ⓘ</span>
             </p>
             <h2 class="text-2xl font-black text-blue-600 font-mono" id="appliedCount">0</h2>
             <span class="text-sm text-slate-500" id="appliedSubtext">% of eligible</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" /></svg>
         </div>
     </div>

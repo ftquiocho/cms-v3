@@ -6,7 +6,7 @@
     <span><strong>Demo Mode:</strong> As VP for Academic & Student Affairs, you have <strong>view‑only</strong> access in production. For this demo, double-click restricted actions to unlock and explore functionality.</span>
 </div> -->
 
-<div class="flex items-center justify-between mb-4">
+<div class="card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
     <div>
         <nav class="flex items-center gap-2 text-sm text-slate-500 mb-1">
             <button type="button" onclick="window.location.href='security.html'" class="hover:text-brand-600 flex items-center gap-1">
@@ -44,7 +44,7 @@
 </div>
 
 <!-- ===== STATS STRIP (Dynamic with Tooltips) ===== -->
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
     <!-- 1st – Total Roles (Brand) -->
     <div class="card flex items-center justify-between">
         <div>
@@ -107,7 +107,7 @@
 </div>
 
 <!-- ===== FILTERS ===== -->
-<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 my-4">
     <div class="flex flex-wrap items-center gap-2">
         <div class="relative">
             <input type="search" id="roleSearch" placeholder="Search by role name..." class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
@@ -128,8 +128,8 @@
 
 <!-- ===== TABLE ===== -->
 <div class="card space-y-4">
-    <div class="table-wrap">
-        <table class="w-full text-left text-sm text-slate-600 border-collapse" id="roleTable">
+    <div class="table-wrap overflow-x-auto w-full">
+        <table class="w-full text-left text-sm text-slate-600 border-collapse min-w-[700px]" id="roleTable">
             <thead>
                 <tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
                     <th scope="col" class="p-3 w-12 text-center">#</th>
@@ -172,7 +172,7 @@
     </div>
 </div>
 
-<!-- ===== VIEW/EDIT ROLE MODAL (Shared – opens in view mode, Edit button enables editing) ===== -->
+<!-- ===== VIEW/EDIT ROLE MODAL ===== -->
 <div id="roleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
@@ -271,43 +271,45 @@
 
 <!-- ===== JAVASCRIPT (Module) ===== -->
 <script type="module">
-    import { securityLogs, getSecurityLogById } from './assets/js/data.js';
     import { initTooltips, showNotification } from './assets/js/ui.js';
+    // ===== IMPORT ROLES DATA FROM data.js =====
+    import { getRoles, addRole, updateRole, deleteRole as deleteRoleData } from './assets/js/data.js';
 
-    // ===== Data =====
-    let logs = [...securityLogs];
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let filteredData = [];
     let currentPage = 1;
     let rowsPerPage = 25;
-    let filteredData = [];
-    let currentSort = { column: 'timestamp', direction: 'desc' };
+    let currentSort = { column: 'name', direction: 'asc' };
+    let selectedRoleId = null;
+    let isEditing = false;
+    let rolesData = getRoles(); // Initial data
 
-    // ===== Apply Filters =====
+    // ============================================================
+    //  APPLY FILTERS
+    // ============================================================
     function applyFilters() {
-        const search = document.getElementById('logSearch').value.toLowerCase().trim();
-        const action = document.getElementById('actionFilter').value;
-        const status = document.getElementById('statusFilter').value;
+        // Refresh data from data.js
+        rolesData = getRoles();
 
-        filteredData = logs.filter(l => {
-            const matchSearch = l.user.toLowerCase().includes(search) || 
-                l.ip.toLowerCase().includes(search) ||
-                l.action.toLowerCase().includes(search) ||
-                (l.targetUser && l.targetUser.toLowerCase().includes(search));
-            const matchAction = action === 'all' || l.action === action;
-            const matchStatus = status === 'all' || l.status === status;
-            return matchSearch && matchAction && matchStatus;
+        const search = document.getElementById('roleSearch').value.toLowerCase().trim();
+        const typeFilter = document.getElementById('typeFilter').value;
+
+        filteredData = rolesData.filter(r => {
+            const matchSearch = r.name.toLowerCase().includes(search) ||
+                r.type.toLowerCase().includes(search) ||
+                r.modules.some(m => m.toLowerCase().includes(search));
+            const matchType = typeFilter === 'all' || r.type === typeFilter;
+            return matchSearch && matchType;
         });
 
-        // Sort
         if (currentSort.column) {
             filteredData.sort((a, b) => {
                 let aVal = a[currentSort.column];
                 let bVal = b[currentSort.column];
                 if (typeof aVal === 'string') aVal = aVal.toLowerCase();
                 if (typeof bVal === 'string') bVal = bVal.toLowerCase();
-                if (currentSort.column === 'timestamp') {
-                    aVal = new Date(aVal);
-                    bVal = new Date(bVal);
-                }
                 if (aVal < bVal) return currentSort.direction === 'asc' ? -1 : 1;
                 if (aVal > bVal) return currentSort.direction === 'asc' ? 1 : -1;
                 return 0;
@@ -315,24 +317,26 @@
         }
 
         // Update stats
-        const total = logs.length;
-        const failed = logs.filter(l => l.status === 'Failed' || l.status === 'Expired').length;
-        const success = logs.filter(l => l.status === 'Success' || l.status === 'Completed' || l.status === 'Applied' || l.status === 'Exported' || l.status === 'Approved').length;
-        const admin = logs.filter(l => l.action.includes('User') || l.action.includes('Role') || l.action.includes('Permission') || l.action.includes('Password') || l.action.includes('MFA') || l.action.includes('API')).length;
+        const total = rolesData.length;
+        const system = rolesData.filter(r => r.type === 'System').length;
+        const custom = rolesData.filter(r => r.type === 'Custom').length;
+        const moduleCount = rolesData.reduce((sum, r) => sum + r.modules.length, 0);
 
-        document.getElementById('logTotal').textContent = total;
-        document.getElementById('logFailed').textContent = failed;
-        document.getElementById('logSuccess').textContent = success;
-        document.getElementById('logAdmin').textContent = admin;
+        document.getElementById('roleTotal').textContent = total;
+        document.getElementById('roleSystem').textContent = system;
+        document.getElementById('roleCustom').textContent = custom;
+        document.getElementById('moduleTotal').textContent = moduleCount;
 
         currentPage = 1;
         renderTable();
         renderPagination();
     }
 
-    // ===== Render Table =====
+    // ============================================================
+    //  RENDER TABLE
+    // ============================================================
     function renderTable() {
-        const tbody = document.getElementById('logBody');
+        const tbody = document.getElementById('roleBody');
         const start = (currentPage - 1) * rowsPerPage;
         const end = Math.min(start + rowsPerPage, filteredData.length);
         const pageItems = filteredData.slice(start, end);
@@ -342,25 +346,40 @@
             tbody.innerHTML = '';
         } else {
             document.getElementById('emptyState').classList.add('hidden');
-            tbody.innerHTML = pageItems.map((l, index) => {
-                const statusClass = l.status === 'Success' || l.status === 'Completed' || l.status === 'Applied' || l.status === 'Exported' || l.status === 'Approved' ? 'status-badge--approved' :
-                                  l.status === 'Pending' ? 'status-badge--pending' :
-                                  l.status === 'Expired' || l.status === 'Failed' ? 'status-badge--hold' : 'status-badge--review';
-                // Add target user info if available
-                const targetInfo = l.targetUser ? `<span class="text-xs text-slate-400"> → ${l.targetUser}</span>` : '';
+            tbody.innerHTML = pageItems.map((r, index) => {
+                const moduleBadges = r.modules.slice(0, 3).map(m =>
+                    `<span class="text-[10px] font-medium bg-slate-100 px-1.5 py-0.5 rounded">${m}</span>`
+                ).join(' ');
+                const moduleCount = r.modules.length;
+                const moduleDisplay = moduleBadges + (moduleCount > 3 ? ` <span class="text-[10px] text-slate-400">+${moduleCount - 3}</span>` : '');
+                const permDisplay = r.permissions.map(p =>
+                    `<span class="text-[10px] font-medium ${p === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-700'} px-1.5 py-0.5 rounded">${p}</span>`
+                ).join(' ');
+                const typeClass = r.type === 'System' ? 'text-blue-600 bg-blue-50 border-blue-200' : 'text-purple-600 bg-purple-50 border-purple-200';
+                const isSystem = r.type === 'System';
+
                 return `
                     <tr>
                         <td class="p-3 text-center font-mono text-slate-500">${start + index + 1}</td>
-                        <td class="p-3 font-mono text-slate-700 text-xs">${l.timestamp}</td>
-                        <td class="p-3 font-bold text-slate-900">${l.user}</td>
-                        <td class="p-3">
-                            <span class="text-xs font-medium bg-slate-100 px-2 py-0.5 rounded">${l.action}</span>
-                            ${targetInfo}
-                        </td>
-                        <td class="p-3 font-mono text-slate-600">${l.ip}</td>
-                        <td class="p-3"><span class="status-badge ${statusClass}">${l.status}</span></td>
-                        <td class="p-3 text-right">
-                            <button onclick="viewLogDetail(${l.id})" class="btn btn-ghost text-brand-600 text-xs">View</button>
+                        <td class="p-3 font-bold text-slate-900">${r.name}</td>
+                        <td class="p-3"><span class="text-xs font-semibold px-2 py-0.5 rounded border ${typeClass}">${r.type}</span></td>
+                        <td class="p-3"><div class="flex flex-wrap gap-0.5">${moduleDisplay}</div></td>
+                        <td class="p-3"><div class="flex flex-wrap gap-0.5">${permDisplay}</div></td>
+                        <td class="p-3 text-center font-mono font-bold text-slate-700">${r.users || 0}</td>
+                        <td class="p-3 text-right whitespace-nowrap">
+                            <button onclick="viewRole(${r.id})" class="btn btn-secondary text-[10px] sm:text-xs py-1 px-1.5 sm:px-2.5">View</button>
+                            ${!isSystem ? `
+                                <button onclick="editRole(${r.id})" 
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                                    ondblclick="editRole(${r.id})"
+                                    class="btn btn-primary text-[10px] sm:text-xs py-1 px-1.5 sm:px-2.5">Edit</button>
+                                <button onclick="deleteRole(${r.id})" 
+                                    data-tooltip="This action is displayed for demo purposes only and not available in this VP access. Double-click to unlock and preview the System Administrator actions."
+                                    ondblclick="deleteRole(${r.id})"
+                                    class="btn btn-danger text-[10px] sm:text-xs py-1 px-1.5 sm:px-2.5">Delete</button>
+                            ` : `
+                                <span class="text-xs text-slate-400 italic">Built-in</span>
+                            `}
                         </td>
                     </tr>
                 `;
@@ -376,7 +395,9 @@
         document.getElementById('showingInfo').textContent = `Showing ${start + 1}-${end} of ${filteredData.length}`;
     }
 
-    // ===== Pagination =====
+    // ============================================================
+    //  PAGINATION
+    // ============================================================
     function renderPagination() {
         const totalPages = Math.ceil(filteredData.length / rowsPerPage);
         const controls = document.getElementById('paginationControls');
@@ -384,7 +405,6 @@
 
         let html = '';
 
-        // Rows per page dropdown (first)
         html += `
             <div class="flex items-center gap-1.5 mr-2">
                 <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
@@ -397,11 +417,14 @@
             </div>
         `;
 
-        // Previous
         html += `<button class="btn btn-secondary text-xs ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage > 1 ? `goToPage(${currentPage - 1})` : ''}" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
 
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
+        const maxPages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+        let endPage = Math.min(totalPages, startPage + maxPages - 1);
+        if (endPage - startPage < maxPages - 1) startPage = Math.max(1, endPage - maxPages + 1);
+
+        for (let i = startPage; i <= endPage; i++) {
             if (i === currentPage) {
                 html += `<button class="btn btn-primary text-xs">${i}</button>`;
             } else {
@@ -409,12 +432,9 @@
             }
         }
 
-        // Next
         html += `<button class="btn btn-secondary text-xs ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" onclick="${currentPage < totalPages ? `goToPage(${currentPage + 1})` : ''}" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
 
         controls.innerHTML = html;
-
-        // Set the rows per page dropdown to the current value
         const select = document.getElementById('rowsPerPage');
         if (select) select.value = rowsPerPage;
     }
@@ -433,7 +453,9 @@
         renderPagination();
     }
 
-    // ===== Sorting =====
+    // ============================================================
+    //  SORTING
+    // ============================================================
     function sortTable(column) {
         if (currentSort.column === column) {
             currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
@@ -441,12 +463,12 @@
             currentSort.column = column;
             currentSort.direction = 'asc';
         }
-        document.querySelectorAll('#logTable .sort-header').forEach(th => {
+        document.querySelectorAll('.sort-header').forEach(th => {
             th.classList.remove('sort-asc', 'sort-desc');
             const arrow = th.querySelector('.sort-arrow');
             if (arrow) arrow.textContent = '↕';
         });
-        const activeHeader = document.querySelector(`#logTable .sort-header[data-sort="${column}"]`);
+        const activeHeader = document.querySelector(`.sort-header[data-sort="${column}"]`);
         if (activeHeader) {
             activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
             const arrow = activeHeader.querySelector('.sort-arrow');
@@ -456,70 +478,187 @@
     }
 
     function resetFilters() {
-        document.getElementById('logSearch').value = '';
-        document.getElementById('actionFilter').value = 'all';
-        document.getElementById('statusFilter').value = 'all';
+        document.getElementById('roleSearch').value = '';
+        document.getElementById('typeFilter').value = 'all';
         applyFilters();
     }
 
-    // ===== View Detail =====
-    function viewLogDetail(id) {
-        const log = getSecurityLogById(id);
-        if (!log) return;
-        document.getElementById('detailModalTitle').textContent = `Event: ${log.action}`;
-        let targetInfo = '';
-        if (log.targetUser) {
-            targetInfo = `<div><span class="font-bold">Target User:</span> ${log.targetUser}</div>`;
-        }
-        if (log.roleName) {
-            targetInfo += `<div><span class="font-bold">Role:</span> ${log.roleName}</div>`;
-        }
-        document.getElementById('detailModalContent').innerHTML = `
-            <div class="grid grid-cols-2 gap-2">
-                <div><span class="font-bold">Timestamp:</span> ${log.timestamp}</div>
-                <div><span class="font-bold">User:</span> ${log.user}</div>
-                <div><span class="font-bold">Action:</span> ${log.action}</div>
-                <div><span class="font-bold">IP Address:</span> ${log.ip}</div>
-                <div><span class="font-bold">Status:</span> ${log.status}</div>
-                <div><span class="font-bold">Event ID:</span> #${log.id}</div>
-                ${targetInfo}
-            </div>
-            <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span class="font-bold text-slate-700">Details:</span>
-                <span class="text-slate-600">${log.details || 'No additional details.'}</span>
-            </div>
-            <p class="text-xs text-slate-400 mt-2">Full audit trail available in system logs.</p>
-        `;
-        document.getElementById('detailModal').classList.remove('hidden');
+    // ============================================================
+    //  VIEW / EDIT ROLE
+    // ============================================================
+    function openAddRoleModal() {
+        isEditing = true;
+        document.getElementById('roleModalTitle').textContent = 'Add New Role';
+        document.getElementById('editRoleId').value = '';
+        document.getElementById('roleName').value = '';
+        document.getElementById('roleType').value = 'Custom';
+        document.getElementById('roleName').disabled = false;
+        document.getElementById('roleType').disabled = false;
+        document.querySelectorAll('#roleForm .form-check input').forEach(cb => cb.checked = false);
+        document.getElementById('enableEditBtn').classList.add('hidden');
+        document.getElementById('saveRoleBtn').classList.remove('hidden');
+        document.getElementById('editModeNotice').classList.remove('hidden');
+        document.getElementById('roleModal').classList.remove('hidden');
+        document.querySelectorAll('#roleForm .form-check input').forEach(cb => cb.disabled = false);
     }
 
-    function closeDetailModal() {
-        document.getElementById('detailModal').classList.add('hidden');
+    function viewRole(id) {
+        const role = rolesData.find(r => r.id === id);
+        if (!role) return;
+        isEditing = false;
+        selectedRoleId = id;
+        document.getElementById('roleModalTitle').textContent = `View Role: ${role.name}`;
+        document.getElementById('editRoleId').value = id;
+        document.getElementById('roleName').value = role.name;
+        document.getElementById('roleType').value = role.type;
+        document.getElementById('roleName').disabled = true;
+        document.getElementById('roleType').disabled = true;
+        document.querySelectorAll('#roleForm .form-check input').forEach(cb => {
+            cb.checked = role.modules.includes(cb.value) || role.permissions.includes(cb.value);
+            cb.disabled = true;
+        });
+        document.getElementById('enableEditBtn').classList.remove('hidden');
+        document.getElementById('saveRoleBtn').classList.add('hidden');
+        document.getElementById('editModeNotice').classList.add('hidden');
+        document.getElementById('roleModal').classList.remove('hidden');
     }
 
-    // ===== Export CSV =====
-    function exportSecurityLogs() {
-        const data = filteredData.length > 0 ? filteredData : logs;
-        if (!data || data.length === 0) {
-            showNotification('No data to export.', 'warning');
+    function editRole(id) {
+        const role = rolesData.find(r => r.id === id);
+        if (!role) return;
+        if (role.type === 'System') {
+            showNotification('System roles cannot be edited.', 'warning');
             return;
         }
-        const headers = ['Timestamp', 'User', 'Action', 'IP Address', 'Status', 'Details'];
-        const rows = data.map(l => [l.timestamp, l.user, l.action, l.ip, l.status, l.details || '']);
-        let csv = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'security_logs.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        showNotification('CSV exported successfully.', 'success');
+        isEditing = true;
+        selectedRoleId = id;
+        document.getElementById('roleModalTitle').textContent = `Edit Role: ${role.name}`;
+        document.getElementById('editRoleId').value = id;
+        document.getElementById('roleName').value = role.name;
+        document.getElementById('roleType').value = role.type;
+        document.getElementById('roleName').disabled = false;
+        document.getElementById('roleType').disabled = true;
+        document.querySelectorAll('#roleForm .form-check input').forEach(cb => {
+            cb.checked = role.modules.includes(cb.value) || role.permissions.includes(cb.value);
+            cb.disabled = false;
+        });
+        document.getElementById('enableEditBtn').classList.add('hidden');
+        document.getElementById('saveRoleBtn').classList.remove('hidden');
+        document.getElementById('editModeNotice').classList.remove('hidden');
+        document.getElementById('roleModal').classList.remove('hidden');
     }
 
-    // ===== Quick Jump =====
+    function enableEditing() {
+        document.getElementById('roleName').disabled = false;
+        document.getElementById('roleType').disabled = false;
+        document.querySelectorAll('#roleForm .form-check input').forEach(cb => cb.disabled = false);
+        document.getElementById('enableEditBtn').classList.add('hidden');
+        document.getElementById('saveRoleBtn').classList.remove('hidden');
+        document.getElementById('editModeNotice').classList.remove('hidden');
+        showNotification('Editing enabled. Make your changes and click Save.', 'info');
+    }
+
+    function closeRoleModal() {
+        document.getElementById('roleModal').classList.add('hidden');
+        isEditing = false;
+        selectedRoleId = null;
+    }
+
+    // ============================================================
+    //  SAVE ROLE (uses data.js helpers)
+    // ============================================================
+    function saveRole(e) {
+        e.preventDefault();
+        const id = document.getElementById('editRoleId').value;
+        const name = document.getElementById('roleName').value.trim();
+        const type = document.getElementById('roleType').value;
+
+        if (!name) {
+            showNotification('Role name is required.', 'warning');
+            return;
+        }
+
+        const modules = [];
+        document.querySelectorAll('#roleForm .form-check input[value]').forEach(cb => {
+            if (cb.checked && !modules.includes(cb.value)) {
+                modules.push(cb.value);
+            }
+        });
+
+        const permissions = [];
+        document.querySelectorAll('#roleForm .form-check input[value]').forEach(cb => {
+            if (cb.checked && !permissions.includes(cb.value)) {
+                permissions.push(cb.value);
+            }
+        });
+
+        if (id) {
+            // Update using data.js helper
+            const updated = updateRole(parseInt(id), { name, type, modules, permissions });
+            if (updated) {
+                showNotification(`Role "${name}" updated successfully!`, 'success');
+            } else {
+                showNotification('Update failed.', 'error');
+                return;
+            }
+        } else {
+            // Add using data.js helper
+            const newRole = addRole({ name, type, modules, permissions, users: 0 });
+            if (newRole) {
+                showNotification(`Role "${name}" added successfully!`, 'success');
+            } else {
+                showNotification('Add failed.', 'error');
+                return;
+            }
+        }
+
+        closeRoleModal();
+        applyFilters();
+    }
+
+    // ============================================================
+    //  DELETE ROLE (uses data.js helper)
+    // ============================================================
+    let deleteTargetId = null;
+
+    function deleteRole(id) {
+        const role = rolesData.find(r => r.id === id);
+        if (!role) return;
+        if (role.type === 'System') {
+            showNotification('System roles cannot be deleted.', 'warning');
+            return;
+        }
+        deleteTargetId = id;
+        document.getElementById('deleteModalBody').textContent = `Are you sure you want to delete the role "${role.name}"? This cannot be undone.`;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        deleteTargetId = null;
+    }
+
+    function confirmDelete() {
+        if (deleteTargetId === null) return;
+        const role = rolesData.find(r => r.id === deleteTargetId);
+        if (role && role.type === 'System') {
+            showNotification('System roles cannot be deleted.', 'warning');
+            closeDeleteModal();
+            return;
+        }
+        const deleted = deleteRoleData(deleteTargetId);
+        if (deleted) {
+            showNotification(`Role "${role ? role.name : ''}" deleted successfully.`, 'warning');
+        } else {
+            showNotification('Delete failed.', 'error');
+        }
+        closeDeleteModal();
+        applyFilters();
+    }
+
+    // ============================================================
+    //  QUICK JUMP
+    // ============================================================
     function toggleQuickJump() {
         document.getElementById('quickJumpMenu').classList.toggle('hidden');
     }
@@ -531,24 +670,34 @@
         }
     });
 
-    // ===== Init =====
+    // ============================================================
+    //  INIT
+    // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
         applyFilters();
         const select = document.getElementById('rowsPerPage');
         if (select) select.value = '25';
         initTooltips();
-        console.log('✅ Security Logs submodule initialised.');
-        console.log(`📊 Loaded ${logs.length} security events.`);
+        console.log('✅ Security Roles & Permissions module initialised with data from data.js.');
+        console.log(`📊 Loaded ${rolesData.length} roles.`);
     });
 
-    // ===== Expose Globals =====
+    // ============================================================
+    //  EXPOSE GLOBALS
+    // ============================================================
     window.applyFilters = applyFilters;
     window.resetFilters = resetFilters;
     window.sortTable = sortTable;
     window.goToPage = goToPage;
     window.changeRowsPerPage = changeRowsPerPage;
-    window.viewLogDetail = viewLogDetail;
-    window.closeDetailModal = closeDetailModal;
-    window.exportSecurityLogs = exportSecurityLogs;
+    window.openAddRoleModal = openAddRoleModal;
+    window.viewRole = viewRole;
+    window.editRole = editRole;
+    window.deleteRole = deleteRole;
+    window.closeRoleModal = closeRoleModal;
+    window.closeDeleteModal = closeDeleteModal;
+    window.confirmDelete = confirmDelete;
+    window.saveRole = saveRole;
+    window.enableEditing = enableEditing;
     window.toggleQuickJump = toggleQuickJump;
 </script>
