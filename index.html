@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=dist/index.html" />
+    <title>Redirecting to Veritas Campus...</title>
+    <style>
+        body { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            font-family: system-ui, sans-serif; 
+            background: #f8fafc; 
+            color: #0f172a;
+            margin: 0;
+        }
+        .container { text-align: center; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #ea580c;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        a { color: #ea580c; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <h1>Veritas Campus</h1>
+        <p>Redirecting to <a href="dist/index.html">dist/index.html</a>...</p>
+        <p style="font-size: 0.875rem; color: #64748b; margin-top: 8px;">
+            If you are not redirected, <a href="dist/index.html">click here</a>.
+        </p>
+    </div>
+</body>
+</html>
