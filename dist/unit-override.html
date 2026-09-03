@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit-override – EduCoreEduCore | Campus Management & Student Portal Suite</title>
+    <title>Unit-override – Veritas CampusVeritas Campus · Academic Management</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -431,12 +431,12 @@
 
     <!-- Brand -->
     <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
-        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0" aria-hidden="true">EC</div>
+        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0" aria-hidden="true">VC</div>
         <div class="hidden sm:block">
             <div class="flex items-center gap-2">
-                <span class="font-extrabold text-sm tracking-tight text-white">EduCore</span>
+                <span class="font-extrabold text-sm tracking-tight text-white">Veritas Campus</span>
             </div>
-            <p class="text-[11px] text-slate-400 truncate">Campus Management &amp; Student Portal Suite</p>
+            <p class="text-[11px] text-slate-400 truncate">Academic Management</p>
         </div>
     </div>
 </div>
@@ -486,6 +486,22 @@
         </div>
     </div>
 </header>
+
+<!-- ===== DEVELOPER HANDBOFF BANNER ===== -->
+<div id="devBanner" class="bg-amber-50 border-b border-amber-200 text-amber-800 text-xs px-4 py-2 flex flex-wrap items-center justify-between gap-2 shadow-sm" role="status" aria-live="polite">
+    <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center rounded-full bg-amber-200 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider border border-amber-300 shrink-0">Handoff</span>
+        <span>
+            <strong class="font-semibold">Developer prototype</strong> – All features are fully interactive to demonstrate intended behavior, data flows, and edge cases.
+            Role-based access (e.g., VP view‑only for operational modules) will be enforced in the production build.
+        </span>
+    </div>
+    <button onclick="document.getElementById('devBanner').style.display='none'" 
+            class="text-amber-600 hover:text-amber-800 text-xs font-medium whitespace-nowrap transition-colors" 
+            aria-label="Dismiss banner">
+        Dismiss <span aria-hidden="true">✕</span>
+    </button>
+</div>
 
 <!-- ===== NOTIFICATION DRAWER (Dynamic) ===== -->
 <div id="notificationDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden" aria-modal="true" role="dialog" aria-labelledby="notifTitle">
@@ -638,6 +654,7 @@
             <nav class="space-y-1" aria-label="Executive navigation">
                 <!-- Dashboard -->
                 <button type="button" id="navDashBtn" onclick="showDashboard()"
+                    data-tooltip="Dashboard"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -649,6 +666,7 @@
 
                 <!-- Approvals -->
                 <button type="button" id="navApprovalsBtn" onclick="showApprovals()"
+                    data-tooltip="Approvals &amp; Requests"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -671,6 +689,7 @@
 
                 <!-- Admissions -->
                 <button type="button" id="navAdmissionsBtn" onclick="showAdmissions()"
+                    data-tooltip="Admissions"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -678,11 +697,11 @@
                             d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4" />
                     </svg>
                     <span class="sidebar-text truncate transition-opacity duration-200">Admissions</span>
-                    <!-- <span class="ml-auto px-1.5 py-0.5 text-[10px] bg-blue-500/20 text-blue-300 rounded font-bold sidebar-badge">Live</span> -->
                 </button>
 
                 <!-- Academic Administration -->
                 <button type="button" id="navAcademicBtn" onclick="showAcademic()"
+                    data-tooltip="Academic Administration"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -690,11 +709,11 @@
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2h0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                     <span class="sidebar-text truncate transition-opacity duration-200">Academic Administration</span>
-                    <!-- <span class="ml-auto px-1.5 py-0.5 text-[10px] bg-brand-500/20 text-brand-300 rounded font-bold sidebar-badge">Hub</span> -->
                 </button>
 
                 <!-- Enrollment -->
                 <button type="button" id="navEnrolBtn" onclick="showEnrol()"
+                    data-tooltip="Enrollment"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -705,7 +724,8 @@
                 </button>
 
                 <!-- Student 360 -->
-                <button type="button" id="navStudent360Btn" onclick="showStudent360()"
+                <button type="button" id="navStudent360Btn" onclick="window.location.href='student-360.html'"
+                    data-tooltip="Student 360"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -717,6 +737,7 @@
 
                 <!-- Graduation -->
                 <button type="button" id="navGraduationBtn" onclick="showGraduation()"
+                    data-tooltip="Graduation"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -728,14 +749,14 @@
 
                 <!-- TER -->
                 <button type="button" id="navTERBtn" onclick="showTER()"
+                    data-tooltip="Teacher Evaluation Records"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    <span class="sidebar-text truncate transition-opacity duration-200">Teacher Evaluation
-                        Records</span>
+                    <span class="sidebar-text truncate transition-opacity duration-200">Teacher Evaluation Records</span>
                 </button>
             </nav>
         </div>
@@ -749,6 +770,7 @@
 
                 <!-- Billing -->
                 <button type="button" id="navBillingBtn" onclick="showBilling()"
+                    data-tooltip="Billing"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -760,6 +782,7 @@
 
                 <!-- Registrar -->
                 <button type="button" id="navRegistrarBtn" onclick="showRegistrar()"
+                    data-tooltip="Registrar"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -771,6 +794,7 @@
 
                 <!-- System Security -->
                 <button type="button" id="navSecurityBtn" onclick="showSecurity()"
+                    data-tooltip="System Security"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -786,6 +810,7 @@
     <!-- ===== FOOTER: SIGN OUT ===== -->
     <div class="p-3 border-t border-slate-800/80">
         <button type="button" onclick="confirmSignOut()"
+            data-tooltip="Sign Out"
             class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors min-h-[44px] text-left sidebar-link">
             <svg class="w-5 h-5 text-rose-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -793,7 +818,6 @@
                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             <span class="sidebar-text truncate transition-opacity duration-200">Sign Out</span>
-            <!-- <span class="ml-auto text-[11px] text-slate-500 font-mono sidebar-badge">v3.0</span> -->
         </button>
     </div>
 </aside>
@@ -932,9 +956,9 @@
     }
 
     /* Tooltip for collapsed sidebar */
-    #mainSidebar.collapsed .nav-item {
+    /* #mainSidebar.collapsed .nav-item {
         position: relative;
-    }
+    } */
 
     #mainSidebar.collapsed .nav-item:hover::after {
         content: attr(data-tooltip);
@@ -952,6 +976,10 @@
         z-index: 50;
         border: 1px solid #334155;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     /* Override for active state when expanded */
@@ -2095,7 +2123,6 @@
                         'subject-override': 'navEnrolBtn',
                         'unit-override': 'navEnrolBtn',
                         'enrol-reports': 'navEnrolBtn',
-                        'student-360': 'navEnrolBtn',
                         'curriculum-requirements': 'navGraduationBtn',
                         'recommend-students': 'navGraduationBtn',
                         'graduation-reports': 'navGraduationBtn',

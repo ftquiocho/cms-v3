@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approvals – EduCoreEduCore | Campus Management & Student Portal Suite</title>
+    <title>Approvals – Veritas CampusVeritas Campus · Academic Management</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -431,12 +431,12 @@
 
     <!-- Brand -->
     <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
-        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0" aria-hidden="true">EC</div>
+        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center font-black text-sm text-white shrink-0" aria-hidden="true">VC</div>
         <div class="hidden sm:block">
             <div class="flex items-center gap-2">
-                <span class="font-extrabold text-sm tracking-tight text-white">EduCore</span>
+                <span class="font-extrabold text-sm tracking-tight text-white">Veritas Campus</span>
             </div>
-            <p class="text-[11px] text-slate-400 truncate">Campus Management &amp; Student Portal Suite</p>
+            <p class="text-[11px] text-slate-400 truncate">Academic Management</p>
         </div>
     </div>
 </div>
@@ -486,6 +486,22 @@
         </div>
     </div>
 </header>
+
+<!-- ===== DEVELOPER HANDBOFF BANNER ===== -->
+<div id="devBanner" class="bg-amber-50 border-b border-amber-200 text-amber-800 text-xs px-4 py-2 flex flex-wrap items-center justify-between gap-2 shadow-sm" role="status" aria-live="polite">
+    <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center rounded-full bg-amber-200 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider border border-amber-300 shrink-0">Handoff</span>
+        <span>
+            <strong class="font-semibold">Developer prototype</strong> – All features are fully interactive to demonstrate intended behavior, data flows, and edge cases.
+            Role-based access (e.g., VP view‑only for operational modules) will be enforced in the production build.
+        </span>
+    </div>
+    <button onclick="document.getElementById('devBanner').style.display='none'" 
+            class="text-amber-600 hover:text-amber-800 text-xs font-medium whitespace-nowrap transition-colors" 
+            aria-label="Dismiss banner">
+        Dismiss <span aria-hidden="true">✕</span>
+    </button>
+</div>
 
 <!-- ===== NOTIFICATION DRAWER (Dynamic) ===== -->
 <div id="notificationDrawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex justify-end hidden" aria-modal="true" role="dialog" aria-labelledby="notifTitle">
@@ -638,6 +654,7 @@
             <nav class="space-y-1" aria-label="Executive navigation">
                 <!-- Dashboard -->
                 <button type="button" id="navDashBtn" onclick="showDashboard()"
+                    data-tooltip="Dashboard"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -649,6 +666,7 @@
 
                 <!-- Approvals -->
                 <button type="button" id="navApprovalsBtn" onclick="showApprovals()"
+                    data-tooltip="Approvals &amp; Requests"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -671,6 +689,7 @@
 
                 <!-- Admissions -->
                 <button type="button" id="navAdmissionsBtn" onclick="showAdmissions()"
+                    data-tooltip="Admissions"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -678,11 +697,11 @@
                             d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4" />
                     </svg>
                     <span class="sidebar-text truncate transition-opacity duration-200">Admissions</span>
-                    <!-- <span class="ml-auto px-1.5 py-0.5 text-[10px] bg-blue-500/20 text-blue-300 rounded font-bold sidebar-badge">Live</span> -->
                 </button>
 
                 <!-- Academic Administration -->
                 <button type="button" id="navAcademicBtn" onclick="showAcademic()"
+                    data-tooltip="Academic Administration"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -690,11 +709,11 @@
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2h0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                     <span class="sidebar-text truncate transition-opacity duration-200">Academic Administration</span>
-                    <!-- <span class="ml-auto px-1.5 py-0.5 text-[10px] bg-brand-500/20 text-brand-300 rounded font-bold sidebar-badge">Hub</span> -->
                 </button>
 
                 <!-- Enrollment -->
                 <button type="button" id="navEnrolBtn" onclick="showEnrol()"
+                    data-tooltip="Enrollment"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -705,7 +724,8 @@
                 </button>
 
                 <!-- Student 360 -->
-                <button type="button" id="navStudent360Btn" onclick="showStudent360()"
+                <button type="button" id="navStudent360Btn" onclick="window.location.href='student-360.html'"
+                    data-tooltip="Student 360"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -717,6 +737,7 @@
 
                 <!-- Graduation -->
                 <button type="button" id="navGraduationBtn" onclick="showGraduation()"
+                    data-tooltip="Graduation"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -728,14 +749,14 @@
 
                 <!-- TER -->
                 <button type="button" id="navTERBtn" onclick="showTER()"
+                    data-tooltip="Teacher Evaluation Records"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    <span class="sidebar-text truncate transition-opacity duration-200">Teacher Evaluation
-                        Records</span>
+                    <span class="sidebar-text truncate transition-opacity duration-200">Teacher Evaluation Records</span>
                 </button>
             </nav>
         </div>
@@ -749,6 +770,7 @@
 
                 <!-- Billing -->
                 <button type="button" id="navBillingBtn" onclick="showBilling()"
+                    data-tooltip="Billing"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -760,6 +782,7 @@
 
                 <!-- Registrar -->
                 <button type="button" id="navRegistrarBtn" onclick="showRegistrar()"
+                    data-tooltip="Registrar"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -771,6 +794,7 @@
 
                 <!-- System Security -->
                 <button type="button" id="navSecurityBtn" onclick="showSecurity()"
+                    data-tooltip="System Security"
                     class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors min-h-[44px] text-left sidebar-link">
                     <svg class="w-5 h-5 text-slate-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -786,6 +810,7 @@
     <!-- ===== FOOTER: SIGN OUT ===== -->
     <div class="p-3 border-t border-slate-800/80">
         <button type="button" onclick="confirmSignOut()"
+            data-tooltip="Sign Out"
             class="nav-item w-full flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 transition-colors min-h-[44px] text-left sidebar-link">
             <svg class="w-5 h-5 text-rose-400 shrink-0 sidebar-icon" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -793,7 +818,6 @@
                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             <span class="sidebar-text truncate transition-opacity duration-200">Sign Out</span>
-            <!-- <span class="ml-auto text-[11px] text-slate-500 font-mono sidebar-badge">v3.0</span> -->
         </button>
     </div>
 </aside>
@@ -932,9 +956,9 @@
     }
 
     /* Tooltip for collapsed sidebar */
-    #mainSidebar.collapsed .nav-item {
+    /* #mainSidebar.collapsed .nav-item {
         position: relative;
-    }
+    } */
 
     #mainSidebar.collapsed .nav-item:hover::after {
         content: attr(data-tooltip);
@@ -952,6 +976,10 @@
         z-index: 50;
         border: 1px solid #334155;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     /* Override for active state when expanded */
@@ -984,7 +1012,7 @@
             financial requests</p>
     </div>
     <div class="flex items-center gap-2 flex-wrap">
-        <button type="button" onclick="exportApprovalsCSV()" class="btn btn-secondary text-xs">
+        <button type="button" onclick="exportApprovalsCSV()" class="btn btn-secondary text-xs w-full sm:w-auto justify-center">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -995,10 +1023,10 @@
 </div>
 
 <!-- ===== STATS STRIP (with icons & tooltips) ===== -->
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Total Pending
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Total number of requests awaiting your review and approval.">ⓘ</span>
@@ -1006,7 +1034,7 @@
             <h2 class="text-2xl font-black text-slate-900 font-mono" id="statTotalPending">17</h2>
             <span class="text-sm text-amber-600 font-semibold">Requires VP Action</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"
             aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1015,8 +1043,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Grade Submissions
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Grade sheets pending VP review and approval.">ⓘ</span>
@@ -1024,7 +1052,7 @@
             <h2 class="text-2xl font-black text-amber-600 font-mono" id="statGradeSubmissions">8</h2>
             <span class="text-sm text-slate-500">Due this week</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"
             aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1033,8 +1061,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Clearance Holds
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Student clearance holds requiring VP intervention.">ⓘ</span>
@@ -1042,7 +1070,7 @@
             <h2 class="text-2xl font-black text-rose-600 font-mono" id="statClearanceHolds">4</h2>
             <span class="text-sm text-slate-500">Urgent review needed</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -1050,8 +1078,8 @@
         </div>
     </div>
     <div class="card flex items-center justify-between">
-        <div>
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+        <div class="min-w-0 flex-1">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Admissions &amp; Scholarships
                 <span class="text-brand-500 ml-1 cursor-help"
                     data-tooltip="Admission and scholarship applications awaiting review.">ⓘ</span>
@@ -1059,7 +1087,7 @@
             <h2 class="text-2xl font-black text-blue-600 font-mono" id="statAdmissions">5</h2>
             <span class="text-sm text-slate-500">Pending evaluation</span>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center" aria-hidden="true">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -1067,14 +1095,13 @@
         </div>
     </div>
 </div>
-
 <!-- ===== APPROVALS TABLE (with integrated filters) ===== -->
 <!-- Filters -->
 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
-    <div class="flex flex-wrap items-center gap-2">
-        <div class="relative">
-            <input type="search" id="searchApprovals" placeholder="Search by ID, name, or department..."
-                class="input-field text-sm w-full sm:w-48 pr-8" oninput="applyFilters()" />
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full lg:w-auto">
+        <div class="relative w-full sm:w-48">
+            <input type="search" id="searchApprovals" placeholder="Search by ID, name..."
+                class="input-field text-sm w-full pr-8" oninput="applyFilters()" />
             <button onclick="resetApprovalFilters()"
                 class="absolute inset-y-0 right-2 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1082,42 +1109,44 @@
                 </svg>
             </button>
         </div>
-        <select id="filterCategory" class="select-field text-sm w-36" onchange="applyFilters()">
-            <option value="all">All Categories</option>
-            <option value="grades">Grade Submissions</option>
-            <option value="clearance">Clearance Holds</option>
-            <option value="admissions">Admissions</option>
-            <option value="scholarship">Scholarships</option>
-        </select>
-        <select id="filterStatus" class="select-field text-sm w-32" onchange="applyFilters()">
-            <option value="all">All Statuses</option>
-            <option value="pending_review">Pending Review</option>
-            <option value="in_review">In Review</option>
-            <option value="hold">On Hold</option>
-            <option value="consultation">Under Consultation</option>
-        </select>
+        <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+            <select id="filterCategory" class="select-field text-sm w-full sm:w-36" onchange="applyFilters()">
+                <option value="all">All Categories</option>
+                <option value="grades">Grade Submissions</option>
+                <option value="clearance">Clearance Holds</option>
+                <option value="admissions">Admissions</option>
+                <option value="scholarship">Scholarships</option>
+            </select>
+            <select id="filterStatus" class="select-field text-sm w-full sm:w-32" onchange="applyFilters()">
+                <option value="all">All Statuses</option>
+                <option value="pending_review">Pending Review</option>
+                <option value="in_review">In Review</option>
+                <option value="hold">On Hold</option>
+                <option value="consultation">Under Consultation</option>
+            </select>
+        </div>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center justify-between sm:justify-end gap-2">
         <span class="text-xs text-slate-500" id="showingInfo">Showing 1-14 of 17</span>
     </div>
 </div>
 
 <!-- Table with filters -->
-<div class="card space-y-4">
+<div class="card space-y-4 max-w-full overflow-hidden">
     <!-- Bulk Actions + Table -->
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <select id="bulkAction" class="select-field text-sm w-40" disabled>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+            <select id="bulkAction" class="select-field text-sm w-36 sm:w-40 flex-1 sm:flex-none" disabled>
                 <option value="">Bulk Actions</option>
                 <option value="approve">Approve Selected</option>
                 <option value="reject">Reject Selected</option>
             </select>
-            <button id="applyBulkBtn" onclick="openBulkConfirmModal()" class="btn btn-secondary text-xs"
+            <button id="applyBulkBtn" onclick="openBulkConfirmModal()" class="btn btn-secondary text-xs shrink-0"
                 disabled>Apply</button>
-            <span id="selectedCount" class="text-xs text-slate-500">0 selected</span>
+            <span id="selectedCount" class="text-xs text-slate-500 whitespace-nowrap">0 selected</span>
         </div>
-        <div class="flex items-center gap-2">
-            <label for="rowsPerPage" class="text-xs text-slate-500">Rows:</label>
+        <div class="flex items-center justify-end gap-2 shrink-0">
+            <label for="rowsPerPage" class="text-xs text-slate-500 whitespace-nowrap">Rows:</label>
             <select id="rowsPerPage" class="select-field text-sm w-20" onchange="changeRowsPerPage()">
                 <option value="10">10</option>
                 <option value="25" selected>25</option>
@@ -1127,7 +1156,7 @@
         </div>
     </div>
 
-    <div class="table-wrap">
+    <div class="table-wrap overflow-x-auto w-full">
         <table class="w-full text-left text-sm text-slate-600 border-collapse" id="approvalsTable">
             <thead>
                 <tr
@@ -1191,11 +1220,11 @@
 
     <!-- Pagination -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-        <p class="text-sm text-slate-500">
+        <p class="text-sm text-slate-500 text-center sm:text-left">
             Showing <span id="pageStart">1</span>–<span id="pageEnd">14</span> of <span id="totalItems">17</span>
             entries
         </p>
-        <div class="flex items-center gap-1.5" id="paginationControls">
+        <div class="flex items-center justify-center sm:justify-end gap-1.5 flex-wrap overflow-x-auto" id="paginationControls">
             <!-- Generated by JavaScript -->
         </div>
     </div>
@@ -1205,46 +1234,46 @@
 
 <!-- Grade Details Modal -->
 <div id="gradeDetailsModal"
-    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden"
     aria-modal="true" role="dialog">
     <div
-        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] p-4 sm:p-6 shadow-2xl border border-slate-200 overflow-y-auto space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
-            <div>
-                <h3 id="gradeDetailTitle" class="text-lg font-bold text-slate-900">Grade Sheet Review</h3>
-                <p id="gradeDetailSubtitle" class="text-sm text-slate-500">Reviewing final grade submissions</p>
+            <div class="min-w-0 pr-2">
+                <h3 id="gradeDetailTitle" class="text-base sm:text-lg font-bold text-slate-900 truncate">Grade Sheet Review</h3>
+                <p id="gradeDetailSubtitle" class="text-xs sm:text-sm text-slate-500 truncate">Reviewing final grade submissions</p>
             </div>
             <button type="button" onclick="closeDetailModal()"
-                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold shrink-0"
                 aria-label="Close">&times;</button>
         </div>
         <div id="gradeDetailContent" class="space-y-4">
             <!-- Rendered by JavaScript -->
         </div>
-        <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100">
-            <button type="button" onclick="closeDetailModal()" class="btn btn-secondary text-xs">Cancel</button>
-            <button type="button" id="detailApproveBtn" class="btn btn-success text-xs">Approve</button>
-            <button type="button" id="detailRejectBtn" class="btn btn-danger text-xs">Reject</button>
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 pt-3 border-t border-slate-100 flex-wrap sm:flex-nowrap">
+            <button type="button" onclick="closeDetailModal()" class="btn btn-secondary text-xs flex-1 sm:flex-none">Cancel</button>
+            <button type="button" id="detailApproveBtn" class="btn btn-success text-xs flex-1 sm:flex-none">Approve</button>
+            <button type="button" id="detailRejectBtn" class="btn btn-danger text-xs flex-1 sm:flex-none">Reject</button>
         </div>
     </div>
 </div>
 
 <!-- ===== BULK CONFIRMATION MODAL ===== -->
 <div id="bulkConfirmModal"
-    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden"
     aria-modal="true" role="dialog">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-slate-200 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 class="text-lg font-bold text-slate-900" id="bulkConfirmTitle">Confirm Bulk Action</h3>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900" id="bulkConfirmTitle">Confirm Bulk Action</h3>
             <button type="button" onclick="closeBulkConfirmModal()"
-                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-xl text-xl font-bold shrink-0"
                 aria-label="Close">&times;</button>
         </div>
         <p class="text-sm text-slate-600" id="bulkConfirmBody">Are you sure you want to approve <span id="bulkCount"
                 class="font-bold">0</span> selected request(s)?</p>
-        <div class="flex justify-end gap-2.5 pt-2">
-            <button type="button" onclick="closeBulkConfirmModal()" class="btn btn-secondary text-xs">Cancel</button>
-            <button type="button" id="bulkConfirmBtn" class="btn btn-primary text-xs">Confirm</button>
+        <div class="flex items-center justify-end gap-2 sm:gap-2.5 pt-2">
+            <button type="button" onclick="closeBulkConfirmModal()" class="btn btn-secondary text-xs flex-1 sm:flex-none">Cancel</button>
+            <button type="button" id="bulkConfirmBtn" class="btn btn-primary text-xs flex-1 sm:flex-none">Confirm</button>
         </div>
     </div>
 </div>
@@ -1555,7 +1584,7 @@
         if (item.category === 'grades') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Course:</span> ${d.course}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Students:</span> ${d.students}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Submitted By:</span> ${d.submittedBy}</div>
@@ -1565,16 +1594,16 @@
                 <p class="font-bold">📋 Grade Summary</p>
                 <p class="text-xs mt-1">Passing: 38/42 students • Failing: 4 students • Pending: 0</p>
             </div>
-            <div class="table-wrap">
+            <div class="table-wrap overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600 border-collapse">
                     <thead><tr class="bg-slate-50 border-y border-slate-200/80 text-xs uppercase font-extrabold text-slate-500 tracking-wider">
                         <th class="p-2">Student ID</th><th class="p-2">Name</th><th class="p-2">Final Grade</th><th class="p-2">Status</th>
                     </tr></thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr><td class="p-2">STU-2021-0001</td><td>James Smith</td><td class="font-bold text-emerald-700">A-</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0002</td><td>Emma Johnson</td><td class="font-bold text-emerald-700">B</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0003</td><td>Liam Williams</td><td class="font-bold text-amber-700">C</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
-                        <tr><td class="p-2">STU-2021-0004</td><td>Olivia Brown</td><td class="font-bold text-rose-700">D</td><td><span class="status-badge status-badge--hold">Failed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0001</td><td>James Smith</td><td class="font-bold text-emerald-700">A-</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0002</td><td>Emma Johnson</td><td class="font-bold text-emerald-700">B</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0003</td><td>Liam Williams</td><td class="font-bold text-amber-700">C</td><td><span class="status-badge status-badge--approved">Passed</span></td></tr>
+                        <tr><td class="p-2 font-mono text-xs">STU-2021-0004</td><td>Olivia Brown</td><td class="font-bold text-rose-700">D</td><td><span class="status-badge status-badge--hold">Failed</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1583,7 +1612,7 @@
         } else if (item.category === 'clearance') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Student:</span> ${d.student}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Reason:</span> ${d.reason}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Receipt:</span> ${d.receipt}</div>
@@ -1597,7 +1626,7 @@
         } else if (item.category === 'admissions') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Program:</span> ${d.program}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Transfer Credits:</span> ${d.transferCredits || '0'}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa || '—'}</div>
@@ -1611,7 +1640,7 @@
         } else if (item.category === 'scholarship') {
             const d = item.details;
             content = `
-            <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Type:</span> ${d.type}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">Amount:</span> ${d.amount}</div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200"><span class="font-bold">GPA:</span> ${d.gpa}</div>
@@ -2210,7 +2239,6 @@
                         'subject-override': 'navEnrolBtn',
                         'unit-override': 'navEnrolBtn',
                         'enrol-reports': 'navEnrolBtn',
-                        'student-360': 'navEnrolBtn',
                         'curriculum-requirements': 'navGraduationBtn',
                         'recommend-students': 'navGraduationBtn',
                         'graduation-reports': 'navGraduationBtn',

@@ -1,5 +1,5 @@
 // ============================================================
-//  CENTRAL DATA STORE – EduCore
+//  CENTRAL DATA STORE – Veritas Campus Academic Management System
 //  All modules should import from this file for consistency.
 // ============================================================
 
