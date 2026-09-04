@@ -457,7 +457,7 @@
 
         if (entered === PROTECTED_PASSWORD) {
             // Save to localStorage so they don't have to re-enter
-            localStorage.setItem('veritas_auth', String(Date.now() + (7 * 24 * 60 * 60 * 1000)));
+            localStorage.setItem('veritas_auth', String(Date.now() + (3 * 24 * 60 * 60 * 1000)));
             document.getElementById('authOverlay').style.display = 'none';
             if (error) error.style.display = 'none';
             console.log('✅ Authentication successful!');
